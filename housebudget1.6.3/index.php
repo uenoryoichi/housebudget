@@ -136,13 +136,8 @@ require 'login_check.php';
 						while ($row = mysql_fetch_assoc($result)) {
 							$account[] = $row;
 						}
-						
-						
-						
-						
-						
-					?>
-					
+								
+					?>	
 					
 					<div id="info">
 						<h2><?php echo $this_month;?> 出費：<?php echo $sum_pay;?>円  収入：<?php echo $sum_income;?>円</h2>
