@@ -11,7 +11,7 @@ session_destroy();
 
 //cookie情報も削除
 setcookie('email', '', time()-3600);
-setcookie('user_password', '', time()-3600);
+setcookie('password', '', time()-3600);
 
 header('Location: login.php');
 

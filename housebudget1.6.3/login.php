@@ -8,28 +8,28 @@ session_start();
 
 if ($_COOKIE['email'] != '') {
 	$_POST['email'] = $_COOKIE['email'];
-	$_POST['user_password'] = $_COOKIE['user_password'];
+	$_POST['password'] = $_COOKIE['password'];
 	$_POST['save'] = 'on';
 }
 
 
 if (!empty($_POST)) {
 	// ログインの処理
-	if ($_POST['email'] != '' && $_POST['user_password'] != '') {
-		$sql = sprintf('SELECT * FROM user_master WHERE email="%s" AND user_password="%s"',
+	if ($_POST['email'] != '' && $_POST['password'] != '') {
+		$sql = sprintf('SELECT * FROM users WHERE email="%s" AND password="%s"',
 			mysql_real_escape_string($_POST['email']),
-			sha1(mysql_real_escape_string($_POST['user_password']))
+			sha1(mysql_real_escape_string($_POST['password']))
 		);
 		$record = mysql_query($sql) or die(mysql_error());
 		if ($table = mysql_fetch_assoc($record)) {
 			// ログイン成功
-			$_SESSION['user_id'] = $table['user_id'];
+			$_SESSION['user_id'] = $table['id'];
 			$_SESSION['time'] = time();
 
 			// ログイン情報を記録する
 			if ($_POST['save'] == 'on') {
 				setcookie('email', $_POST['email'], time()+60*60*24*14);
-				setcookie('user_password', $_POST['user_password'], time()+60*60*24*14);
+				setcookie('password', $_POST['password'], time()+60*60*24*14);
 			}
 
 			header('Location: index.php'); exit();
@@ -87,7 +87,7 @@ if (!empty($_POST)) {
                     		</dd>
 							<dt>パスワード</dt>
 							<dd>
-                    			<input type = "password" name = "user_password" size="10" maxlength="20" class="span3" value="<?php echo htmlspecialchars($_POST['user_password']);?>"/>
+                    			<input type = "password" name = "user_password" size="10" maxlength="20" class="span3" value="<?php echo htmlspecialchars($_POST['password']);?>"/>
 							</dd>
 							<?php //ログイン情報の記録?>
 							<dd>

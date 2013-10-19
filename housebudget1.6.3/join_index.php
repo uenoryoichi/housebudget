@@ -18,21 +18,21 @@ session_start();
 
 if (!empty($_POST)){
 	//入力不足チェック
-	if ($_POST['user_name'] == '') {
-		$error['user_name']='blank';
+	if ($_POST['name'] == '') {
+		$error['name']='blank';
 	}
 	if ($_POST['email'] == '') {
 		$error['email']='blank';
 	}
-	if (strlen($_POST['user_password']) < 4) {
-		$error['user_password']='length';
+	if (strlen($_POST['password']) < 4) {
+		$error['password']='length';
 	}
-	if ($_POST['user_password'] == '') {
-		$error['user_password']='blank';
+	if ($_POST['password'] == '') {
+		$error['password']='blank';
 	}
 	//重複アカウントチェック
 	if (empty($error)) {
-		$sql=sprintf('SELECT COUNT(*) AS cnt FROM user_master WHERE email="%s"',
+		$sql=sprintf('SELECT COUNT(*) AS cnt FROM users WHERE email="%s"',
 			mysql_real_escape_string($_POST['email'])
 		);
 		$record=mysql_query($sql) or die(mysql_error());
@@ -86,7 +86,7 @@ if ($_REQUEST['action']== 'rewrite') {
                     <div class="control-group">
                         <form method = "POST" action = "join_index.php" enctype="multipart/form-date" class="well">
                             <label>ニックネーム<span class="required">必須</span></label>
-                            <input type = "text" name = "user_name" size="35" maxlength="48" class="span3" value="<?php echo htmlspecialchars($_POST['user_name'], ENT_QUOTES,'UTF');?>"/>
+                            <input type = "text" name = "name" size="35" maxlength="48" class="span3" value="<?php echo htmlspecialchars($_POST['name'], ENT_QUOTES,'UTF');?>"/>
                             <?php if ($error['user_name']=='blank'):?>
 							<p class="error">* ニックネームを入力してください</p>
                             <?php endif; ?>
@@ -99,11 +99,11 @@ if ($_REQUEST['action']== 'rewrite') {
                             <p class="error">* 指定したメールアドレスはすでに登録されています。</p>
                             <?php endif;?>
 							<label>パスワード<span class="required">必須</span></label>
-                            <input type = "password" name = "user_password" size="10" maxlength="20" class="span3" value="<?php echo htmlspecialchars($_POST['user_password'], ENT_QUOTES,'UTF');?>"/>
-                            <?php if ($error['user_password']=='blank'):?>
+                            <input type = "password" name = "user_password" size="10" maxlength="20" class="span3" value="<?php echo htmlspecialchars($_POST['password'], ENT_QUOTES,'UTF');?>"/>
+                            <?php if ($error['password']=='blank'):?>
 							<p class="error">* パスワードを入力してください</p>
                             <?php endif; ?>
-                            <?php if ($error['user_password']=='length'):?>
+                            <?php if ($error['password']=='length'):?>
 							<p class="error">* パスワードは４文字以上で入力してください</p>
                             <?php endif; ?>
                             <div><input type= "submit" value="入力内容確認" class="btn-primary"/></div>

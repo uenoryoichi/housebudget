@@ -20,10 +20,10 @@ if (!isset($_SESSION['join'])) {
 //登録処理
 
 if (!empty($_POST)) {
-	$sql = sprintf('INSERT INTO user_master SET user_name="%s", email="%s", user_password="%s",created="%s"',
-		mysql_real_escape_string($_SESSION['join']['user_name']),
+	$sql = sprintf('INSERT INTO users SET name="%s", email="%s", password="%s",created="%s"',
+		mysql_real_escape_string($_SESSION['join']['name']),
 		mysql_real_escape_string($_SESSION['join']['email']),
-		mysql_real_escape_string(sha1($_SESSION['join']['user_password'])),
+		mysql_real_escape_string(sha1($_SESSION['join']['password'])),
 		date('Y-m-d H:i:s')
 	);
 	mysql_query($sql) or die(mysql_error());
@@ -66,7 +66,7 @@ if (!empty($_POST)) {
                     	    <input type="hidden" name="action" value="submit" />
                     	    <dl>
                    	 	    	<dt>ニックネーム</dt>
-                    	        <dd><?php echo htmlspecialchars($_SESSION['join']['user_name'], ENT_QUOTES, 'UTF-8'); ?></dd>
+                    	        <dd><?php echo htmlspecialchars($_SESSION['join']['name'], ENT_QUOTES, 'UTF-8'); ?></dd>
                         	    <dt>メールアドレス</dt>
                             	<dd><?php echo htmlspecialchars($_SESSION['join']['email'], ENT_QUOTES, 'UTF-8');?></dd>
 		              			<dt>パスワード</dt>
