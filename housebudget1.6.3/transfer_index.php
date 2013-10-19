@@ -47,21 +47,13 @@ require 'login_check.php';
                             <input type = "text" name = "amount" class="span3" >
                             <label>送り手</label>
                             	<select  name="account_remitter" id="account_remitter" class="span3" >
-									<?php 
-										$account_array = array("現金","JCB","ゆうちょ銀行","住信SBIネット銀行","三井住友銀行","GMOクリック証券","SBI証券","松井証券","マネックス証券","大和証券","三菱UFJ銀行");
-										for ($i=0; $i<count($account_array); $i++){
-											print('<option value="'.$account_array[$i].'">'.$account_array[$i].'</option>');
-										}
-									?>
+								<?php //選択肢にユーザーの口座情報を入れる?>
+                            	<?php require 'input_user_account_name.php'; ?>
 								</select>
 							<label>受け手</label>
                             	<select  name="account_remittee" id="account_remittee" class="span3" >
-									<?php 
-										$account_array = array("現金","JCB","ゆうちょ銀行","住信SBIネット銀行","三井住友銀行","GMOクリック証券","SBI証券","松井証券","マネックス証券","大和証券","三菱UFJ銀行");
-										for ($i=0; $i<count($account_array); $i++){
-											print('<option value="'.$account_array[$i].'">'.$account_array[$i].'</option>');
-										}
-									?>
+								<?php //選択肢にユーザーの口座情報を入れる?>
+                            	<?php require 'input_user_account_name.php'; ?>
 								</select>
 							<label>移動日</label>
 								<?php $today = date("Y-m-d");?>

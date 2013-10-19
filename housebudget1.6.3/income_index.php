@@ -20,6 +20,7 @@ require 'connect_housebudget.php';
 require 'login_check.php';
 
 
+
 ?>
 
 <!DOCTYPE html>
@@ -57,15 +58,10 @@ require 'login_check.php';
                             <input type = "text" name = "date" class="span3" value=<?php echo $today?>>
                             <label>口座名</label>
                             <select  name="account" id="account" class="span3" >
-                            <?php 
-								$kouza_array = array("現金","JCB","ゆうちょ銀行","住信SBIネット銀行","三井住友銀行","GMOクリック証券","SBI証券","松井証券","マネックス証券","大和証券","三菱UFJ銀行");
-								for ($i=0; $i<count($kouza_array); $i++){
-									print('<option value="'.$kouza_array[$i].'">'.$kouza_array[$i].'</option>');
-								}
-							?>
+                            <?php //選択肢にユーザーの口座情報を入れる?>
+                            <?php require 'input_user_account_name.php'; ?>
 							</select>
-                            <!-- <input type = "text" name = "account"　class="span3" placeholder="">-->
-							<?php  //収入情報キー ?>
+                          	<?php  //収入情報キー ?>
 							<input type = "hidden" name = "key" value="income" >
 							<input type = "submit" value = "送信" class="btn-primary">
                         </form>
