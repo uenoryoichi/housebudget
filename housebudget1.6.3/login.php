@@ -87,7 +87,7 @@ if (!empty($_POST)) {
                     		</dd>
 							<dt>パスワード</dt>
 							<dd>
-                    			<input type = "password" name = "user_password" size="10" maxlength="20" class="span3" value="<?php echo htmlspecialchars($_POST['password']);?>"/>
+                    			<input type = "password" name = "password" size="10" maxlength="20" class="span3" value="<?php echo htmlspecialchars($_POST['password']);?>"/>
 							</dd>
 							<?php //ログイン情報の記録?>
 							<dd>
