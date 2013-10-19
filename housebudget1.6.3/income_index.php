@@ -85,7 +85,7 @@ require 'login_check.php';
 	$result = mysql_query($sql, $link);
 
 	while ($row = mysql_fetch_assoc($result)) {
-		$pay[] = $row;
+		$income[] = $row;
 	}
 ?>
 	<div class = "center">
@@ -101,18 +101,18 @@ require 'login_check.php';
 			<th scope="col">削除</th>
 		</tr>
 
-		<?php for ($i = 0; $i < count($pay); $i++): ?>
+		<?php for ($i = 0; $i < count($income); $i++): ?>
 	
 		<tr>
-			<td><?php print(htmlspecialchars($pay[$i]['id'], ENT_QUOTES));?></td>
-			<td><?php print(htmlspecialchars($pay[$i]['amount'], ENT_QUOTES));?></td>
-			<td><?php print(htmlspecialchars($pay[$i]['content'], ENT_QUOTES));?></td>
-			<td><?php print(htmlspecialchars($pay[$i]['date'], ENT_QUOTES));?></td>
-			<td><?php print(htmlspecialchars($pay[$i]['account'], ENT_QUOTES));?></td>
+			<td><?php print(htmlspecialchars($income[$i]['id'], ENT_QUOTES));?></td>
+			<td><?php print(htmlspecialchars($income[$i]['amount'], ENT_QUOTES));?></td>
+			<td><?php print(htmlspecialchars($income[$i]['content'], ENT_QUOTES));?></td>
+			<td><?php print(htmlspecialchars($income[$i]['date'], ENT_QUOTES));?></td>
+			<td><?php print(htmlspecialchars($income[$i]['account'], ENT_QUOTES));?></td>
 			<td>
 				<form method = "POST" action = "income_update.php" >
                  	<?php  //編集　id送信 ?>
-					<input type = "hidden" name = "id" value=<?php print(htmlspecialchars($pay[$i]['id'], ENT_QUOTES));?> >
+					<input type = "hidden" name = "id" value=<?php print(htmlspecialchars($income[$i]['id'], ENT_QUOTES));?> >
 					<input type = "submit" value = "編集" class="btn-primary" >
                 </form>
             </td>
@@ -120,7 +120,7 @@ require 'login_check.php';
                 <form method = "POST" action = "delete_action.php" >
                  	<?php  //削除　収入キー送信　id送信 ?>
 					<input type = "hidden" name = "key" value="income" >
-					<input type = "hidden" name = "id" value=<?php print(htmlspecialchars($pay[$i]['id'], ENT_QUOTES));?> >
+					<input type = "hidden" name = "id" value=<?php print(htmlspecialchars($income[$i]['id'], ENT_QUOTES));?> >
 					<input type = "submit" value = "削除" class="btn-primary" onclick="return confirm('削除してよろしいですか');">
                 </form>
 			</td>
