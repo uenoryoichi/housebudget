@@ -47,9 +47,7 @@ require 'login_check.php';
      
      <!-- 一覧部ここから -->   
 <?php
-	//$sql = sprintf('SELECT a.name, u.balance, u.id,  FROM user_accounts u JOIN accounts a ON u.account_id=a.id WHERE u.user_id=%d',
-	//	mysql_real_escape_string($_SESSION['user_id'])
-	//);
+	
     $sql = sprintf('SELECT a.name, u.balance, u.id FROM user_accounts u JOIN accounts a ON u.account_id=a.id WHERE u.user_id=%d ORDER BY ID ASC',
 		($_SESSION['user_id'])
 	);

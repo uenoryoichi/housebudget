@@ -56,7 +56,10 @@ require 'login_check.php';
 <meta http-equiv="content-style-type" content="text/css" />
 <meta http-equiv="imagetoolbar" content="no" />
 <!-- 外部CSS読み込み -->
-<link href="css/default.css" rel="stylesheet" type="text/css" />
+<!--  <link href="css/default.css" rel="stylesheet" type="text/css" />
+-->
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+
 <!-- /ここまで -->
 <script type="text/javascript" src="js/default.js"></script>
 </head>
@@ -68,15 +71,15 @@ require 'login_check.php';
 
 <body>
 
+	<div id="head">
+		<h1><?php echo $member['name'];?>さんのMy家計簿</h1>
+		<h1>トップページ</h1>
+	</div>
+
 	<div id="container">
 
-		<h1>作成中</h1>
 
-		<h2><a href="./"><?php echo $member['user_name'];?>さんのMy家計簿</a></h2>
-
-		<div id="head">
-
-			<div id="head_menu">
+			<div class="">
 				<ul>
 					<li><a href="./">HOME</a></li>
 					<li><a href="pay_index.php">支出管理</a></li>
@@ -87,13 +90,6 @@ require 'login_check.php';
 				</ul>
 			</div>
 
-			<div id="main_image">
-				<p></p>
-			</div>
-
-		</div>
-
-		<p><img src="img/common/line_02.gif" width="800" height="8" /></p>
 
 		<div id="contents">
 
@@ -129,39 +125,50 @@ require 'login_check.php';
 						for ($i = 0; $i < count($income); $i++):
 							$sum_income += $income[$i]['amount'];
 						endfor;
+						
+						
+						
+						$sql = sprintf('SELECT a.name, u.balance, u.id FROM user_accounts u JOIN accounts a ON u.account_id=a.id WHERE u.user_id=%d ORDER BY ID ASC',
+								($_SESSION['user_id'])
+						);
+						$result = mysql_query($sql, $link);
+						
+						while ($row = mysql_fetch_assoc($result)) {
+							$account[] = $row;
+						}
+						
+						
+						
+						
+						
 					?>
 					
 					
-
-				
-					<h3>無駄使いはするなよ～</h3>
-					<h4><img src="img/top/st_info.gif" alt="インフォメーション" width="144" height="24" /></h4>
 					<div id="info">
 						<h2><?php echo $this_month;?> 出費：<?php echo $sum_pay;?>円  収入：<?php echo $sum_income;?>円</h2>
-						<br>
-						<h2>残高</h2>
-						<p>メモ：データベース作成、口座間移動のphp、残高表示</p>
-						<p>現金</p>
-						<p>郵貯</p>
-						<p>SBI銀行</p>
-						<p>三井住友</p>
-						<br>
-						<p>GMO証券</p>
-						<p>SBI証券</p>
-						<p>松井証券</p>
-						<p>マネックス証券</p>
-						<p>大和証券</p>
-												
 					</div>
+					
+					<div class = "center">
+						<h2>口座情報</h2>
+						<table align = "center" >
+							<tr>
+								<th scope="col">口座名</th>
+								<th scope="col">金額</th>
+							</tr>
+							<?php for ($i = 0; $i < count($account); $i++): ?>
+							<tr>
+								<td><?php print(htmlspecialchars($account[$i]['name'], ENT_QUOTES));?></td>
+								<td><?php print(htmlspecialchars($account[$i]['balance'], ENT_QUOTES));?></td>
+							</tr>
+							<?php endfor;?>
+						</table>
+					</div>
+					
+					
+					
 				</div>
 
-				<div id="right">
-					<div id="bnr_sps">
-						<p><a href="contents01.html"><img src="img/top/bnr_sample.gif" alt="コンテンツ01へ" width="230" height="90" /></a></p>
-						<p><a href="contents01.html"><img src="img/top/bnr_sample.gif" alt="コンテンツ01へ" width="230" height="90" /></a></p>
-						<p><a href="contents01.html"><img src="img/top/bnr_sample.gif" alt="コンテンツ01へ" width="230" height="90" /></a></p>
-					</div>
-				</div>
+				
 
 			</div>
 

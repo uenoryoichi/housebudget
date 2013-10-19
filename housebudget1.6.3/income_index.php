@@ -76,7 +76,7 @@ require 'login_check.php';
      <!-- insert部ここまで -->
      
 	<div class = "center">
-		<a href="index.php">Back To TOP</a>
+		<a href="index.php">Back To TOP </a>
 	</div>
      
      <!-- 一覧部ここから -->   
