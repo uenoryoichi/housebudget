@@ -82,7 +82,7 @@ require 'login_check.php';
 					<li><a href="pay_index.php">支出管理</a></li>
 					<li><a href="income_index.php">収入管理</a></li>
 					<li><a href="transfer_index.php">口座移動</a></li>
-					<li><a href="login.php">ログイン作業用</a></li>
+					<li><a href="account_index.php">口座残高</a></li>
 					<li><a href="logout.php">ログアウト</a></li>
 				</ul>
 			</div>
