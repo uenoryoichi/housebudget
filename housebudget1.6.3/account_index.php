@@ -47,16 +47,34 @@ require 'login_check.php';
      
      <!-- 一覧部ここから -->   
 <?php
-	
-    $sql = sprintf('SELECT a.name, u.balance, u.id FROM user_accounts u JOIN accounts a ON u.account_id=a.id WHERE u.user_id=%d ORDER BY ID ASC',
+	//account情報を入手
+    $sql = sprintf('SELECT a.name, u.* FROM user_accounts u JOIN accounts a ON u.account_id=a.id WHERE u.user_id=%d ORDER BY ID ASC',
 		($_SESSION['user_id'])
 	);
 	$result = mysql_query($sql, $link);
-
 	while ($row = mysql_fetch_assoc($result)) {
 		$account[] = $row;
 	}
-
+	
+	
+	//支払い情報を入手
+	for ($i = 0; $i < count($account); $i++){
+		$checked_date=$account[$i]['checked'];
+		$sql = sprintf('SELECT account_id, how_much, date FROM pay p, user_account u WHERE p.user_id=u.user_id=%d AND account_id=%d AND date>=u.checked ORDER BY ID ASC',
+				($_SESSION['user_id']),
+				$account[$i]['account_id'],
+				$checked_dates
+		);
+	$result = mysql_query($sql, $link);
+	while ($row = mysql_fetch_assoc($result)) {
+	$pay[] = $row;
+	}
+	};
+	
+	var_dump($pay);
+	var_dump($account['1']['checked']);
+	var_dump($checked_date);
+	
 ?>
 	<div class = "center">
 	<h2>口座情報</h2>
