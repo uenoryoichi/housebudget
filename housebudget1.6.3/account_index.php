@@ -58,22 +58,20 @@ require 'login_check.php';
 	
 	
 	//支払い情報を入手
-	for ($i = 0; $i < count($account); $i++){
-		$checked_date=$account[$i]['checked'];
-		$sql = sprintf('SELECT account_id, how_much, date FROM pay p, user_account u WHERE p.user_id=u.user_id=%d AND account_id=%d AND date>=u.checked ORDER BY ID ASC',
-				($_SESSION['user_id']),
-				$account[$i]['account_id'],
-				$checked_dates
-		);
+	$sql = sprintf('SELECT p.account_id, sum(p.how_much) 
+					FROM user_accounts u 
+						JOIN pay p ON p.user_accounts_id=u.id 
+					WHERE p.user_accounts_id 
+						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=%d) AND p.date>u.checked 
+					GROUP BY p.user_accounts_id',
+				($_SESSION['user_id'])
+	);
 	$result = mysql_query($sql, $link);
 	while ($row = mysql_fetch_assoc($result)) {
 	$pay[] = $row;
 	}
-	};
-	
+	var_dump($result);
 	var_dump($pay);
-	var_dump($account['1']['checked']);
-	var_dump($checked_date);
 	
 ?>
 	<div class = "center">
