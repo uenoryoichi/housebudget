@@ -47,16 +47,46 @@ require 'function/login_check.php';
      
      <!-- 一覧部ここから -->   
 <?php
-	
-    $sql = sprintf('SELECT a.name, u.balance, u.id FROM user_accounts u JOIN accounts a ON u.account_id=a.id WHERE u.user_id=%d ORDER BY ID ASC',
+	//account情報を入手
+    $sql = sprintf('SELECT a.name, u.* FROM user_accounts u JOIN accounts a ON u.account_id=a.id WHERE u.user_id=%d ORDER BY ID ASC',
 		($_SESSION['user_id'])
 	);
 	$result = mysql_query($sql, $link);
-
 	while ($row = mysql_fetch_assoc($result)) {
 		$account[] = $row;
 	}
-
+	
+	//支払い情報を入手
+	$sql = sprintf('SELECT p.account_id, sum(p.how_much) 
+					FROM user_accounts u 
+						JOIN pay p ON p.user_accounts_id=u.id 
+					WHERE p.user_accounts_id 
+						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=%d) AND p.date>u.checked 
+					GROUP BY p.user_accounts_id',
+				($_SESSION['user_id'])
+	);
+	$result = mysql_query($sql, $link);
+	while ($row = mysql_fetch_assoc($result)) {
+	$pay[] = $row;
+	}
+	
+	//収入情報を入手
+	$sql = sprintf('SELECT i.account_id, sum(i.amount) 
+					FROM user_accounts u 
+						JOIN income i ON i.user_accounts_id=u.id 
+					WHERE i.user_accounts_id 
+						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=%d) AND i.date>u.checked 
+					GROUP BY i.user_accounts_id',
+				($_SESSION['user_id'])
+	);
+	$result = mysql_query($sql, $link);
+	while ($row = mysql_fetch_assoc($result)) {
+	$income[] = $row;
+}
+	
+	var_dump($result);
+	var_dump($pay);
+	
 ?>
 	<div class = "center">
 	<h2>口座情報</h2>
