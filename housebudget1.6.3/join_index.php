@@ -11,7 +11,7 @@
  */
 
 //データベースへの接続 housebudget
-require 'connect_housebudget.php';
+require 'function/connect_housebudget.php';
 //ここまで
 
 session_start();

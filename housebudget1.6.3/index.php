@@ -37,11 +37,11 @@
 session_start();
 
 //データベースへの接続 housebudget
-require 'connect_housebudget.php';
+require 'function/connect_housebudget.php';
 
 
 //ログインチェック
-require 'login_check.php';
+require 'function/login_check.php';
 
 ?>
 

@@ -13,11 +13,11 @@
 session_start();
 
 //データベースへの接続 housebudget
-require 'connect_housebudget.php';
+require 'function/connect_housebudget.php';
 
 
 //ログインチェック
-require 'login_check.php';
+require 'function/login_check.php';
 
 
 
@@ -59,7 +59,7 @@ require 'login_check.php';
                             <label>口座名</label>
                             <select  name="account" id="account" class="span3" >
                             <?php //選択肢にユーザーの口座情報を入れる?>
-                            <?php require 'input_user_account_name.php'; ?>
+                            <?php require 'function/input_user_account_name.php'; ?>
 							</select>
                           	<?php  //収入情報キー ?>
 							<input type = "hidden" name = "key" value="income" >

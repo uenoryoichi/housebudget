@@ -11,11 +11,11 @@
 session_start();
 
 //データベースへの接続 housebudget
-require 'connect_housebudget.php';
+require 'function/connect_housebudget.php';
 
 
 //ログインチェック
-require 'login_check.php';
+require 'function/login_check.php';
 
 
 
@@ -69,7 +69,7 @@ require 'login_check.php';
                             <label>支払い</label>
                        		<select  name="how" id="how" class="span3" >
 							<?php //選択肢にユーザーの口座情報を入れる?>
-                            <?php require 'input_user_account_name.php'; ?>
+                            <?php require 'function/input_user_account_name.php'; ?>
 							</select>
                          	<label>分類</label>
                             <select  name="type" id="type" class="span3" >

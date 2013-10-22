@@ -10,11 +10,11 @@
 session_start();
 
 //データベースへの接続 housebudget
-require 'connect_housebudget.php';
+require 'function/connect_housebudget.php';
 
 
 //ログインチェック
-require 'login_check.php';
+require 'function/login_check.php';
 
 ?>
 
@@ -48,12 +48,12 @@ require 'login_check.php';
                             <label>送り手</label>
                             	<select  name="account_remitter" id="account_remitter" class="span3" >
 								<?php //選択肢にユーザーの口座情報を入れる?>
-                            	<?php require 'input_user_account_name.php'; ?>
+                            	<?php require 'function/input_user_account_name.php'; ?>
 								</select>
 							<label>受け手</label>
                             	<select  name="account_remittee" id="account_remittee" class="span3" >
 								<?php //選択肢にユーザーの口座情報を入れる?>
-                            	<?php require 'input_user_account_name.php'; ?>
+                            	<?php require 'function/input_user_account_name.php'; ?>
 								</select>
 							<label>移動日</label>
 								<?php $today = date("Y-m-d");?>
