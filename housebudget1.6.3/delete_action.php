@@ -13,14 +13,12 @@ session_start();
 
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
-
-
 //ログインチェック
 require 'function/login_check.php';
-
-
 //キーの格納
 $key=htmlspecialchars($_POST['key'], ENT_QUOTES);
+
+
 
 //削除要求 支払い
 if ($key=="pay") {
@@ -40,7 +38,7 @@ if ($key =="income") {
 }
 //ここまで
 
-//削除要求　収入
+//削除要求　口座移動
 if ($key =="transfer") {
 	$sql=sprintf("DELETE FROM transfer WHERE id=%d",
 			mysql_real_escape_string(htmlspecialchars($_REQUEST['id'], ENT_QUOTES))

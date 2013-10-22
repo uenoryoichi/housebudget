@@ -54,10 +54,9 @@ require 'function/login_check.php';
 	<!-- insert部ここから -->
     <body>
         <div class="container">
-            <div class="row">
-                <div class="span6 offset3">
-                    <h2>支出情報入力フォーム</h2>
-                    <div class="control-group">
+	      <div class="span6 offset3">
+           	<h2>支出情報入力フォーム</h2>
+             <div class="control-group">
                         <form method = "POST" action = "insert_action.php" class = "well">
                             <label>金額</label>
                             <input type = "text" name = "how_much" class="span3" >
@@ -69,7 +68,7 @@ require 'function/login_check.php';
                             <label>支払い</label>
                        		<select  name="how" id="how" class="span3" >
 							<?php //選択肢にユーザーの口座情報を入れる?>
-                            <?php require 'function/input_user_account_name.php'; ?>
+                           	<?php require 'function/input_user_account_name.php'; ?>
 							</select>
                          	<label>分類</label>
                             <select  name="type" id="type" class="span3" >
@@ -84,10 +83,10 @@ require 'function/login_check.php';
 							<input type = "hidden" name = "key" value="pay" >
 							<input type = "submit" value = "送信" class="btn-primary">
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+               </div>
+          </div>
+      </div>
+
      <!-- insert部ここまで -->
      
 	<div class = "center">

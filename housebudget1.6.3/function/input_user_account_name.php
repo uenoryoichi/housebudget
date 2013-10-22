@@ -6,12 +6,12 @@ $sql = sprintf('SELECT a.name, u.id FROM user_accounts u JOIN accounts a ON u.ac
 $result = mysql_query($sql) or die(mysql_error());
 
 while ($row = mysql_fetch_assoc($result)) {
-	$account_name[] = $row;
+	$account[] = $row;
 }
 
 
-for ($i=0; $i<count($account_name); $i++){
-	print('<option value="'.$account_name[$i]['name'].'">'.$account_name[$i]['name'].'</option>');
+for ($i=0,$count=count($account); $i<$count; $i++){
+	print('<option value="'.$account_name[$i]['id'].'">'.$account_name[$i]['name'].'</option>');
 }
 
 ?>
