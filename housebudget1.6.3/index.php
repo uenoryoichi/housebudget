@@ -39,9 +39,14 @@ session_start();
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
 
-
 //ログインチェック
 require 'function/login_check.php';
+
+//口座の現在残高取得
+require 'function/calculate_account_balance.php';
+
+//今月の収支情報取得
+require 'function/calculate_this_month.php';
 
 ?>
 
@@ -92,53 +97,8 @@ require 'function/login_check.php';
 
 
 		<div id="contents">
-
 			<div id="top">
-
 				<div id="left">
-				
-				
-					<?php
-					//今月分の支払いデータ取得					
-						$this_month = date('Y-m');
-						$sql = "SELECT * FROM pay WHERE date  LIKE '$this_month%' ";
-						$result = mysql_query($sql, $link);
-						$sum_pay = 0;
-						while ($row = mysql_fetch_assoc($result)) {
-							$pay[] = $row;
-						}				
-					//支払い合計金額
-						for ($i = 0; $i < count($pay); $i++):
-							$sum_pay += $pay[$i]['how_much'];
-						endfor;
-					
-					//今月の収入データ取得					
-						$this_month_income = date('Y-m');
-						$sql = "SELECT * FROM income WHERE date  LIKE '$this_month%' ";
-						$result = mysql_query($sql, $link);
-						$sum_income = 0;
-						while ($row = mysql_fetch_assoc($result)) {
-							$income[] = $row;
-						}
-											
-					//支払い合計金額
-						for ($i = 0; $i < count($income); $i++):
-							$sum_income += $income[$i]['amount'];
-						endfor;
-						
-						
-						
-						$sql = sprintf('SELECT a.name, u.balance, u.id FROM user_accounts u JOIN accounts a ON u.account_id=a.id WHERE u.user_id=%d ORDER BY ID ASC',
-								($_SESSION['user_id'])
-						);
-						$result = mysql_query($sql, $link);
-						
-						while ($row = mysql_fetch_assoc($result)) {
-							$account[] = $row;
-						}
-								
-					?>	
-					
 					<div id="info">
 						<h2><?php echo $this_month;?> 出費：<?php echo $sum_pay;?>円  収入：<?php echo $sum_income;?>円</h2>
 					</div>
@@ -158,21 +118,15 @@ require 'function/login_check.php';
 							<?php endfor;?>
 						</table>
 					</div>
-					
-					
-					
 				</div>
-
-				
-
 			</div>
-
 		</div>
 
-		<div id="copy">Copyright (C) <script type="text/javascript">document.write(new Date().getFullYear());</script> <a href="./">My家計簿</a>. All Rights Reserved.</div>
-
+		<div id="copy">Copyright (C) 
+			<script type="text/javascript">document.write(new Date().getFullYear());</script> 
+			<a href="./">My家計簿</a>. All Rights Reserved.
+		</div>
 	</div>
-
 </body>
 </html>
 
