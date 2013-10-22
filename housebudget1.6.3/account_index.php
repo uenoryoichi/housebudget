@@ -13,11 +13,11 @@
 session_start();
 
 //データベースへの接続 housebudget
-require 'connect_housebudget.php';
+require 'function/connect_housebudget.php';
 
 
 //ログインチェック
-require 'login_check.php';
+require 'function/login_check.php';
 
 
 ?>
@@ -56,7 +56,6 @@ require 'login_check.php';
 		$account[] = $row;
 	}
 	
-	
 	//支払い情報を入手
 	$sql = sprintf('SELECT p.account_id, sum(p.how_much) 
 					FROM user_accounts u 
@@ -70,6 +69,21 @@ require 'login_check.php';
 	while ($row = mysql_fetch_assoc($result)) {
 	$pay[] = $row;
 	}
+	
+	//収入情報を入手
+	$sql = sprintf('SELECT i.account_id, sum(i.amount) 
+					FROM user_accounts u 
+						JOIN income i ON i.user_accounts_id=u.id 
+					WHERE i.user_accounts_id 
+						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=%d) AND i.date>u.checked 
+					GROUP BY i.user_accounts_id',
+				($_SESSION['user_id'])
+	);
+	$result = mysql_query($sql, $link);
+	while ($row = mysql_fetch_assoc($result)) {
+	$income[] = $row;
+}
+	
 	var_dump($result);
 	var_dump($pay);
 	
