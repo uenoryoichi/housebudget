@@ -11,12 +11,8 @@ session_start();
 
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
-
-
 //ログインチェック
 require 'function/login_check.php';
-
-
 //キーの格納
 $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
 
@@ -34,6 +30,7 @@ $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
     <body>
 
 <?php
+var_dump($_POST["user_id"]);
 //支払い情報入力
 	if ($key == "pay") {
 		$how_much = htmlspecialchars($_POST["how_much"], ENT_QUOTES);

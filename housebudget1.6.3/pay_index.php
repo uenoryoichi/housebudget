@@ -13,11 +13,8 @@ session_start();
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
 
-
 //ログインチェック
 require 'function/login_check.php';
-
-
 
 //$recordSet=mysql_query('SELECT a_m.name, p.* FROM account_user_master a_u_m, account_master a_m, pay p, WHERE m.id=i.maker_id ORDER BY id DESC');
 /*
@@ -66,7 +63,7 @@ require 'function/login_check.php';
 							<?php $today = date("Y-m-d");?>
                             <input type = "text" name = "date" class="span3" value=<?php echo $today?>>
                             <label>支払い</label>
-                       		<select  name="how" id="how" class="span3" >
+                       		<select  name="user_account_id" id="user_account_id" class="span3" >
 							<?php //選択肢にユーザーの口座情報を入れる?>
                            	<?php require 'function/input_user_account_name.php'; ?>
 							</select>
@@ -81,6 +78,7 @@ require 'function/login_check.php';
 							</select>
                          	<?php  //支出情報キー ?>
 							<input type = "hidden" name = "key" value="pay" >
+							<input type = "hidden" name = "user_id" value=<?php echo $_SESSION['user_id'] ?>>
 							<input type = "submit" value = "送信" class="btn-primary">
                         </form>
                </div>
@@ -95,7 +93,15 @@ require 'function/login_check.php';
      
      <!-- 一覧部ここから -->   
 <?php
-    $sql = 'SELECT * FROM pay ORDER BY ID DESC';
+    $sql = sprintf('SELECT pay.*, accounts.name 
+ 				FROM pay 
+ 					JOIN user_accounts ON pay.user_accounts_id=user_accounts.id 
+ 					JOIN accounts ON user_accounts.account_id=accounts.id 
+ 				WHERE pay.user_id=%d 
+ 				ORDER BY DATE DESC',
+    				$_SESSION['user_id']
+	);
+    
 	$result = mysql_query($sql, $link);
 
 	while ($row = mysql_fetch_assoc($result)) {
@@ -108,9 +114,9 @@ require 'function/login_check.php';
 		<tr>
 			<th scope="col">ID</th>
 			<th scope="col">値段</th>
-			<th scope="col">支払い内容</th>
+			<th scope="col">支払内容</th>
 			<th scope="col">日付</th>
-			<th scope="col">現金orカード</th>
+			<th scope="col">支払口座</th>
 			<th scope="col">種別</th>
 			<th scope="col">編集</th>
 			<th scope="col">削除</th>
@@ -123,7 +129,7 @@ require 'function/login_check.php';
 			<td><?php print(htmlspecialchars($pay[$i]['how_much'], ENT_QUOTES));?></td>
 			<td><?php print(htmlspecialchars($pay[$i]['what'], ENT_QUOTES));?></td>
 			<td><?php print(htmlspecialchars($pay[$i]['date'], ENT_QUOTES));?></td>
-			<td><?php print(htmlspecialchars($pay[$i]['how'], ENT_QUOTES));?></td>
+			<td><?php print(htmlspecialchars($pay[$i]['name'], ENT_QUOTES));?></td>
 			<td><?php print(htmlspecialchars($pay[$i]['type'], ENT_QUOTES));?></td>
 			<td>
 				<form method = "POST" action = "pay_update.php" >

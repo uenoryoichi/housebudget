@@ -9,9 +9,17 @@ while ($row = mysql_fetch_assoc($result)) {
 	$account[] = $row;
 }
 
-
-for ($i=0,$count=count($account); $i<$count; $i++){
-	print('<option value="'.$account_name[$i]['id'].'">'.$account_name[$i]['name'].'</option>');
+if(isset($selected)){		//更新時
+	for ($i=0,$count=count($account); $i<$count; $i++){
+		if ($selected=$account) {
+			print('<option value="'.$account[$i]['id'].'" selected>'.$account[$i]['name'].'</option>');
+		}else {
+			print('<option value="'.$account[$i]['id'].'">'.$account[$i]['name'].'</option>');
+		}
+	}
+}else {							//入力時
+	for ($i=0,$count=count($account); $i<$count; $i++){
+		print('<option value="'.$account[$i]['id'].'">'.$account[$i]['name'].'</option>');
+	}
 }
-
 ?>
