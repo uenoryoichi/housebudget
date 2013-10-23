@@ -16,16 +16,12 @@ require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
 
-//$recordSet=mysql_query('SELECT a_m.name, p.* FROM account_user_master a_u_m, account_master a_m, pay p, WHERE m.id=i.maker_id ORDER BY id DESC');
 /*
  * user_idをページ内に保存
  * account_user_masterを参照してuser_idと一致していたもののaccount_idとaccount_master内のidを参照
  * 一致しているもののnameを出力
  * 
  */
-
-
-
 ?>
 
 
@@ -40,14 +36,11 @@ require 'function/login_check.php';
         <title>my家計簿</title>
 	</head>
 
-	<!-- 本文　ここから -->
-	
+	<!-- 本文　ここから -->	
 	<!-- 見出し ここから　-->
 	<div id="head">
 		<h1>支出一覧</h1>
 	</div>
-	<!-- 見出し　ここまで　-->
-	
 	<!-- insert部ここから -->
     <body>
         <div class="container">
@@ -78,7 +71,6 @@ require 'function/login_check.php';
 							</select>
                          	<?php  //支出情報キー ?>
 							<input type = "hidden" name = "key" value="pay" >
-							<input type = "hidden" name = "user_id" value=<?php echo $_SESSION['user_id'] ?>>
 							<input type = "submit" value = "送信" class="btn-primary">
                         </form>
                </div>
@@ -101,7 +93,6 @@ require 'function/login_check.php';
  				ORDER BY DATE DESC',
     				$_SESSION['user_id']
 	);
-    
 	$result = mysql_query($sql, $link);
 
 	while ($row = mysql_fetch_assoc($result)) {

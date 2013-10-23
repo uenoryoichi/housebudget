@@ -15,7 +15,6 @@ require 'function/connect_housebudget.php';
 require 'function/login_check.php';
 //キーの格納
 $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
-
 ?>
 
 <!DOCTYPE html>
@@ -30,24 +29,19 @@ $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
     <body>
 
 <?php
-var_dump($_POST["user_id"]);
+var_dump($_POST);
+var_dump($_SESSION);
 //支払い情報入力
 	if ($key == "pay") {
 		$how_much = htmlspecialchars($_POST["how_much"], ENT_QUOTES);
 		$what = htmlspecialchars($_POST["what"], ENT_QUOTES);
 		$date = htmlspecialchars($_POST["date"], ENT_QUOTES);
-		$how = htmlspecialchars($_POST["how"], ENT_QUOTES);
+		$user_account_id = htmlspecialchars($_POST["user_account_id"], ENT_QUOTES);
 		$type = htmlspecialchars($_POST["type"], ENT_QUOTES);
-
-		$sql = "INSERT INTO pay (how_much,what,date,how,type) VALUES ('$how_much','$what','$date','$how','$type')";
-		mysql_query($sql, $link);
-
-		$sql = 'SELECT * FROM pay ORDER BY ID DESC';
-		$result = mysql_query($sql, $link);
-
-		while ($row = mysql_fetch_assoc($result)) {
-			$pay[] = $row;
-		}
+		$user_id = $_SESSION['user_id'];
+		
+		$sql = "INSERT INTO pay (how_much,what,date,user_accounts_id,type,user_id) VALUES ('$how_much','$what','$date','$user_account_id','$type','$user_id')";
+		mysql_query($sql, $link) or die(mysql_error());
 	}
     //ここまで
     
@@ -64,15 +58,8 @@ var_dump($_POST["user_id"]);
 			'$date',
 			'$account',
 			NOW())";
-		mysql_query($sql, $link);
+		mysql_query($sql, $link) or die(mysql_error());
 	
-		
-		$sql = 'SELECT * FROM income ORDER BY ID DESC';
-		$result = mysql_query($sql, $link);
-	
-		while ($row = mysql_fetch_assoc($result)) {
-			$income[] = $row;
-		}
 	}
 	//ここまで
 	
@@ -103,8 +90,6 @@ var_dump($_POST["user_id"]);
 
 ?>	
 
-
-<div id="wrap">
 <!-- 見出し -->
 	<div id="head">
 		<h1>入力完了</h1>
@@ -138,15 +123,12 @@ var_dump($_POST["user_id"]);
 	</div>
 	<!-- 完了表示　ここまで -->
 
-	
 	<!-- トップに戻る -->
 	<div class = "center">
 		<h2><a href="index.php">Back To TOP</a></h2>
 	</div>
-	<!-- トップに戻る　ここまで -->	
-</div>	
+	<!-- トップに戻る　ここまで -->		
 	
-
 
 </body>
 </html>

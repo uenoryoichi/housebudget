@@ -12,25 +12,20 @@ session_start();
 
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
-
-
 //ログインチェック
 require 'function/login_check.php';
-
-
 //キーの格納
 $key=htmlspecialchars($_POST['key'], ENT_QUOTES);
 ?>
 
-
 <?
 if ($key == 'pay') {
 	//POST で送られてきた情報をpayのカラム格納
-	$sql=sprintf('UPDATE pay SET how_much=%d, what="%s", date="%s", how="%s", type="%s" WHERE id=%d',
+	$sql=sprintf('UPDATE pay SET how_much=%d, what="%s", date="%s", user_accounts_id="%s", type="%s" WHERE id=%d',
 		mysql_real_escape_string(htmlspecialchars($_POST['how_much'], ENT_QUOTES)),
 		mysql_real_escape_string(htmlspecialchars($_POST['what'], ENT_QUOTES)),
 		mysql_real_escape_string(htmlspecialchars($_POST['date'], ENT_QUOTES)),
-		mysql_real_escape_string(htmlspecialchars($_POST['how'], ENT_QUOTES)),
+		mysql_real_escape_string(htmlspecialchars($_POST['user_account_id'], ENT_QUOTES)),
 		mysql_real_escape_string(htmlspecialchars($_POST['type'], ENT_QUOTES)),
 		mysql_real_escape_string(htmlspecialchars($_POST['pay_id'], ENT_QUOTES))
 	);

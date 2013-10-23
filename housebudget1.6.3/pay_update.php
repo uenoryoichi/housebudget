@@ -18,7 +18,6 @@ require 'function/login_check.php';
 
 <?php 
 $id=htmlspecialchars($_POST['id'], ENT_QUOTES);
-
 $sql=sprintf("SELECT pay.*, accounts.name 
  				FROM pay 
  					JOIN user_accounts ON pay.user_accounts_id=user_accounts.id 
@@ -26,9 +25,8 @@ $sql=sprintf("SELECT pay.*, accounts.name
 				WHERE pay.id=%d",
 			mysql_real_escape_string($id)
 );
-$recordSet=mysql_query($sql);
-$date=mysql_fetch_assoc($recordSet);
-var_dump($date);
+$result=mysql_query($sql,$link);
+$date=mysql_fetch_assoc($result);
 ?>
 
 <!DOCTYPE html>

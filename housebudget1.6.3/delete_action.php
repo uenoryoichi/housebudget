@@ -19,7 +19,6 @@ require 'function/login_check.php';
 $key=htmlspecialchars($_POST['key'], ENT_QUOTES);
 
 
-
 //削除要求 支払い
 if ($key=="pay") {
 	$sql=sprintf("DELETE FROM pay WHERE id=%d",
@@ -49,11 +48,7 @@ if ($key =="transfer") {
 
 ?>
 
-
-
-
 <!DOCTYPE html PUBLIC>
-
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />

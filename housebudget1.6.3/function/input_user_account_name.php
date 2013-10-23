@@ -11,7 +11,7 @@ while ($row = mysql_fetch_assoc($result)) {
 
 if(isset($selected)){		//更新時
 	for ($i=0,$count=count($account); $i<$count; $i++){
-		if ($selected=$account) {
+		if ($selected=$account['user_account_id']) {
 			print('<option value="'.$account[$i]['id'].'" selected>'.$account[$i]['name'].'</option>');
 		}else {
 			print('<option value="'.$account[$i]['id'].'">'.$account[$i]['name'].'</option>');
