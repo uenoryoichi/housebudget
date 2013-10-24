@@ -32,11 +32,11 @@ require 'function/login_check.php';
 	<div id="head">
 		<h1>収入一覧</h1>
 	</div>
-	<!-- 見出し　ここまで　-->
 	
-	<!-- insert部ここから -->
+
     <body>
-        <div class="container">
+       	<!-- insert部ここから -->
+       	<div class="container">
             <div class="row">
                 <div class="span6 offset3">
                     <h2>収入情報入力フォーム</h2>
@@ -62,13 +62,13 @@ require 'function/login_check.php';
                 </div>
             </div>
         </div>
-     <!-- insert部ここまで -->
+
      
-	<div class = "center">
-		<a href="index.php">Back To TOP </a>
-	</div>
+		<div class = "center">
+			<a href="index.php">Back To TOP </a>
+		</div>
      
-     <!-- 一覧部ここから -->   
+     
 <?php
     $sql = sprintf('SELECT income.*, accounts.name 
  				FROM income 
@@ -83,7 +83,7 @@ require 'function/login_check.php';
 		$income[] = $row;
 	}
 ?>
-
+<!-- 一覧部ここから -->   
 	<div class = "center">
 	<h2>収入情報</h2>
 	<table align = "center" >

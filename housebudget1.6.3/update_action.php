@@ -47,16 +47,18 @@ if ($key == 'income') {
 //口座移動情報
 if ($key == 'transfer') {
 	//POST で送られてきた情報をtransferのカラム格納
-	$sql=sprintf('UPDATE transfer SET amount=%d, account_remitter="%s", account_remittee="%s", date="%s", memo="%s" WHERE id=%d',
+	$sql=sprintf('UPDATE transfer SET amount=%d, user_accounts_id_remitter=%d, user_accounts_id_remittee=%d, date="%s", memo="%s" WHERE id=%d',
 			mysql_real_escape_string(htmlspecialchars($_POST['amount'], ENT_QUOTES)),
-			mysql_real_escape_string(htmlspecialchars($_POST['account_remitter'], ENT_QUOTES)),
-			mysql_real_escape_string(htmlspecialchars($_POST['account_remittee'], ENT_QUOTES)),
+			mysql_real_escape_string(htmlspecialchars($_POST['user_accounts_id_remitter'], ENT_QUOTES)),
+			mysql_real_escape_string(htmlspecialchars($_POST['user_accounts_id_remittee'], ENT_QUOTES)),
 			mysql_real_escape_string(htmlspecialchars($_POST['date'], ENT_QUOTES)),
 			mysql_real_escape_string(htmlspecialchars($_POST['memo'], ENT_QUOTES)),
-			mysql_real_escape_string(htmlspecialchars($_POST['id'], ENT_QUOTES))
+			mysql_real_escape_string(htmlspecialchars($_POST['transfer_id'], ENT_QUOTES))
 	);
 	mysql_query($sql) or die(mysql_error());
 }
+var_dump($_POST);
+var_dump($_SESSION);
 
 
 ?>

@@ -65,26 +65,21 @@ $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
 	//口座移動情報入力
 	if ($key == "transfer") {
 		$amount = htmlspecialchars($_POST["amount"], ENT_QUOTES);
-		$account_remitter = htmlspecialchars($_POST["account_remitter"], ENT_QUOTES); 
-		$account_remittee = htmlspecialchars($_POST["account_remittee"], ENT_QUOTES);
+		$user_accounts_id_remitter = htmlspecialchars($_POST["user_accounts_id_remitter"], ENT_QUOTES); 
+		$user_accounts_id_remittee = htmlspecialchars($_POST["user_accounts_id_remittee"], ENT_QUOTES);
 		$date = htmlspecialchars($_POST["date"], ENT_QUOTES);
 		$memo = htmlspecialchars($_POST["memo"], ENT_QUOTES);
+		$user_id = $_SESSION['user_id'];
 		
-		$sql = "INSERT INTO transfer (amount,account_remitter,account_remittee,date,memo,created) VALUES (
+		$sql = "INSERT INTO transfer (amount,user_accounts_id_remitter,user_accounts_id_remittee,date,memo,user_id,created) VALUES (
 			'$amount',
-			'$account_remitter',
-			'$account_remittee',
+			'$user_accounts_id_remitter',
+			'$user_accounts_id_remittee',
 			'$date',
 			'$memo',
+			'$user_id',
 			NOW())";
 		mysql_query($sql, $link) or die(mysql_error());
-		
-		$sql = 'SELECT * FROM transfer ORDER BY ID DESC';
-		$result = mysql_query($sql, $link);
-		
-		while ($row = mysql_fetch_assoc($result)) {
-			$transfer[] = $row;
-		}
 	}
 
 ?>	

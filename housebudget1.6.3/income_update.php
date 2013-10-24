@@ -21,7 +21,7 @@ $sql=sprintf("SELECT income.*, accounts.name
  				WHERE income.id=%d",
 				mysql_real_escape_string($id)
 );
-$recordSet=mysql_query($sql) or die(mysql_error());;
+$recordSet=mysql_query($sql) or die(mysql_error());
 $date=mysql_fetch_assoc($recordSet);
 ?>
 
