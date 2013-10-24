@@ -4,13 +4,9 @@
  * バージョン管理
  * 1.6.3
  * 
- * 
- * 
  */
 
-
 session_start();
-
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
 //ログインチェック
@@ -21,8 +17,9 @@ $key=htmlspecialchars($_POST['key'], ENT_QUOTES);
 
 //削除要求 支払い
 if ($key=="pay") {
-	$sql=sprintf("DELETE FROM pay WHERE id=%d",
-			mysql_real_escape_string(htmlspecialchars($_REQUEST['id'], ENT_QUOTES))
+	$sql=sprintf("DELETE FROM pay WHERE id=%d AND user_id=%d",
+			mysql_real_escape_string(htmlspecialchars($_REQUEST['id'], ENT_QUOTES)),
+			mysql_real_escape_string(htmlspecialchars($_SESSION['user_id'], ENT_QUOTES))
 	);
 	mysql_query($sql) or die(mysql_error());
 }
@@ -30,8 +27,9 @@ if ($key=="pay") {
 
 //削除要求　収入
 if ($key =="income") {
-		$sql=sprintf("DELETE FROM income WHERE id=%d",
-			mysql_real_escape_string(htmlspecialchars($_REQUEST['id'], ENT_QUOTES))
+		$sql=sprintf("DELETE FROM income WHERE id=%d AND user_id=%d",
+			mysql_real_escape_string(htmlspecialchars($_REQUEST['id'], ENT_QUOTES)),
+			mysql_real_escape_string(htmlspecialchars($_SESSION['user_id'], ENT_QUOTES))
 	);
 	mysql_query($sql) or die(mysql_error());
 }
@@ -39,8 +37,9 @@ if ($key =="income") {
 
 //削除要求　口座移動
 if ($key =="transfer") {
-	$sql=sprintf("DELETE FROM transfer WHERE id=%d",
-			mysql_real_escape_string(htmlspecialchars($_REQUEST['id'], ENT_QUOTES))
+	$sql=sprintf("DELETE FROM transfer WHERE id=%d AND user_id=%d",
+			mysql_real_escape_string(htmlspecialchars($_REQUEST['id'], ENT_QUOTES)),
+			mysql_real_escape_string(htmlspecialchars($_SESSION['user_id'], ENT_QUOTES))
 	);
 	mysql_query($sql) or die(mysql_error());
 }
@@ -68,10 +67,7 @@ if ($key =="transfer") {
 	<div id="head">
 		<h1>削除処理</h1>
 	</div>
-
-
 <!-- 実行内容表示 -->
-
 	<div id="content">
 	<div class = "center">
 		<br>

@@ -21,11 +21,11 @@ $key=htmlspecialchars($_POST['key'], ENT_QUOTES);
 <?
 if ($key == 'pay') {
 	//POST で送られてきた情報をpayのカラム格納
-	$sql=sprintf('UPDATE pay SET how_much=%d, what="%s", date="%s", user_accounts_id="%s", type="%s" WHERE id=%d',
+	$sql=sprintf('UPDATE pay SET how_much=%d, what="%s", date="%s", user_accounts_id="%d", type="%s" WHERE id=%d',
 		mysql_real_escape_string(htmlspecialchars($_POST['how_much'], ENT_QUOTES)),
 		mysql_real_escape_string(htmlspecialchars($_POST['what'], ENT_QUOTES)),
 		mysql_real_escape_string(htmlspecialchars($_POST['date'], ENT_QUOTES)),
-		mysql_real_escape_string(htmlspecialchars($_POST['user_account_id'], ENT_QUOTES)),
+		mysql_real_escape_string(htmlspecialchars($_POST['user_accounts_id'], ENT_QUOTES)),
 		mysql_real_escape_string(htmlspecialchars($_POST['type'], ENT_QUOTES)),
 		mysql_real_escape_string(htmlspecialchars($_POST['pay_id'], ENT_QUOTES))
 	);
@@ -34,7 +34,7 @@ if ($key == 'pay') {
 //収入情報
 if ($key == 'income') {
 	//POST で送られてきた情報をincomeのカラム格納
-	$sql=sprintf('UPDATE income SET amount=%d, content="%s", date="%s", account="%s" WHERE id=%d',
+	$sql=sprintf('UPDATE income SET amount=%d, content="%s", date="%s", user_accounts_id="%d" WHERE id=%d',
 			mysql_real_escape_string(htmlspecialchars($_POST['amount'], ENT_QUOTES)),
 			mysql_real_escape_string(htmlspecialchars($_POST['content'], ENT_QUOTES)),
 			mysql_real_escape_string(htmlspecialchars($_POST['date'], ENT_QUOTES)),

@@ -1,14 +1,13 @@
 <?php
-
 /*
  * バージョン管理
 * 1.6.3
 *
-*
-*
 */
-session_start();
+?>
 
+<?
+session_start();
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
 //ログインチェック
@@ -29,18 +28,16 @@ $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
     <body>
 
 <?php
-var_dump($_POST);
-var_dump($_SESSION);
 //支払い情報入力
 	if ($key == "pay") {
 		$how_much = htmlspecialchars($_POST["how_much"], ENT_QUOTES);
 		$what = htmlspecialchars($_POST["what"], ENT_QUOTES);
 		$date = htmlspecialchars($_POST["date"], ENT_QUOTES);
-		$user_account_id = htmlspecialchars($_POST["user_account_id"], ENT_QUOTES);
+		$user_accounts_id = htmlspecialchars($_POST["user_accounts_id"], ENT_QUOTES);
 		$type = htmlspecialchars($_POST["type"], ENT_QUOTES);
 		$user_id = $_SESSION['user_id'];
 		
-		$sql = "INSERT INTO pay (how_much,what,date,user_accounts_id,type,user_id) VALUES ('$how_much','$what','$date','$user_account_id','$type','$user_id')";
+		$sql = "INSERT INTO pay (how_much,what,date,user_accounts_id,type,user_id) VALUES ('$how_much','$what','$date','$user_accounts_id','$type','$user_id')";
 		mysql_query($sql, $link) or die(mysql_error());
 	}
     //ここまで
@@ -50,14 +47,16 @@ var_dump($_SESSION);
 		$amount = htmlspecialchars($_POST["amount"], ENT_QUOTES);
 		$content = htmlspecialchars($_POST["content"], ENT_QUOTES);
 		$date = htmlspecialchars($_POST["date"], ENT_QUOTES);
-		$account = htmlspecialchars($_POST["account"], ENT_QUOTES);
+		$user_accounts_id = htmlspecialchars($_POST["user_accounts_id"], ENT_QUOTES);
+		$user_id = $_SESSION['user_id'];
 		
-		$sql = "INSERT INTO income (amount,content,date,account,created) VALUES (
+		$sql = "INSERT INTO income (amount,content,date,user_accounts_id,created,user_id) VALUES (
 			'$amount',
 			'$content',
 			'$date',
-			'$account',
-			NOW())";
+			'$user_accounts_id',
+			NOW()),
+			'$user_id'";
 		mysql_query($sql, $link) or die(mysql_error());
 	
 	}

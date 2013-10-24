@@ -64,7 +64,7 @@ $date=mysql_fetch_assoc($result);
 							<label>日付</label>
                             <input type = "text" name = "date" class="span3" value="<?php print (htmlspecialchars($date['date'],ENT_QUOTES));?>"/>
 							<label>支払い</label>
-							<select  name="user_account_id" id="user_account_id" class="span3" >
+							<select  name="user_accounts_id" id="user_accounts_id" class="span3" >
 								<?php //選択肢にユーザーの口座情報を入れる?>
 								<?php $selected=$date['user_accounts_id']?>
                            		<?php require 'function/input_user_account_name.php'; ?>

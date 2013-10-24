@@ -69,33 +69,22 @@ require 'function/calculate_this_month.php';
 <script type="text/javascript" src="js/default.js"></script>
 </head>
 
-
-
-
-
-
 <body>
-
 	<div id="head">
 		<h1><?php echo $member['name'];?>さんのMy家計簿</h1>
 		<h1>トップページ</h1>
 	</div>
-
 	<div id="container">
-
-
-			<div class="">
-				<ul>
-					<li><a href="./">HOME</a></li>
-					<li><a href="pay_index.php">支出管理</a></li>
-					<li><a href="income_index.php">収入管理</a></li>
-					<li><a href="transfer_index.php">口座移動</a></li>
-					<li><a href="account_index.php">口座残高</a></li>
-					<li><a href="logout.php">ログアウト</a></li>
-				</ul>
-			</div>
-
-
+		<div class="">
+			<ul>
+				<li><a href="./">HOME</a></li>
+				<li><a href="pay_index.php">支出管理</a></li>
+				<li><a href="income_index.php">収入管理</a></li>
+				<li><a href="transfer_index.php">口座移動</a></li>
+				<li><a href="account_index.php">口座残高</a></li>
+				<li><a href="logout.php">ログアウト</a></li>
+			</ul>
+		</div>
 		<div id="contents">
 			<div id="top">
 				<div id="left">

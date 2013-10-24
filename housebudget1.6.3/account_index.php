@@ -8,20 +8,17 @@
  * マスタ利用時修正必要
  * 
  * 
+ * 
  */
 
 session_start();
 
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
-
-
 //ログインチェック
 require 'function/login_check.php';
-
 //口座の現在残高取得
 require 'function/calculate_account_balance.php';
-
 ?>
 
 <!DOCTYPE html>
