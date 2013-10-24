@@ -11,7 +11,6 @@ session_start();
 
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
-
 //ログインチェック
 require 'function/login_check.php';
 ?>
@@ -67,9 +66,11 @@ $date=mysql_fetch_assoc($result);
 							<label>支払い</label>
 							<select  name="user_account_id" id="user_account_id" class="span3" >
 								<?php //選択肢にユーザーの口座情報を入れる?>
-								<?php $selected=$date['user_account_id']?>
+								<?php $selected=$date['user_accounts_id']?>
                            		<?php require 'function/input_user_account_name.php'; ?>
+ 
 							</select>
+							
 							<label>分類</label>
                             <input type = "text" name = "type" class="span3" value="<?php print (htmlspecialchars($date['type'],ENT_QUOTES));?>"/>
                            	<input type = "hidden" name = "key" value="pay" >
