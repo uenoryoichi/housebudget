@@ -60,12 +60,17 @@ if ($key == 'transfer') {
 
 
 //口座移動情報
-if ($key == 'account_balance') {
-	$aaa='aaa';
+if ($key == 'account_balance' and count($_POST['user_accounts_id']==count($_POST['balance']))) {
+	//POST で送られてきた情報をtransferのカラム格納
+	for ($i = 0, $count=count($_POST['user_accounts_id']); $i < $count; $i++) {
+		$sql=sprintf('UPDATE user_accounts SET balance=%d, checked=cast(now() as datetime) WHERE id=%d AND user_id=%d',
+						mysql_real_escape_string(htmlspecialchars($_POST['balance'][$i], ENT_QUOTES)),
+						mysql_real_escape_string(htmlspecialchars($_POST['user_accounts_id'][$i], ENT_QUOTES)),
+						mysql_real_escape_string(htmlspecialchars($_SESSION['user_id'], ENT_QUOTES))
+		);
+		mysql_query($sql) or die(mysql_error());
+	}
 }
-var_dump($_POST);
-var_dump($_SESSION);
-
 
 ?>
 
@@ -115,7 +120,7 @@ var_dump($_SESSION);
 			if ($key =='pay') {echo 'pay_index.php';}
 			elseif ($key =='income'){echo 'income_index.php';}
 			elseif ($key == 'transfer'){echo 'transfer_index.php';}
-			?>
+			elseif ($key == 'account_balance'){echo  'account_index.php';}?>
 		>一覧に戻る</a>
 		</h2>
 	</div>	

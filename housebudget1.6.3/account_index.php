@@ -53,13 +53,15 @@ require 'function/calculate_account_balance.php';
 						<tr>
 							<td><?php print(htmlspecialchars($account[$i]['name'], ENT_QUOTES));?></td>
 							<td>
-								<input type = "hidden" name = "user_account_id[]" class="span2" value="<?php print (htmlspecialchars($account[$i]['id'],ENT_QUOTES));?>"/>
+								<input type = "hidden" name = "user_accounts_id[]" class="span2" value="<?php print (htmlspecialchars($account[$i]['id'],ENT_QUOTES));?>"/>
 								<input type = "text" name = "balance[]" class="span2" style="text-align: right;" value="<?php print (htmlspecialchars($account[$i]['balance'],ENT_QUOTES));?>"/>
 							</td>
 						</tr>
 						<?php endfor;?>
 						</table>
-						<input type="submit" value="更新" class="btn-primary"/>	
+						<div class="offset4" >
+							<input type="submit" value="更新" class="btn-primary span1"/>	
+						</div>
 					</form>
 				</div>
 			</div>
