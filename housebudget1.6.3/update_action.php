@@ -57,6 +57,12 @@ if ($key == 'transfer') {
 	);
 	mysql_query($sql) or die(mysql_error());
 }
+
+
+//口座移動情報
+if ($key == 'account_balance') {
+	$aaa='aaa';
+}
 var_dump($_POST);
 var_dump($_SESSION);
 
@@ -97,6 +103,7 @@ var_dump($_SESSION);
 			if ($key =='pay') {echo '支払い';}
 			elseif ($key =='income'){echo '収入';}
 			elseif ($key == 'transfer'){echo '口座移動';}
+			elseif ($key == 'account_balance'){echo  '残高';}
 		?>
 		情報を変更しました
 		</h3>

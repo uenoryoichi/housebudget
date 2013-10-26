@@ -12,7 +12,6 @@
  */
 
 session_start();
-
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
 //ログインチェック
@@ -35,30 +34,39 @@ require 'function/calculate_account_balance.php';
 	
 	<!-- 見出し ここから　-->
 	<div id="head">
-		<h1>口座情報一覧</h1>
+		<h1>口座情報更新</h1>
 	</div>
 	<!-- 見出し　ここまで　-->
+	<div class="container">
+		<div class="row">
+			<div class="span6 offset3">
+          		<h2>最終更新日時：</h2>
+           		<div class="control-group">
+             		<form method= "post" action= "update_action.php" class = "well" >
+             		<input type = "hidden" name="key" value="account_balance"/>
+             		<table align = "center" >
+						<tr>
+							<th scope="col">口座名</th>
+							<th scope="col">金額</th>
+						</tr>
+						<?php for ($i = 0; $i < count($account); $i++): ?>
+						<tr>
+							<td><?php print(htmlspecialchars($account[$i]['name'], ENT_QUOTES));?></td>
+							<td>
+								<input type = "hidden" name = "user_account_id[]" class="span2" value="<?php print (htmlspecialchars($account[$i]['id'],ENT_QUOTES));?>"/>
+								<input type = "text" name = "balance[]" class="span2" style="text-align: right;" value="<?php print (htmlspecialchars($account[$i]['balance'],ENT_QUOTES));?>"/>
+							</td>
+						</tr>
+						<?php endfor;?>
+						</table>
+						<input type="submit" value="更新" class="btn-primary"/>	
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 	
-	     
-	<div class = "center">
-		<a href="index.php">Back To TOP</a>
-	
-	 <!-- 一覧部ここから -->   
-		<h2>口座情報</h2>
-		<table align = "center" >
-			<tr>
-				<th scope="col">口座名</th>
-				<th scope="col">金額</th>
-			</tr>
-
-			<?php for ($i = 0; $i < count($account); $i++): ?>
-			<tr>
-				<td><?php print(htmlspecialchars($account[$i]['name'], ENT_QUOTES));?></td>
-				<td><input type = "text" name = "balance" class="span2" style="text-align: right;" value="<?php print (htmlspecialchars($account[$i]['balance'],ENT_QUOTES));?>"/></td>
-			</tr>
-			<?php endfor;?>
-		</table>
-		
+	<div class="center">
 		<a href="index.php">Back To TOP</a>
 	</div>
 
