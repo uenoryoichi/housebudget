@@ -1,15 +1,5 @@
 <?php 
-
-/*
- * 1.6.3
- * 
- * 
- * 
- */
-
-
 session_start();
-
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
 //ログインチェック
@@ -59,7 +49,7 @@ if ($key == 'transfer') {
 }
 
 
-//口座移動情報
+//口座更新情報
 if ($key == 'account_balance' and count($_POST['user_accounts_id']==count($_POST['balance']))) {
 	//POST で送られてきた情報をtransferのカラム格納
 	for ($i = 0, $count=count($_POST['user_accounts_id']); $i < $count; $i++) {
