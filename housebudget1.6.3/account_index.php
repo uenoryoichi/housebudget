@@ -1,16 +1,4 @@
 <?php
-
-/*
- * バージョン管理
- * 1.6.3
- * 
- * メモ
- * マスタ利用時修正必要
- * 
- * 
- * 
- */
-
 session_start();
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';

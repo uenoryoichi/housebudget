@@ -1,30 +1,11 @@
 <?php
-
-/*
- * バージョン管理
- * 1.6.2
- * 
- * マスタ利用時変更必要
- * 
- */
-
 session_start();
 
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
-
 //ログインチェック
 require 'function/login_check.php';
-
-/*
- * user_idをページ内に保存
- * account_user_masterを参照してuser_idと一致していたもののaccount_idとaccount_master内のidを参照
- * 一致しているもののnameを出力
- * 
- */
 ?>
-
-
 
 <!DOCTYPE html>
 <html>
