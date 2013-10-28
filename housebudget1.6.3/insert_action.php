@@ -14,8 +14,11 @@ require 'function/connect_housebudget.php';
 require 'function/login_check.php';
 //キーの格納
 $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
+
 ?>
 
+<?php var_dump($key);?>
+<?php var_dump($_POST)?>
 <!DOCTYPE html>
 <html>
     <head>
