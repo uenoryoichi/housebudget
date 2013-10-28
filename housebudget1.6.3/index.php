@@ -49,27 +49,18 @@ require 'function/calculate_account_balance.php';
 require 'function/calculate_this_month.php';
 
 ?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="ja" xml:lang="ja" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>MY家計簿</title>
-<meta name="keywords" content="家計簿" />
-<meta name="description" content="自分専用家計簿ページ" />
-<meta http-equiv="content-script-type" content="text/javascript" />
-<meta http-equiv="content-style-type" content="text/css" />
-<meta http-equiv="imagetoolbar" content="no" />
-<!-- 外部CSS読み込み -->
-<!--  <link href="css/default.css" rel="stylesheet" type="text/css" />
--->
+<html>
+	<head>
+        <meta http-equiv = "Content-Type" content = "text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="./css/common.css" />
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<meta name="keywords" content="家計簿" />
+		<meta name="description" content="自分専用家計簿ページ" />
+        <title>my家計簿</title>
+	</head>
 
-<!-- /ここまで -->
-<script type="text/javascript" src="js/default.js"></script>
-</head>
-
-<body>
+	<body>
 	<div id="head">
 		<h1><?php echo $member['name'];?>さんのMy家計簿</h1>
 		<h1>トップページ</h1>
@@ -82,6 +73,7 @@ require 'function/calculate_this_month.php';
 				<li><a href="income_index.php">収入管理</a></li>
 				<li><a href="transfer_index.php">口座移動</a></li>
 				<li><a href="account_index.php">口座残高</a></li>
+				<li><a href="account_choice.php">口座選択</a></li>
 				<li><a href="logout.php">ログアウト</a></li>
 			</ul>
 		</div>
