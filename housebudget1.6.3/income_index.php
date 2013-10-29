@@ -1,5 +1,4 @@
 <?php
-
 /*
  * バージョン管理
  * 1.6.3
@@ -9,18 +8,14 @@
  * 
  * 
  */
+?>
 
+<?
 session_start();
-
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
-
-
 //ログインチェック
 require 'function/login_check.php';
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -32,18 +27,16 @@ require 'function/login_check.php';
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
         <title>my家計簿</title>
 	</head>
-
-	<!-- 本文　ここから -->
-	
+	<!-- 本文　ここから -->	
 	<!-- 見出し ここから　-->
 	<div id="head">
 		<h1>収入一覧</h1>
 	</div>
-	<!-- 見出し　ここまで　-->
 	
-	<!-- insert部ここから -->
+
     <body>
-        <div class="container">
+       	<!-- insert部ここから -->
+       	<div class="container">
             <div class="row">
                 <div class="span6 offset3">
                     <h2>収入情報入力フォーム</h2>
@@ -57,7 +50,7 @@ require 'function/login_check.php';
 							<?php $today = date("Y-m-d");?>
                             <input type = "text" name = "date" class="span3" value=<?php echo $today?>>
                             <label>口座名</label>
-                            <select  name="account" id="account" class="span3" >
+                            <select  name="user_accounts_id" id="user_accounts_id" class="span3" >
                             <?php //選択肢にユーザーの口座情報を入れる?>
                             <?php require 'function/input_user_account_name.php'; ?>
 							</select>
@@ -69,21 +62,28 @@ require 'function/login_check.php';
                 </div>
             </div>
         </div>
-     <!-- insert部ここまで -->
-     
-	<div class = "center">
-		<a href="index.php">Back To TOP </a>
-	</div>
-     
-     <!-- 一覧部ここから -->   
-<?php
-    $sql = 'SELECT * FROM income ORDER BY ID DESC';
-	$result = mysql_query($sql, $link);
 
+     
+		<div class = "center">
+			<a href="index.php">Back To TOP </a>
+		</div>
+     
+     
+<?php
+    $sql = sprintf('SELECT income.*, accounts.name 
+ 				FROM income 
+ 					JOIN user_accounts ON income.user_accounts_id=user_accounts.id 
+ 					JOIN accounts ON user_accounts.account_id=accounts.id 
+ 				WHERE income.user_id=%d 
+ 				ORDER BY DATE DESC',
+    				$_SESSION['user_id']
+	);
+	$result = mysql_query($sql, $link);
 	while ($row = mysql_fetch_assoc($result)) {
 		$income[] = $row;
 	}
 ?>
+<!-- 一覧部ここから -->   
 	<div class = "center">
 	<h2>収入情報</h2>
 	<table align = "center" >
@@ -104,7 +104,7 @@ require 'function/login_check.php';
 			<td><?php print(htmlspecialchars($income[$i]['amount'], ENT_QUOTES));?></td>
 			<td><?php print(htmlspecialchars($income[$i]['content'], ENT_QUOTES));?></td>
 			<td><?php print(htmlspecialchars($income[$i]['date'], ENT_QUOTES));?></td>
-			<td><?php print(htmlspecialchars($income[$i]['account'], ENT_QUOTES));?></td>
+			<td><?php print(htmlspecialchars($income[$i]['name'], ENT_QUOTES));?></td>
 			<td>
 				<form method = "POST" action = "income_update.php" >
                  	<?php  //編集　id送信 ?>

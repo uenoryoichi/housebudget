@@ -11,33 +11,33 @@ session_start();
 
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
-
-
 //ログインチェック
 require 'function/login_check.php';
-
-
-
 ?>
 
 <?php 
-$id=htmlspecialchars($_REQUEST['id'], ENT_QUOTES);
-$sql=sprintf("SELECT * FROM pay WHERE id=%d",
+$id=htmlspecialchars($_POST['id'], ENT_QUOTES);
+$sql=sprintf("SELECT pay.*, accounts.name 
+ 				FROM pay 
+ 					JOIN user_accounts ON pay.user_accounts_id=user_accounts.id 
+ 					JOIN accounts ON user_accounts.account_id=accounts.id 
+				WHERE pay.id=%d",
 			mysql_real_escape_string($id)
 );
-$recordSet=mysql_query($sql);
-$date=mysql_fetch_assoc($recordSet);
+$result=mysql_query($sql,$link);
+$date=mysql_fetch_assoc($result);
 ?>
 
 <!DOCTYPE html>
 <html>
 	<!-- ヘッダーここから -->
-    <head>
+	<head>
         <meta http-equiv = "Content-Type" content = "text/html; charset=UTF-8" />
         <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="./css/common.css" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
         <title>my家計簿</title>
-    </head>
+	</head>
     <!-- ヘッダーここまで -->
     
     <!-- 本文ここから -->
@@ -64,7 +64,13 @@ $date=mysql_fetch_assoc($recordSet);
 							<label>日付</label>
                             <input type = "text" name = "date" class="span3" value="<?php print (htmlspecialchars($date['date'],ENT_QUOTES));?>"/>
 							<label>支払い</label>
-							<input type = "text" name = "how" class="span3" value="<?php print (htmlspecialchars($date['how'],ENT_QUOTES));?>"/>
+							<select  name="user_accounts_id" id="user_accounts_id" class="span3" >
+								<?php //選択肢にユーザーの口座情報を入れる?>
+								<?php $selected=$date['user_accounts_id']?>
+                           		<?php require 'function/input_user_account_name.php'; ?>
+ 
+							</select>
+							
 							<label>分類</label>
                             <input type = "text" name = "type" class="span3" value="<?php print (htmlspecialchars($date['type'],ENT_QUOTES));?>"/>
                            	<input type = "hidden" name = "key" value="pay" >

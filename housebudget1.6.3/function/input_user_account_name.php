@@ -5,13 +5,24 @@ $sql = sprintf('SELECT a.name, u.id FROM user_accounts u JOIN accounts a ON u.ac
 	);
 $result = mysql_query($sql) or die(mysql_error());
 
+$account=NULL;		//2回使う時のための初期
 while ($row = mysql_fetch_assoc($result)) {
-	$account_name[] = $row;
+	$account[] = $row;
 }
 
-
-for ($i=0; $i<count($account_name); $i++){
-	print('<option value="'.$account_name[$i]['name'].'">'.$account_name[$i]['name'].'</option>');
+if(isset($selected)){		//更新時
+	for ($i=0,$count=count($account); $i<$count; $i++){
+		if ($selected==$account[$i]['id']) {
+			print ('<option value="'.$account[$i]['id'].'" selected>'.$account[$i]['name'].'</option>');
+		}else {
+			print('<option value="'.$account[$i]['id'].'">'.$account[$i]['name'].'</option>');
+		}
+	}
+}else {							//入力時
+	for ($i=0,$count=count($account); $i<$count; $i++){
+		print('<option value="'.$account[$i]['id'].'">'.$account[$i]['name'].'</option>');
+		
+	}
 }
-
 ?>
+

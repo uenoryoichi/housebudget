@@ -1,26 +1,29 @@
 <?php
-
 /*
  * バージョン管理
 * 1.6.3
 *
-*
-*
 */
-session_start();
+?>
 
+<?
+session_start();
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
-
-
 //ログインチェック
 require 'function/login_check.php';
-
-
 //キーの格納
 $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
-
+//配列をエスケープするための関数
+function array_htmlspecialchars($string) {
+	if (is_array($string)) {
+		return array_map("array_htmlspecialchars", $string);
+	} else {
+		return htmlspecialchars($string, ENT_QUOTES);
+	}
+}
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -39,18 +42,12 @@ $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
 		$how_much = htmlspecialchars($_POST["how_much"], ENT_QUOTES);
 		$what = htmlspecialchars($_POST["what"], ENT_QUOTES);
 		$date = htmlspecialchars($_POST["date"], ENT_QUOTES);
-		$how = htmlspecialchars($_POST["how"], ENT_QUOTES);
+		$user_accounts_id = htmlspecialchars($_POST["user_accounts_id"], ENT_QUOTES);
 		$type = htmlspecialchars($_POST["type"], ENT_QUOTES);
-
-		$sql = "INSERT INTO pay (how_much,what,date,how,type) VALUES ('$how_much','$what','$date','$how','$type')";
-		mysql_query($sql, $link);
-
-		$sql = 'SELECT * FROM pay ORDER BY ID DESC';
-		$result = mysql_query($sql, $link);
-
-		while ($row = mysql_fetch_assoc($result)) {
-			$pay[] = $row;
-		}
+		$user_id = $_SESSION['user_id'];
+		
+		$sql = "INSERT INTO pay (how_much,what,date,user_accounts_id,type,user_id) VALUES ('$how_much','$what','$date','$user_accounts_id','$type','$user_id')";
+		mysql_query($sql, $link) or die(mysql_error());
 	}
     //ここまで
     
@@ -59,55 +56,57 @@ $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
 		$amount = htmlspecialchars($_POST["amount"], ENT_QUOTES);
 		$content = htmlspecialchars($_POST["content"], ENT_QUOTES);
 		$date = htmlspecialchars($_POST["date"], ENT_QUOTES);
-		$account = htmlspecialchars($_POST["account"], ENT_QUOTES);
+		$user_accounts_id = htmlspecialchars($_POST["user_accounts_id"], ENT_QUOTES);
+		$user_id = $_SESSION['user_id'];
 		
-		$sql = "INSERT INTO income (amount,content,date,account,created) VALUES (
+		$sql = "INSERT INTO income (amount,content,date,user_accounts_id,created,user_id) VALUES (
 			'$amount',
 			'$content',
 			'$date',
-			'$account',
-			NOW())";
-		mysql_query($sql, $link);
+			'$user_accounts_id',
+			NOW()),
+			'$user_id'";
+		mysql_query($sql, $link) or die(mysql_error());
 	
-		
-		$sql = 'SELECT * FROM income ORDER BY ID DESC';
-		$result = mysql_query($sql, $link);
-	
-		while ($row = mysql_fetch_assoc($result)) {
-			$income[] = $row;
-		}
 	}
 	//ここまで
 	
 	//口座移動情報入力
 	if ($key == "transfer") {
 		$amount = htmlspecialchars($_POST["amount"], ENT_QUOTES);
-		$account_remitter = htmlspecialchars($_POST["account_remitter"], ENT_QUOTES); 
-		$account_remittee = htmlspecialchars($_POST["account_remittee"], ENT_QUOTES);
+		$user_accounts_id_remitter = htmlspecialchars($_POST["user_accounts_id_remitter"], ENT_QUOTES); 
+		$user_accounts_id_remittee = htmlspecialchars($_POST["user_accounts_id_remittee"], ENT_QUOTES);
 		$date = htmlspecialchars($_POST["date"], ENT_QUOTES);
 		$memo = htmlspecialchars($_POST["memo"], ENT_QUOTES);
+		$user_id = $_SESSION['user_id'];
 		
-		$sql = "INSERT INTO transfer (amount,account_remitter,account_remittee,date,memo,created) VALUES (
+		$sql = "INSERT INTO transfer (amount,user_accounts_id_remitter,user_accounts_id_remittee,date,memo,user_id,created) VALUES (
 			'$amount',
-			'$account_remitter',
-			'$account_remittee',
+			'$user_accounts_id_remitter',
+			'$user_accounts_id_remittee',
 			'$date',
 			'$memo',
+			'$user_id',
 			NOW())";
 		mysql_query($sql, $link) or die(mysql_error());
-		
-		$sql = 'SELECT * FROM transfer ORDER BY ID DESC';
-		$result = mysql_query($sql, $link);
-		
-		while ($row = mysql_fetch_assoc($result)) {
-			$transfer[] = $row;
-		}
 	}
 
+	//口座移動情報入力
+	if ($key == "user_accounts_add") {
+		$account_id=array_htmlspecialchars($_POST["account_id"]);
+		$user_id=$_SESSION['user_id'];
+		//acounts_idを一つづつ抽出
+		for ($i = 0, $count_accounts=count($account_id); $i < $count_accounts; $i++) {
+			$sql = "INSERT INTO user_accounts (user_id,account_id,created) VALUES (
+				'$user_id',
+				'$account_id[$i]',
+				NOW())";
+		mysql_query($sql, $link) or die(mysql_error());
+		}
+	}
 ?>	
 
 
-<div id="wrap">
 <!-- 見出し -->
 	<div id="head">
 		<h1>入力完了</h1>
@@ -121,10 +120,11 @@ $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
 		<br>
 		<h3>
 			<?php 
-			if ($key=='pay') {echo '支払い';}
-			elseif ($key=='income'){echo '収入';}
-			elseif ($key == 'transfer'){echo '口座移動';}
-			?>情報を入力しました
+			if ($key=='pay') {echo '支払い情報を入力しました';}
+			elseif ($key=='income'){echo '収入情報を入力しました';}
+			elseif ($key == 'transfer'){echo '口座移動情報を入力しました';}
+			elseif ($key== 'user_accounts_add'){echo '新規口座を登録しました';}
+			?>
 		</h3>
 		<br>
 		<br>
@@ -134,6 +134,7 @@ $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
 			if ($key =='pay') {echo 'pay_index.php';}
 			elseif ($key =='income'){echo 'income_index.php';}
 			elseif ($key == 'transfer'){echo'transfer_index.php';}
+			elseif ($key == 'user_accounts_add'){echo'account_choice.php';}
 			?>
 		>一覧に戻る</a>
 		</h2>
@@ -141,15 +142,12 @@ $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
 	</div>
 	<!-- 完了表示　ここまで -->
 
-	
 	<!-- トップに戻る -->
 	<div class = "center">
 		<h2><a href="index.php">Back To TOP</a></h2>
 	</div>
-	<!-- トップに戻る　ここまで -->	
-</div>	
+	<!-- トップに戻る　ここまで -->		
 	
-
 
 </body>
 </html>
