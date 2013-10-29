@@ -133,16 +133,16 @@ while ($row = mysql_fetch_assoc($result)) {
 						<?php for ($j = 0, $count_not_using_accounts=count($not_using_accounts);  $j < $count_not_using_accounts; $j++): ?>
 						<?php if ($not_using_accounts[$j]['account_classification_id']==$account_classifications[$i]['id']):?>
 						<tr>
-							<td><input type="checkbox" name="accounts_id[]" value="<?php echo $not_using_accounts[$j]['id']?>" /></td>
+							<td><input type="checkbox" name="account_id[]" value="<?php echo $not_using_accounts[$j]['id']?>" /></td>
 							<td><?php print (htmlspecialchars($not_using_accounts[$j]['name'], ENT_QUOTES));?></td>
 						</tr>
 						<?php endif;?>
 						<?php endfor;?>
 					</table>
-					<div class="well">
+					<div class="row"><div class="span2  offset3"><div class="well"><div class="center">
 						<input type="hidden" name="key" value="user_accounts_add" />
 						<input type="submit" value="追加" class="btn-primary span1 "/>	
-					</div>
+					</div></div></div></div>
 					<?php endfor;?>
 					</form>
 				</div>
