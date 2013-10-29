@@ -71,8 +71,8 @@ require 'function/calculate_this_month.php';
 				<li><a href="./">HOME</a></li>
 				<li><a href="pay_index.php">支出管理</a></li>
 				<li><a href="income_index.php">収入管理</a></li>
-				<li><a href="transfer_index.php">口座移動</a></li>
-				<li><a href="account_index.php">口座残高</a></li>
+				<li><a href="transfer_index.php">口座間移動</a></li>
+				<li><a href="account_index.php">口座残高更新</a></li>
 				<li><a href="account_choice.php">口座選択</a></li>
 				<li><a href="logout.php">ログアウト</a></li>
 			</ul>

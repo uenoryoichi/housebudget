@@ -40,23 +40,18 @@ while ($row = mysql_fetch_assoc($result)) {
 	$accounts[] = $row;
 }
 for ($i= 0, $count_accounts=count($accounts);  $i < $count_accounts; $i++){
-	$using=1;
+	$using=false;
 	for ($j= 0, $count_using_accounts=count($using_accounts);  $j < $count_using_accounts; $j++){ //使用中のものとかぶっていないか
 		if ($accounts[$i]['id']==$using_accounts[$j]['account_id']){
-			$using=2;
+			$using=true;
 			break;
 		};
 	};
-	if ($using==1) {
+	if ($using==false) {
 		$not_using_accounts[]=$accounts[$i];
 	}
-	$using=1;
+	$using=false;
 };
-var_dump($not_using_accounts);
-var_dump($count_using_accounts);
-var_dump($count_accounts);
-
-
 
 //口座種別取得
 $sql = sprintf('SELECT *  FROM account_classifications');
@@ -91,30 +86,54 @@ while ($row = mysql_fetch_assoc($result)) {
 			<div class="span6 offset3">
           		<h2>使用中の口座</h2>
            		<div class="control-group">
+           		<?php if ($_POST['can_delete']=="true"):	?>										<?php //削除アクション有効?>
+           			<div class="alert">
+						<button class="close" data-dismiss="alert">&times;</button>
+						<strong>口座情報を削除すると関連する収入支出情報も削除されます</strong>
+					</div>
+					<form action="delete_action.php" method="post">		           		
+				<?php else:?>
+					<form action="" method="post">												<?php //削除アクション無効?>
+				<?php endif;?>
              		<?php for ($i = 0, $count_a_c=count($account_classifications);$i< $count_a_c; $i++):?>
              		<h3><?php echo $account_classifications[$i]['name']?></h3>
              		<table align = "center" >
 						<tr>
+							<?php if ($_POST['can_delete']=="true"):?><th scope="col">削除</th><?php endif;?>	<?php //削除アクション有効?>
 							<th scope="col">口座名</th>
 							<th scope="col">金額</th>
 						</tr>
 						<?php for ($j = 0, $count_accounts=count($accounts);  $j < $count_accounts; $j++): ?>
-						
 						<?php if ($accounts[$j]['account_classification_id']==$account_classifications[$i]['id']):  //種別が一致しているか?>
-						
 						<tr>
-							<td><?php print (htmlspecialchars($using_accounts[$j]['name'], ENT_QUOTES));?></td>
+							<?php if ($_POST['can_delete']=="true"):?>
+							<td class="center"><input type="radio" name="user_accounts_id" value="<?php echo $using_accounts[$j]['id']; ?>"/></td>	<?php //削除アクション有効?>
+							<?php endif;?>
+							<td><?php print (htmlspecialchars($using_accounts[$j]['name'], ENT_QUOTES));?></td> 
 							<td>	<?php print (htmlspecialchars($using_accounts[$j]['balance'], ENT_QUOTES));?></td>
 						</tr>
-						
 						<?php endif;?>
 						<?php endfor;?>
 					</table>
 					<?php endfor;?>
+					<div class="row">
+						<div class="offset4">
+							<?php if ($_POST['can_delete']=="true"):?>
+								<input type="hidden" name="key" value="user_accounts"/>
+								<input type="submit" value="削除" class="btn btn-danger"/>
+							<?php else:?>
+								<input type="hidden" name="can_delete" value="true"/>
+								<input type="submit" value="削除を有効にする" class="btn btn-danger"/>
+							<?php endif;?>
+						</div>
+					</div>
+					</form>
 				</div>
 			</div>
 		</div>
 	</div>
+	
+	<?php //===========================================================?>
 	
 	<?php //使用してない口座一覧?>
 	<div class="container">
@@ -133,16 +152,16 @@ while ($row = mysql_fetch_assoc($result)) {
 						<?php for ($j = 0, $count_not_using_accounts=count($not_using_accounts);  $j < $count_not_using_accounts; $j++): ?>
 						<?php if ($not_using_accounts[$j]['account_classification_id']==$account_classifications[$i]['id']):?>
 						<tr>
-							<td><input type="checkbox" name="accounts_id[]" value="<?php echo $not_using_accounts[$j]['id']?>" /></td>
+							<td><input type="checkbox" name="account_id[]" value="<?php echo $not_using_accounts[$j]['id']?>" /></td>
 							<td><?php print (htmlspecialchars($not_using_accounts[$j]['name'], ENT_QUOTES));?></td>
 						</tr>
 						<?php endif;?>
 						<?php endfor;?>
 					</table>
-					<div class="well">
+					<div class="row"><div class="span2  offset3"><div class="well"><div class="center">
 						<input type="hidden" name="key" value="user_accounts_add" />
 						<input type="submit" value="追加" class="btn-primary span1 "/>	
-					</div>
+					</div></div></div></div>
 					<?php endfor;?>
 					</form>
 				</div>

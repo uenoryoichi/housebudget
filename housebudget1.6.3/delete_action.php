@@ -14,6 +14,8 @@ require 'function/login_check.php';
 //キーの格納
 $key=htmlspecialchars($_POST['key'], ENT_QUOTES);
 
+var_dump($_POST);
+
 
 //削除要求 支払い
 if ($key=="pay") {
@@ -43,7 +45,8 @@ if ($key =="transfer") {
 	);
 	mysql_query($sql) or die(mysql_error());
 }
-//ここまで
+//ここまで 
+	
 
 ?>
 
@@ -74,10 +77,11 @@ if ($key =="transfer") {
 		<br>
 		<h3>
 			<?php 
-			if ($key=='pay') {echo '支払い';}
-			elseif ($key=='income'){echo '収入';}
-			elseif ($key=='transfer'){echo '口座移動';}
-			?>情報を削除しました
+			if ($key=='pay') {echo '支払い情報を削除しました';}
+			elseif ($key=='income'){echo '収入情報を削除しました';}
+			elseif ($key=='transfer'){echo '口座移動情報を削除しました';}
+			elseif ($key==NULL){echo 'エラー キーがありません';}
+			?>
 		</h3>
 		<br>
 		<br>

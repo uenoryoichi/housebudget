@@ -14,11 +14,17 @@ require 'function/connect_housebudget.php';
 require 'function/login_check.php';
 //キーの格納
 $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
-
+//配列をエスケープするための関数
+function array_htmlspecialchars($string) {
+	if (is_array($string)) {
+		return array_map("array_htmlspecialchars", $string);
+	} else {
+		return htmlspecialchars($string, ENT_QUOTES);
+	}
+}
 ?>
 
-<?php var_dump($key);?>
-<?php var_dump($_POST)?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -85,7 +91,21 @@ $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
 		mysql_query($sql, $link) or die(mysql_error());
 	}
 
+	//口座移動情報入力
+	if ($key == "user_accounts_add") {
+		$account_id=array_htmlspecialchars($_POST["account_id"]);
+		$user_id=$_SESSION['user_id'];
+		//acounts_idを一つづつ抽出
+		for ($i = 0, $count_accounts=count($account_id); $i < $count_accounts; $i++) {
+			$sql = "INSERT INTO user_accounts (user_id,account_id,created) VALUES (
+				'$user_id',
+				'$account_id[$i]',
+				NOW())";
+		mysql_query($sql, $link) or die(mysql_error());
+		}
+	}
 ?>	
+
 
 <!-- 見出し -->
 	<div id="head">
@@ -100,10 +120,11 @@ $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
 		<br>
 		<h3>
 			<?php 
-			if ($key=='pay') {echo '支払い';}
-			elseif ($key=='income'){echo '収入';}
-			elseif ($key == 'transfer'){echo '口座移動';}
-			?>情報を入力しました
+			if ($key=='pay') {echo '支払い情報を入力しました';}
+			elseif ($key=='income'){echo '収入情報を入力しました';}
+			elseif ($key == 'transfer'){echo '口座移動情報を入力しました';}
+			elseif ($key== 'user_accounts_add'){echo '新規口座を登録しました';}
+			?>
 		</h3>
 		<br>
 		<br>
@@ -113,6 +134,7 @@ $key = htmlspecialchars($_POST["key"], ENT_QUOTES);
 			if ($key =='pay') {echo 'pay_index.php';}
 			elseif ($key =='income'){echo 'income_index.php';}
 			elseif ($key == 'transfer'){echo'transfer_index.php';}
+			elseif ($key == 'user_accounts_add'){echo'account_choice.php';}
 			?>
 		>一覧に戻る</a>
 		</h2>
