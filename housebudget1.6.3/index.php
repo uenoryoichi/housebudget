@@ -38,13 +38,10 @@ session_start();
 
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
-
 //ログインチェック
 require 'function/login_check.php';
-
 //口座の現在残高取得
 require 'function/calculate_account_balance.php';
-
 //今月の収支情報取得
 require 'function/calculate_this_month.php';
 
@@ -67,8 +64,8 @@ require 'function/calculate_this_month.php';
 	</div>
 	<div id="container">
 		<div class="">
-			<ul>
-				<li><a href="./">HOME</a></li>
+			<ul class="nav nav-tabs nav-stacked">
+				<li><a href="">HOME</a></li>
 				<li><a href="pay_index.php">支出管理</a></li>
 				<li><a href="income_index.php">収入管理</a></li>
 				<li><a href="transfer_index.php">口座間移動</a></li>
