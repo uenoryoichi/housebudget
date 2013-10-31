@@ -17,11 +17,27 @@ require 'function/login_check.php';
  * insert_actionにはaccount_idを送る。
  * insertではuser_idとaccount_id入れて口座更新へ飛ばす
  * 
- * 
- * 
  */
 ?>
+
 <?php 
+//優先：登録口座追加
+if (isset($_POST['accounts_name'])&&isset($_POST["accounts_kana"])) {
+	$accounts_name=htmlspecialchars($_POST["accounts_name"], ENT_QUOTES);
+	$accounts_kana=htmlspecialchars($_POST["accounts_kana"], ENT_QUOTES);
+	$account_classification_id=htmlspecialchars($_POST["account_classification_id"], ENT_QUOTES);
+	$sql = "INSERT INTO accounts ( name, kana, account_classification_id, created) 
+						VALUES (
+							'$accounts_name',
+							'$accounts_kana',
+							'$account_classification_id',
+							NOW())"
+	;
+	mysql_query($sql, $link) or die(mysql_error());
+}
+
+
+
 //使用中の口座情報
 $sql = sprintf('SELECT a.name,a.account_classification_id, u.*  FROM user_accounts u 
 		JOIN accounts a ON u.account_id=a.id 
@@ -103,8 +119,8 @@ while ($row = mysql_fetch_assoc($result)) {
 							<th scope="col">口座名</th>
 							<th scope="col">金額</th>
 						</tr>
-						<?php for ($j = 0, $count_accounts=count($accounts);  $j < $count_accounts; $j++): ?>
-						<?php if ($accounts[$j]['account_classification_id']==$account_classifications[$i]['id']):  //種別が一致しているか?>
+						<?php for ($j = 0, $count_using_accounts=count($using_accounts);  $j < $count_using_accounts; $j++): ?>
+						<?php if ($using_accounts[$j]['account_classification_id']==$account_classifications[$i]['id']):  //種別が一致しているか?>
 						<tr>
 							<?php if ($_POST['can_delete']=="true"):?>
 							<td class="center"><input type="radio" name="user_accounts_id" value="<?php echo $using_accounts[$j]['id']; ?>"/></td>	<?php //削除アクション有効?>
@@ -141,7 +157,7 @@ while ($row = mysql_fetch_assoc($result)) {
 			<div class="span6 offset3">
           		<h2>登録されている口座から選択</h2>
            		<div class="control-group">
-           			<form method= "post" action= "insert_action.php" class = "well">
+           			<form method= "post" action= "insert_action.php" name ="user"class = "well">
              		<?php for ($i = 0, $count_a_c=count($account_classifications);$i< $count_a_c; $i++):?>
              		<h3><?php echo $account_classifications[$i]['name']?></h3>
              		<table align = "center" >
@@ -158,11 +174,27 @@ while ($row = mysql_fetch_assoc($result)) {
 						<?php endif;?>
 						<?php endfor;?>
 					</table>
-					<div class="row"><div class="span2  offset3"><div class="well"><div class="center">
-						<input type="hidden" name="key" value="user_accounts_add" />
-						<input type="submit" value="追加" class="btn-primary span1 "/>	
-					</div></div></div></div>
+					<div class="row">
+						<div class="offset4">
+							<input type="hidden" name="key" value="user_accounts_add" />
+							<input type="submit" value="選択" class="btn-primary span1 "/>
+						</div>
+					</div>
 					<?php endfor;?>
+					</form>
+					<h2>上記にない口座を登録</h2>
+					<?php //口座追加?>
+					<form action="" method="post" name="add_accounts">
+						<div class="row"><div class="span4  offset1"><div class="well">
+						<select name="account_classification_id" id="account_classification_id" class="span3" >
+                            <?php //選択肢口座種別情報を入れる?>
+                            <?php require 'function/input_account_classifications.php'; ?>
+						</select>
+						<input type="hidden" name="add_accounts" valuse="ture">
+						<p>名称<input type="text" name="accounts_name" class="span2"/></p>
+						<p>かな(全角ひらがな)<input type="text" name="accounts_kana" class="span2"/></p>
+						<input type="submit" value="新規登録" class="btn-primary"/>
+						</div></div></div>
 					</form>
 				</div>
 			</div>
