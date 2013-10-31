@@ -25,7 +25,6 @@ if ($key=="pay") {
 	);
 	mysql_query($sql) or die(mysql_error());
 }
-//ここまで
 
 //削除要求　収入
 if ($key =="income") {
@@ -35,7 +34,6 @@ if ($key =="income") {
 	);
 	mysql_query($sql) or die(mysql_error());
 }
-//ここまで
 
 //削除要求　口座移動
 if ($key =="transfer") {
@@ -45,8 +43,15 @@ if ($key =="transfer") {
 	);
 	mysql_query($sql) or die(mysql_error());
 }
-//ここまで 
-	
+
+//削除要求　ユーザー使用口座
+if ($key =="user_accounts") {
+	$sql=sprintf("DELETE FROM user_accounts WHERE id=%d AND user_id=%d",
+			mysql_real_escape_string(htmlspecialchars($_REQUEST['user_accounts_id'], ENT_QUOTES)),
+			mysql_real_escape_string(htmlspecialchars($_SESSION['user_id'], ENT_QUOTES))
+	);
+	mysql_query($sql) or die(mysql_error());
+}
 
 ?>
 
@@ -80,6 +85,7 @@ if ($key =="transfer") {
 			if ($key=='pay') {echo '支払い情報を削除しました';}
 			elseif ($key=='income'){echo '収入情報を削除しました';}
 			elseif ($key=='transfer'){echo '口座移動情報を削除しました';}
+			elseif ($key=='user_accounts'){echo '口座情報を削除しました';}
 			elseif ($key==NULL){echo 'エラー キーがありません';}
 			?>
 		</h3>
@@ -91,6 +97,7 @@ if ($key =="transfer") {
 			if ($key =='pay') {echo 'pay_index.php';}
 			elseif ($key =='income'){echo 'income_index.php';}
 			elseif ($key == 'transfer'){echo 'transfer_index.php';}
+			elseif ($key == 'user_accounts'){echo 'account_choice.php';}
 			?>
 		>一覧に戻る</a>
 		</h2>

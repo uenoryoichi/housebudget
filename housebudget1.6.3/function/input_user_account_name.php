@@ -5,22 +5,22 @@ $sql = sprintf('SELECT a.name, u.id FROM user_accounts u JOIN accounts a ON u.ac
 	);
 $result = mysql_query($sql) or die(mysql_error());
 
-$account=NULL;		//2回使う時のための初期
+$accounts=NULL;		//2回使う時のための初期
 while ($row = mysql_fetch_assoc($result)) {
-	$account[] = $row;
+	$accounts[] = $row;
 }
 
 if(isset($selected)){		//更新時
-	for ($i=0,$count=count($account); $i<$count; $i++){
-		if ($selected==$account[$i]['id']) {
-			print ('<option value="'.$account[$i]['id'].'" selected>'.$account[$i]['name'].'</option>');
+	for ($i=0,$count_accounts=count($accounts); $i<$count_accounts; $i++){
+		if ($selected==$accounts[$i]['id']) {
+			print ('<option value="'.$accounts[$i]['id'].'" selected>'.$accounts[$i]['name'].'</option>');
 		}else {
-			print('<option value="'.$account[$i]['id'].'">'.$account[$i]['name'].'</option>');
+			print('<option value="'.$accounts[$i]['id'].'">'.$accounts[$i]['name'].'</option>');
 		}
 	}
 }else {							//入力時
-	for ($i=0,$count=count($account); $i<$count; $i++){
-		print('<option value="'.$account[$i]['id'].'">'.$account[$i]['name'].'</option>');
+	for ($i=0,$count_accounts=count($accounts); $i<$count_accounts; $i++){
+		print('<option value="'.$accounts[$i]['id'].'">'.$accounts[$i]['name'].'</option>');
 		
 	}
 }
