@@ -62,9 +62,10 @@ require 'function/calculate_this_month.php';
 		<h1><?php echo $member['name'];?>さんのMy家計簿</h1>
 		<h1>トップページ</h1>
 	</div>
+	
 	<div id="container">
-		<div class="">
-			<ul class="nav nav-tabs nav-stacked">
+		<div class="row">
+			<ul class="nav nav-tabs ">
 				<li><a href="">HOME</a></li>
 				<li><a href="pay_index.php">支出管理</a></li>
 				<li><a href="income_index.php">収入管理</a></li>
@@ -74,12 +75,14 @@ require 'function/calculate_this_month.php';
 				<li><a href="logout.php">ログアウト</a></li>
 			</ul>
 		</div>
-		<div id="contents">
-			<div id="top">
-				<div id="left">
-					<div id="info">
-						<h2><?php echo $this_month;?> 出費：<?php echo $sum_pay;?>円  収入：<?php echo $sum_income;?>円</h2>
-					</div>
+		
+		<div class="row">
+			<div class="span12">
+			<div class="text-center">aaa</div>
+				<h2>今月の収支</h2>
+				<p><?php echo $this_month;?> 出費：<?php echo $sum_pay;?>円  収入：<?php echo $sum_income;?>円</p>
+			</div>
+		</div>	
 					
 					<div class = "center">
 						<h2>口座情報</h2>
@@ -98,7 +101,6 @@ require 'function/calculate_this_month.php';
 					</div>
 				</div>
 			</div>
-		</div>
 
 		<div id="copy">Copyright (C) 
 			<script type="text/javascript">document.write(new Date().getFullYear());</script> 
