@@ -46,47 +46,37 @@ require 'function/calculate_account_balance.php';
 require 'function/calculate_this_month.php';
 
 ?>
-<html>
-	<head>
-        <meta http-equiv = "Content-Type" content = "text/html; charset=UTF-8" />
-        <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="./css/common.css" />
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-		<meta name="keywords" content="家計簿" />
-		<meta name="description" content="自分専用家計簿ページ" />
-        <title>my家計簿</title>
-	</head>
+<!DOCTYPE html>
+<html lang=ja>
+	<?php //ヘッダー情報取り込み?>
+    	<?php include 'include/head.html';?>
 
-	<body>
+<body>
+	<!-- 見出しここから -->
 	<div id="head">
 		<h1><?php echo $member['name'];?>さんのMy家計簿</h1>
 		<h1>トップページ</h1>
 	</div>
 	
-	<div id="container">
+	<!-- メニューバー -->
+	<?php include 'include/menu.html';?>
+
+	<!-- 情報一覧 -->
+	<div class="container">	
 		<div class="row">
-			<ul class="nav nav-tabs ">
-				<li><a href="">HOME</a></li>
-				<li><a href="pay_index.php">支出管理</a></li>
-				<li><a href="income_index.php">収入管理</a></li>
-				<li><a href="transfer_index.php">口座間移動</a></li>
-				<li><a href="account_index.php">口座残高更新</a></li>
-				<li><a href="account_choice.php">口座選択</a></li>
-				<li><a href="logout.php">ログアウト</a></li>
-			</ul>
+			<div class="span12">
+				<div class="text-center">
+					<h2>今月の収支</h2>
+					<p><?php echo $this_month;?> 出費：<?php echo $sum_pay;?>円  収入：<?php echo $sum_income;?>円</p>
+				</div>
+			</div>
 		</div>
 		
 		<div class="row">
-			<div class="span12">
-			<div class="text-center">aaa</div>
-				<h2>今月の収支</h2>
-				<p><?php echo $this_month;?> 出費：<?php echo $sum_pay;?>円  収入：<?php echo $sum_income;?>円</p>
-			</div>
-		</div>	
-					
-					<div class = "center">
-						<h2>口座情報</h2>
-						<table align = "center" >
+			<div class="span6 offset3">
+				<div class="center">
+					<h2>口座情報</h2>
+						<table class="table">
 							<tr>
 								<th scope="col">口座名</th>
 								<th scope="col">金額</th>
@@ -97,16 +87,15 @@ require 'function/calculate_this_month.php';
 								<td><?php print(htmlspecialchars($account[$i]['balance'], ENT_QUOTES));?></td>
 							</tr>
 							<?php endfor;?>
-						</table>
-					</div>
+					</table>
 				</div>
 			</div>
-
-		<div id="copy">Copyright (C) 
-			<script type="text/javascript">document.write(new Date().getFullYear());</script> 
-			<a href="./">My家計簿</a>. All Rights Reserved.
 		</div>
 	</div>
+					
+	<!-- フッター -->
+	<?php include 'include/footer.html';?>
+	
 </body>
 </html>
 

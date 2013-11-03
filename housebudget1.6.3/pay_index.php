@@ -8,52 +8,55 @@ require 'function/login_check.php';
 ?>
 
 <!DOCTYPE html>
-<html>
-	<head>
-        <meta http-equiv = "Content-Type" content = "text/html; charset=UTF-8" />
-        <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="./css/common.css" />
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-        <title>my家計簿</title>
-	</head>
+<html lang=ja>
+	<!-- ヘッダーここから -->
+    <?php include 'include/head.html';?>
 
 	<!-- 本文　ここから -->	
 	<!-- 見出し ここから　-->
 	<div id="head">
 		<h1>支出一覧</h1>
 	</div>
+	
+	<!-- メニューバー?>
+	<?php include 'include/menu.html';?>
+	
 	<!-- insert部ここから -->
     <body>
-        <div class="container">
-	      <div class="span6 offset3">
-           	<h2>支出情報入力フォーム</h2>
-             <div class="control-group">
-                        <form method = "POST" action = "insert_action.php" class = "well">
-                            <label>金額</label>
-                            <input type = "text" name = "how_much" class="span3" >
-                            <label>内容</label>
-                            <input type = "text" name = "what" class="span5" placeholder= "">
-							<label>日付</label>
-							<?php $today = date("Y-m-d");?>
-                            <input type = "text" name = "date" class="span3" value=<?php echo $today?>>
-                            <label>支払い</label>
-                       		<select  name="user_accounts_id" id="user_accounts_id" class="span3" >
+		<div class="container">
+	    		<div class="span8 offset2">
+           		<legend>支出情報入力フォーム</legend>
+                 <form method = "POST" action = "insert_action.php" class = "form-horizontal well">
+                 	<div class="form-group">
+                 		<label class="col-sm-2 control-label">金額</label>
+                 		<div class="col-sm-10">
+                        	<input type = "text" name = "how_much" class="form-control " >
+                        	</div>
+                        	<label>内容</label>
+                        	<input type = "text" name = "what" class="form-control">
+						<label>日付</label>
+						<?php $today = date("Y-m-d");?>
+                        	<input type = "text" name = "date" class="form-control" value=<?php echo $today?>>
+                        	<label>支払い</label>
+                       	<select  name="user_accounts_id" id="user_accounts_id" class="form-control" >
 							<?php //選択肢にユーザーの口座情報を入れる?>
-                           	<?php require 'function/input_user_account_name.php'; ?>
-							</select>
+                        		<?php require 'function/input_user_account_name.php'; ?>
+						</select>
                          	<label>分類</label>
-                            <select  name="type" id="type" class="span3" >
+                       	<select  name="type" id="type" class="form-control">
 							<?php 
 								$bunrui_array = array("交通費","食費","消耗品","交際費","HUCC","研究室","その他");
 								for ($i=0; $i<count($bunrui_array); $i++){
 									print('<option value="'.$bunrui_array[$i].'">'.$bunrui_array[$i].'</option>');
 								}
 							?>
-							</select>
+						</select>
                          	<?php  //支出情報キー ?>
 							<input type = "hidden" name = "key" value="pay" >
-							<input type = "submit" value = "送信" class="btn-primary">
-                        </form>
+							<input type = "submit" value = "送信" class="btn btn-primary">
+                 			
+                 		</div>
+                  	</form>
                </div>
           </div>
       </div>
