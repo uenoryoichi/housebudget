@@ -14,8 +14,6 @@ require 'function/login_check.php';
 //キーの格納
 $key=htmlspecialchars($_POST['key'], ENT_QUOTES);
 
-var_dump($_POST);
-
 
 //削除要求 支払い
 if ($key=="pay") {
@@ -54,29 +52,21 @@ if ($key =="user_accounts") {
 }
 
 ?>
+<!DOCTYPE html>
+<html lang=ja>
+	<!-- ヘッダーここから -->
+    <?php include 'include/head.html';?>
 
-<!DOCTYPE html PUBLIC>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="description" content="家計簿">
-<meta name="keywords" content="web家計簿">
-<link rel="stylesheet" type="text/css" href="css/style.css" />
-<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
-<link rel="stylesheet" type="text/css" href="./css/common.css" />
-<title>my家計簿</title>
-</head>
-
+	<!-- 本文　ここから -->	
 <body>
 
-<div id="wrap">
-
 <!-- 見出し -->
-	<div id="head">
-		<h1>削除処理</h1>
-	</div>
+<div id="head">
+	<h1>削除処理</h1>
+</div>
+
 <!-- 実行内容表示 -->
-	<div id="content">
+<div id="content">
 	<div class = "center">
 		<br>
 		<br>
@@ -102,22 +92,15 @@ if ($key =="user_accounts") {
 		>一覧に戻る</a>
 		</h2>
 	</div>	
-	</div>
-	<!-- 完了表示　ここまで -->
-
-	
-	<!-- トップに戻る -->
-	<div class = "center">
-		<h2><a href="index.php">Back To TOP</a></h2>
-	</div>
-	<!-- トップに戻る　ここまで -->	
 </div>
 
-
-<!-- foot -->
-<div id="foot">
-<p></p>
+<!-- トップに戻る -->
+<div class = "center">
+	<h2><a href="index.php">Back To TOP</a></h2>
 </div>
+
+<!-- フッター -->
+<?php include 'include/footer.html';?>
 
 
 </body>
