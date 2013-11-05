@@ -28,7 +28,7 @@ if ($key == 'income') {
 			mysql_real_escape_string(htmlspecialchars($_POST['amount'], ENT_QUOTES)),
 			mysql_real_escape_string(htmlspecialchars($_POST['content'], ENT_QUOTES)),
 			mysql_real_escape_string(htmlspecialchars($_POST['date'], ENT_QUOTES)),
-			mysql_real_escape_string(htmlspecialchars($_POST['account'], ENT_QUOTES)),
+			mysql_real_escape_string(htmlspecialchars($_POST['user_accounts_id'], ENT_QUOTES)),
 			mysql_real_escape_string(htmlspecialchars($_POST['income_id'], ENT_QUOTES))
 	);
 	mysql_query($sql) or die(mysql_error());

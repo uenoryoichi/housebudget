@@ -85,4 +85,3 @@ $date=mysql_fetch_assoc($recordSet);
         </div>
     </body>
 </html>
-<?php var_dump($date);?>
