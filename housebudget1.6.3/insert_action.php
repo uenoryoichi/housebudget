@@ -1,11 +1,3 @@
-<?php
-/*
- * バージョン管理
-* 1.6.3
-*
-*/
-?>
-
 <?
 session_start();
 //データベースへの接続 housebudget
@@ -64,8 +56,8 @@ function array_htmlspecialchars($string) {
 			'$content',
 			'$date',
 			'$user_accounts_id',
-			NOW()),
-			'$user_id'";
+			NOW(),
+			'$user_id')";
 		mysql_query($sql, $link) or die(mysql_error());
 	
 	}
