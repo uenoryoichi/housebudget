@@ -7,20 +7,6 @@ require 'function/login_check.php';
 ?>
 
 <?php 
-/*
- * 使っていない口座もサブクエリで抽出しようとしたがサブクエリが複数行を返すのでダメと言われた
- * 	SELECT * FROM accounts a WHERE a.id=(SELECT u.account_id FROM user_accounts u WHERE u.user_id=4)
- * 
- * accountから登録されているすべての口座をとってくる<=classification.name
- * user_accountからチェックを予め付けておく口座の情報を取ってくる<=デザインで修正するまずは上にユーザー、下にすべて
- * 左側に今使ってる口座情報 右に使っていない講座情報を種別ごとあいうえお順に
- * insert_actionにはaccount_idを送る。
- * insertではuser_idとaccount_id入れて口座更新へ飛ばす
- * 
- */
-?>
-
-<?php 
 //優先：登録口座追加
 if (isset($_POST['accounts_name'])&&isset($_POST["accounts_kana"])) {
 	$accounts_name=htmlspecialchars($_POST["accounts_name"], ENT_QUOTES);
