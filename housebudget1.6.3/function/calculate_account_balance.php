@@ -52,26 +52,26 @@
 	//送金側
 	$sql = sprintf('SELECT u.account_id, sum(t.amount) 
 					FROM user_accounts u 
-						JOIN transfer t ON t.user_account_id_remitter=u.id 
-					WHERE t.user_account_id_remitter
+						JOIN transfer t ON t.user_accounts_id_remitter=u.id 
+					WHERE t.user_accounts_id_remitter
 						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=%d) AND t.date>u.checked 
-					GROUP BY t.user_account_id_remitter',
+					GROUP BY t.user_accounts_id_remitter',
 				($_SESSION['user_id'])
 	);	
-	$result = mysql_query($sql, $link);
+	$result = mysql_query($sql, $link) or die(mysql_error());;
 	while ($row = mysql_fetch_assoc($result)) {
 		$transfer_remitter[] = $row;
 	}	
 	//受け取り側
 	$sql = sprintf('SELECT u.account_id, sum(t.amount)
 					FROM user_accounts u
-						JOIN transfer t ON t.user_account_id_remittee=u.id
-					WHERE t.user_account_id_remittee
+						JOIN transfer t ON t.user_accounts_id_remittee=u.id
+					WHERE t.user_accounts_id_remittee
 						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=%d) AND t.date>u.checked
-					GROUP BY t.user_account_id_remittee',
+					GROUP BY t.user_accounts_id_remittee',
 			($_SESSION['user_id'])
 	);
-	$result = mysql_query($sql, $link);
+	$result = mysql_query($sql, $link) or die(mysql_error());
 	while ($row = mysql_fetch_assoc($result)) {
 		$transfer_remittee[] = $row;
 	}
