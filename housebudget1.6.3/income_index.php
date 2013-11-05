@@ -66,7 +66,7 @@ require 'function/login_check.php';
  				ORDER BY DATE DESC',
     				$_SESSION['user_id']
 	);
-	$result = mysql_query($sql, $link);
+	$result = mysql_query($sql, $link) or die(mysql_error());
 	while ($row = mysql_fetch_assoc($result)) {
 		$income[] = $row;
 	}

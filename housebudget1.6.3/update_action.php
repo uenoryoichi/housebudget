@@ -28,7 +28,7 @@ if ($key == 'income') {
 			mysql_real_escape_string(htmlspecialchars($_POST['amount'], ENT_QUOTES)),
 			mysql_real_escape_string(htmlspecialchars($_POST['content'], ENT_QUOTES)),
 			mysql_real_escape_string(htmlspecialchars($_POST['date'], ENT_QUOTES)),
-			mysql_real_escape_string(htmlspecialchars($_POST['account'], ENT_QUOTES)),
+			mysql_real_escape_string(htmlspecialchars($_POST['user_accounts_id'], ENT_QUOTES)),
 			mysql_real_escape_string(htmlspecialchars($_POST['income_id'], ENT_QUOTES))
 	);
 	mysql_query($sql) or die(mysql_error());
@@ -64,33 +64,20 @@ if ($key == 'account_balance' and count($_POST['user_accounts_id']==count($_POST
 
 ?>
 
-<!DOCTYPE html PUBLIC>
-<html>
+<!DOCTYPE html>
+<html lang=ja>
+	<!-- ヘッダーここから -->
+    <?php include 'include/head.html';?>
 
-<!-- ヘッダーここから -->
-<head>
-	<meta http-equiv="Content-Type" content="text/thml: charset=UTF-8"/>
-	<meta name="description" content="my家計簿">
-	<meta name="keywords" content="変更操作">
-	<link rel="stylesheet" type="text/css" href="css/style.css" />
-    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="./css/common.css" />
-	<title>my家計簿</title>
-</head>
-<!-- ヘッダーここまで -->
-
-<!-- 本文ここから -->
+	<!-- 本文　ここから -->	
 <body>
-
-<div id="wrap">
-	<!-- タイトル -->
-	<div id="head">
-		<h1>変更操作</h1>
-	</div>
-	<!-- タイトルここまで -->
+<!-- タイトル -->
+<div id="head">
+	<h1>変更操作</h1>
+</div>
 	
-	<!-- 完了表示 -->
-	<div id="content">
+<!-- 完了表示 -->
+<div id="content">
 	<div class = "center">
 		<br>
 		<br>
@@ -114,21 +101,15 @@ if ($key == 'account_balance' and count($_POST['user_accounts_id']==count($_POST
 		>一覧に戻る</a>
 		</h2>
 	</div>	
-	</div>
-	<!-- 完了表示　ここまで -->
-
-	
-	<!-- トップに戻る -->
-	<div class = "center">
-		<h2><a href="index.php">Back To TOP</a></h2>
-	</div>
-	<!-- トップに戻る　ここまで -->
-
-	<div id="foot">
-	<p></p>
-	</div>
-
 </div>
+	
+<!-- トップに戻る -->
+<div class = "center">
+	<h2><a href="index.php">Back To TOP</a></h2>
+</div>
+
+<!-- フッター -->
+<?php include 'include/footer.html';?>
 
 </body>
 

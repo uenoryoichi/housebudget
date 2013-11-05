@@ -1,4 +1,10 @@
 <?php
+
+/*
+ * バージョン管理
+ * 1.6.3
+ * 
+ */
 session_start();
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';

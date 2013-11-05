@@ -99,30 +99,6 @@ require 'function/calculate_this_month.php';
 		</div>
 	</div>
 					
-　<div class="container">	
-		<div class="row">
-			<div class="col-md-offset-3 col-xs-6 well">
-				<div class="center">
-					<br>
-					<h2>更新履歴</h2>
-					<?php include 'include/change_log.html';?>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<div class="container">	
-		<div class="row">
-			<div class="col-md-offset-3 col-xs-6 well">
-				<div class="center">
-					<br>
-					<h2>coming_soon</h2>
-					<?php include 'include/coming_soon.html';?>
-				</div>
-			</div>
-		</div>
-	</div>
-	
 	<!-- フッター -->
 	<?php include 'include/footer.html';?>
 	
