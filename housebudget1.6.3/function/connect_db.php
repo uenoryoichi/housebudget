@@ -10,6 +10,4 @@ $db = mysql_select_db($dbname, $link) or die(mysql_error()); // データベー�
 
 $sql = 'SET NAMES utf8'; // 文字コード設定のクエリ定義
 mysql_query($sql, $link); // クエリの発行
-
 ?>
-

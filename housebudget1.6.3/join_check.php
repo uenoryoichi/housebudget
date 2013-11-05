@@ -23,7 +23,7 @@ if (!empty($_POST)) {
 	$sql = sprintf('INSERT INTO users SET name="%s", email="%s", password="%s",created="%s"',
 		mysql_real_escape_string($_SESSION['join']['name']),
 		mysql_real_escape_string($_SESSION['join']['email']),
-		mysql_real_escape_string(sha1($_SESSION['join']['password'])),
+		mysql_real_escape_string(sha1($_SESSION['join']['user_password'])),
 		date('Y-m-d H:i:s')
 	);
 	mysql_query($sql) or die(mysql_error());
