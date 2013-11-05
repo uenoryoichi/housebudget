@@ -24,10 +24,10 @@ if (!empty($_POST)){
 	if ($_POST['email'] == '') {
 		$error['email']='blank';
 	}
-	if (strlen($_POST['password']) < 4) {
+	if (strlen($_POST['user_password']) < 4) {
 		$error['password']='length';
 	}
-	if ($_POST['password'] == '') {
+	if ($_POST['user_password'] == '') {
 		$error['password']='blank';
 	}
 	//重複アカウントチェック
@@ -86,12 +86,12 @@ if ($_REQUEST['action']== 'rewrite') {
                     <div class="control-group">
                         <form method = "POST" action = "join_index.php" enctype="multipart/form-date" class="well">
                             <label>ニックネーム<span class="required">必須</span></label>
-                            <input type = "text" name = "name" size="35" maxlength="48" class="span3" value="<?php echo htmlspecialchars($_POST['name'], ENT_QUOTES,'UTF');?>"/>
+                            <input type = "text" name = "name" size="35" maxlength="48" class="span3" value="<?php echo htmlspecialchars($_POST['name'], ENT_QUOTES);?>"/>
                             <?php if ($error['user_name']=='blank'):?>
 							<p class="error">* ニックネームを入力してください</p>
                             <?php endif; ?>
                             <label>メールアドレス<span class="required">必須</span></label>
-                            <input type = "text" name = "email" size="35" maxlength= "255" class="span3" value="<?php echo htmlspecialchars($_POST['email'], ENT_QUOTES,'UTF');?>"/>
+                            <input type = "text" name = "email" size="35" maxlength= "255" class="span3" value="<?php echo htmlspecialchars($_POST['email'], ENT_QUOTES);?>"/>
                             <?php if ($error['email']=='blank'):?>
 							<p class="error">* メールアドレスを入力してください</p>
                             <?php endif; ?>
@@ -99,7 +99,7 @@ if ($_REQUEST['action']== 'rewrite') {
                             <p class="error">* 指定したメールアドレスはすでに登録されています。</p>
                             <?php endif;?>
 							<label>パスワード<span class="required">必須</span></label>
-                            <input type = "password" name = "user_password" size="10" maxlength="20" class="span3" value="<?php echo htmlspecialchars($_POST['password'], ENT_QUOTES,'UTF');?>"/>
+                            <input type = "password" name = "user_password" size="10" maxlength="20" class="span3" value="<?php echo htmlspecialchars($_POST['password'], ENT_QUOTES);?>"/>
                             <?php if ($error['password']=='blank'):?>
 							<p class="error">* パスワードを入力してください</p>
                             <?php endif; ?>
