@@ -30,8 +30,8 @@ require 'function/calculate_account_balance.php';
 			<div class="col-md-offset-3 col-md-6">
 				<div class = "center">
 					<br>
-					<h2>最終更新日時：</h2>
-           			<form method="POST" action="update_action" class="form-horizontal"></form>
+					<h2>口座残高情報更新</h2>
+           			<form method="POST" action="update_action" class="form-horizontal well">
 	           			<table class="table table-hover table-bordered">
 							<thead>
 								<tr>

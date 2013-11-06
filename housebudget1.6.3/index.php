@@ -57,7 +57,7 @@ require 'function/calculate_this_month.php';
 	<!-- 情報一覧 -->
 	<div class="container">	
 		<div class="row">
-			<div class="col-md-offset-3 col-xs-6 well" >
+			<div class="col-md-offset-3 col-xs-6 well well-lg" >
 				<div class="text-center">
 					<h2>今月の収支</h2>
 					<p><?php echo $this_month;?> 出費：<?php echo $sum_pay;?>円  収入：<?php echo $sum_income;?>円</p>

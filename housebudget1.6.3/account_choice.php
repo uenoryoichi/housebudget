@@ -22,8 +22,6 @@ if (isset($_POST['accounts_name'])&&isset($_POST["accounts_kana"])) {
 	mysql_query($sql, $link) or die(mysql_error());
 }
 
-
-
 //使用中の口座情報
 $sql = sprintf('SELECT a.name,a.account_classification_id, u.*  FROM user_accounts u 
 		JOIN accounts a ON u.account_id=a.id 
@@ -149,7 +147,7 @@ while ($row = mysql_fetch_assoc($result)) {
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-xs-6">
 				<div class = "center">
-					<br><h2>登録されている口座から選択</h2>
+					<br><br><h2>登録されている口座から選択</h2>
            			<form method= "post" action= "insert_action.php" name ="user" class = "form-horizontal well">
              			<?php for ($i = 0, $count_a_c=count($account_classifications);$i< $count_a_c; $i++):?>
              			<br><h2><?php echo $account_classifications[$i]['name']?></h2>
@@ -206,7 +204,7 @@ while ($row = mysql_fetch_assoc($result)) {
 						<label>かな(全角ひらがな)</label>
 						<input type="text" name="accounts_kana" class="form-control"/>
 						
-						<input type="submit" value="追加" class="btn btn-primary"/>
+						<input type="submit" value="追加" class="btn btn-success"/>
 					</form>
 				</div>
 			</div>
