@@ -44,48 +44,48 @@ require 'function/login_check.php';
 	<div class="container">
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-xs-6">
-           		<h2>支出情報入力フォーム</h2>
-          			<form method = "POST" action = "insert_action.php" class = "form-horizontal well">
+           		<br><h2>支出情報入力フォーム</h2>
+          		<form method = "POST" action = "insert_action.php" class = "form-horizontal well">
                      		
-                     		<label>金額</label>
-                        	<input type = "text" name = "how_much" class="form-control" >
+                 	<label>金額</label>
+                    	<input type = "text" name = "how_much" class="form-control" >
                         	
-                        	<label>内容</label>
-                        	<input type = "text" name = "what" class="form-control" >
+                     	<label>内容</label>
+                     	<input type = "text" name = "what" class="form-control" >
 						
-						<label>日付</label>
-						<?php $today = date("Y-m-d");?>
-                      	<input type = "text" name = "date" class="form-control"  value=<?php echo $today?>>
+					<label>日付</label>
+					<?php $today = date("Y-m-d");?>
+                     	<input type = "text" name = "date" class="form-control"  value=<?php echo $today?>>
                          
-                         <label>支払い</label>
-                       	<select  name="user_accounts_id" id="user_accounts_id" class="form-control"  >
-							<?php //選択肢にユーザーの口座情報を入れる?>
-                           	<?php require 'function/input_user_account_name.php'; ?>
-						</select>
+                    	<label>支払い</label>
+                    	<select  name="user_accounts_id" id="user_accounts_id" class="form-control"  >
+						<?php //選択肢にユーザーの口座情報を入れる?>
+                         	<?php require 'function/input_user_account_name.php'; ?>
+					</select>
                          	
-                         	<label>分類</label>
-                         	<select  name="type" id="type" class="form-control" >
+                     	<label>分類</label>
+                     	<select  name="type" id="type" class="form-control" >
 						<?php 
 							$bunrui_array = array("交通費","食費","消耗品","交際費","HUCC","研究室","その他");
 							for ($i=0; $i<count($bunrui_array); $i++){
 								print('<option value="'.$bunrui_array[$i].'">'.$bunrui_array[$i].'</option>');
 							}
 						?>
-						</select>
+					</select>
                          	
-                         	<?php  //支出情報キー ?>
-						<input type = "hidden" name = "key" value="pay" >
+                     	<?php  //支出情報キー ?>
+					<input type = "hidden" name = "key" value="pay" >
 						
-						<div class="form-group">	
-							<div class="center">
-								<input type = "submit" value = "送信" class="btn btn-primary">
-                        		</div>
-                        	</div>
-                 	</form>
-             	</div>
-        		</div>
-     	</div>
-  	</div>
+					<div class="form-group">	
+						<div class="center">
+							<input type = "submit" value = "送信" class="btn btn-primary">
+                     		</div>
+                     	</div>
+                	</form>
+            	</div>
+        	</div>
+     </div>
+  	
 
      <!-- insert部ここまで -->
      
@@ -134,12 +134,13 @@ require 'function/login_check.php';
 										<input type = "hidden" name = "key" value="pay" >
 										<input type = "hidden" name = "id" value=<?php print(htmlspecialchars($pay[$i]['id'], ENT_QUOTES));?> >
 										<input type = "submit" value = "削除" class="btn btn-primary" onclick="return confirm('削除してよろしいですか');">
-                					</form>
-							</td>
-						</tr>
-					</tbody>
-					<?php endfor;?>
-				</table>
+                						</form>
+								</td>
+							</tr>
+						</tbody>
+						<?php endfor;?>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>

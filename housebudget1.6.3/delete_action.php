@@ -1,11 +1,4 @@
 <?php
-
-/*
- * バージョン管理
- * 1.6.3
- * 
- */
-
 session_start();
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
@@ -56,8 +49,7 @@ if ($key =="user_accounts") {
 <html lang=ja>
 	<!-- ヘッダーここから -->
     <?php include 'include/head.html';?>
-
-	<!-- 本文　ここから -->	
+	
 <body>
 
 <!-- 見出し -->
@@ -65,6 +57,9 @@ if ($key =="user_accounts") {
 	<h1>削除処理</h1>
 </div>
 
+<!-- メニューバー -->
+<?php include 'include/menu.html';?>
+	
 <!-- 実行内容表示 -->
 <div id="content">
 	<div class = "center">
@@ -101,7 +96,6 @@ if ($key =="user_accounts") {
 
 <!-- フッター -->
 <?php include 'include/footer.html';?>
-
 
 </body>
 </html>

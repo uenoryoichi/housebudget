@@ -43,20 +43,12 @@ if (!empty($_POST)) {
 
 ?>
 
-
-
 <!DOCTYPE html>
-<html>
-	<head>
-        <meta http-equiv = "Content-Type" content = "text/html; charset=UTF-8" />
-        <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="./css/common.css" />
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-        <title>my家計簿</title>
-	</head>
-	
-	
-	<!-- 本文　ここから -->
+<html lang=ja>
+	<!-- ヘッダーここから -->
+    <?php include 'include/head.html';?>
+
+<body>
 	
 	<!-- 見出し ここから　-->
 	<div id="head">
@@ -64,45 +56,59 @@ if (!empty($_POST)) {
 	</div>
 	<!-- 見出し　ここまで　-->
 
-	<body>
 <!-- ログイン画面ここから -->	
 	<div class="container">
-		<div class="row">
-			<div class="span6 offset3">
-				<h2>メールアドレスとパスワードを記入してログインしてください<h2p>
-				<p>登録されていない方はこちらから</p>
-				<p>&raquo;<a href="join_index.php">入会手続きをする</a></p>
-				<div class="control-group">
-					<form method = "POST" action = "" class="well">
-						<dl>
-							<dt>メールアドレス</dt>
+		<div class="row"> 		
+			<div class="col-md-offset-3 col-md-6">
+           		<h2>メールアドレスとパスワードを記入してログインしてください</h2>
+					<form method = "POST" action = "" class="form-horizontal well">
+					<dl>
+						<dt>メールアドレス</dt>
 							<dd>
-								<input type = "text" name = "email" size="35" maxlength="255" class="span3" value="<?php echo htmlspecialchars($_POST['email']);?>"/>
-                    			<?php if ($error['login']=='blank'):?>
-								<p class="error">* メールアドレスとパスワードを入力してください</p>
-                    			<?php endif; ?>
-                    			<?php if ($error['login']=='failed'): ?>
-                    			<p class="error">* ログインに失敗しました。正しく入力してください</p>
-                    			<?php endif;?>
-                    		</dd>
-							<dt>パスワード</dt>
+								<input type = "text" name = "email" maxlength="255" class="form-control"" value="<?php echo htmlspecialchars($_POST['email']);?>"/>
+                    				<?php if ($error['login']=='blank'):?>
+									<p class="error">* メールアドレスとパスワードを入力してください</p>
+                    				<?php endif; ?>
+                    				<?php if ($error['login']=='failed'): ?>
+                    					<p class="error">* ログインに失敗しました。正しく入力してください</p>
+                    				<?php endif;?>
+                    			</dd>
+						<dt>パスワード</dt>
 							<dd>
-                    			<input type = "password" name = "password" size="10" maxlength="20" class="span3" value="<?php echo htmlspecialchars($_POST['password']);?>"/>
+                    				<input type = "password" name = "password" maxlength="20" class="form-control" value="<?php echo htmlspecialchars($_POST['password']);?>"/>
 							</dd>
 							<?php //ログイン情報の記録?>
 							<dd>
 								<input id ="save" type="checkbox" name="save" value="on">次回からは自動的にログインする
 							</dd>
-						</dl>
-						<div>
-							<input type="submit" value="ログイン" class="btn-primary"/>
-						</div>
-					</form>
-	            </div>
-	  		</div>
+					</dl>
+					<div class="center">
+						<input type="submit" value="ログイン" class="btn btn-primary"/>
+					</div>
+				</form>
+	       	</div>
+	 	</div>
     	</div>
-    </div>
-<!-- ログイン画面ここまで -->		
+    	
+    	
+    	
+    	<div class="container">
+		<div class="row"> 		
+			<div class="col-md-offset-3 col-md-6">
+				<div class="well">
+					<dl>
+						<dt>登録されていない方はこちらから</dt>
+							<dd class="center">
+								<a href="join_index.php"  class="btn btn-success">ユーザー登録</a>
+							</dd>
+					</dl>
+				</div>
+	       	</div>
+	 	</div>
+    	</div>
+<!-- ログイン画面ここまで -->	
+	<?php include 'include/footer.html';?>
+    		
 	</body>
 	
 	

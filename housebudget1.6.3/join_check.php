@@ -1,14 +1,4 @@
 <?php
-
-/*
- * バージョン管理
- * 1.6.3
- * 
- * メモ
- * マスタ利用時修正必要
- * 
- * 
- */
 session_start();
 //データベースへの接続 housebudget
 require('function/connect_housebudget.php');
@@ -38,17 +28,11 @@ if (!empty($_POST)) {
 ?>
 
 <!DOCTYPE html>
-<html>
-	<head>
-        <meta http-equiv = "Content-Type" content = "text/html; charset=UTF-8" />
-        <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="./css/common.css" />
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-        <title>my家計簿</title>
-	</head>
-
-	<!-- 本文　ここから -->
+<html lang=ja>
+<!-- ヘッダーここから -->
+<?php include 'include/head.html';?>
 	
+<body>
 	<!-- 見出し ここから　-->
 	<div id="head">
 		<h1>登録</h1>
@@ -56,29 +40,28 @@ if (!empty($_POST)) {
 	<!-- 見出し　ここまで　-->
 	
 	<!-- insert部ここから -->
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="span6 offset3">
-                    <h2>次の内容を確認して登録するボタンをクリックしてください</h2>
-                    <div class="control-group">
-                    	<form action="" method="POST" class="well">
-                    	    <input type="hidden" name="action" value="submit" />
-                    	    <dl>
-                   	 	    	<dt>ニックネーム</dt>
-                    	        <dd><?php echo htmlspecialchars($_SESSION['join']['name'], ENT_QUOTES, 'UTF-8'); ?></dd>
-                        	    <dt>メールアドレス</dt>
+	<div class="container">
+		<div class="row"> 		
+			<div class="col-md-offset-3 col-md-6">
+           		<br><h2>次の内容を確認して登録するボタンをクリックしてください</h2>
+                 <form action="" method="POST" class="form-horizontal well">
+                  	<dl>
+                  		<dt>ニックネーム</dt>
+                    			<dd><?php echo htmlspecialchars($_SESSION['join']['name'], ENT_QUOTES, 'UTF-8'); ?></dd>
+                     		<dt>メールアドレス</dt>
                             	<dd><?php echo htmlspecialchars($_SESSION['join']['email'], ENT_QUOTES, 'UTF-8');?></dd>
-		              			<dt>パスワード</dt>
-             	               	<dd>【表示されません】</dd>
-                	        </dl>   
-                            <div><a href="join_index.php?action=rewrite">&laquo;&nbsp;修正する</a>｜		<!-- 意味チェックする -->
-                            <input type= "submit" value="登録する" class="btn-primary"/></div>
-                    	</form>
-                    </div>
-                </div>
-            </div>
-        </div>
+		              	<dt>パスワード</dt>
+             	           	<dd>【表示されません】</dd>
+                	 	</dl>   
+          			<div class="center">
+          				<a href="join_index.php?action=rewrite" class="btn btn-default">&laquo;&nbsp;修正する</a>｜		<!-- 意味チェックする -->
+                        	<input type="hidden" name="action" value="submit" />
+                       	<input type= "submit" value="登録する" class="btn btn-success"/>
+                  	</div>
+               	</form>
+            	</div>
+        	</div>
+  	</div>
 	<!-- insert部ここまで -->
         
     </body>

@@ -81,13 +81,14 @@ if ($key == 'account_balance' and count($_POST['user_accounts_id']==count($_POST
 	<div class = "center">
 		<br>
 		<br>
-		<h3><?php 
-			if ($key =='pay') {echo '支払い';}
-			elseif ($key =='income'){echo '収入';}
-			elseif ($key == 'transfer'){echo '口座移動';}
-			elseif ($key == 'account_balance'){echo  '残高';}
-		?>
-		情報を変更しました
+		<h3>
+			<?php 
+			if ($key =='pay') {echo '支払い情報を変更しました';}
+			elseif ($key =='income'){echo '収入情報を変更しました';}
+			elseif ($key == 'transfer'){echo '口座移動情報を変更しました';}
+			elseif ($key == 'account_balance'){echo  '残高情報を変更しました';}
+			elseif ($key==NULL){echo 'エラー キーがありません';}
+			?>
 		</h3>
 		<br>
 		<br>

@@ -25,14 +25,7 @@
  * housebudget1.2　	不要ファイル整理
  * housebudget1.1　	編集機能実装
  * 
- * 
- * test
- * test
- * 
- * aaaa
- * 
  */
-
 
 session_start();
 

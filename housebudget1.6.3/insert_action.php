@@ -16,18 +16,6 @@ function array_htmlspecialchars($string) {
 }
 ?>
 
-
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv = "Content-Type" content = "text/html; charset=UTF-8" />
-        <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="./css/common.css" />
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
-        <title>my家計簿</title>
-    </head>
-    <body>
-
 <?php
 //支払い情報入力
 	if ($key == "pay") {
@@ -98,15 +86,22 @@ function array_htmlspecialchars($string) {
 	}
 ?>	
 
+<!DOCTYPE html>
+<html lang=ja>
+	<!-- ヘッダーここから -->
+    <?php include 'include/head.html';?>
 
+<body>
 <!-- 見出し -->
-	<div id="head">
-		<h1>入力完了</h1>
-	</div>
+<div id="head">
+	<h1>入力完了</h1>
+</div>
 
+<!-- メニューバー -->
+<?php include 'include/menu.html';?>
+	
 <!-- 実行内容表示 -->
-
-	<div id="content">
+<div id="content">
 	<div class = "center">
 		<br>
 		<br>
@@ -116,6 +111,7 @@ function array_htmlspecialchars($string) {
 			elseif ($key=='income'){echo '収入情報を入力しました';}
 			elseif ($key == 'transfer'){echo '口座移動情報を入力しました';}
 			elseif ($key== 'user_accounts_add'){echo '新規口座を登録しました';}
+			elseif ($key==NULL){echo 'エラー キーがありません';}
 			?>
 		</h3>
 		<br>
@@ -139,6 +135,9 @@ function array_htmlspecialchars($string) {
 		<h2><a href="index.php">Back To TOP</a></h2>
 	</div>
 	<!-- トップに戻る　ここまで -->		
+	
+	<!-- フッター -->
+<?php include 'include/footer.html';?>
 	
 
 </body>

@@ -17,37 +17,45 @@ require 'function/connect_housebudget.php';
 ?>
 
 <!DOCTYPE html>
-<html>
-	<head>
-        <meta http-equiv = "Content-Type" content = "text/html; charset=UTF-8" />
-        <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="./css/common.css" />
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-        <title>my家計簿</title>
-	</head>
+<html lang=ja>
+	<!-- ヘッダーここから -->
+    <?php include 'include/head.html';?>
 
-	<!-- 本文　ここから -->
-	
+<body>
+
 	<!-- 見出し ここから　-->
 	<div id="head">
-		<h1>登録</h1>
+		<h1>登録完了</h1>
 	</div>
 	<!-- 見出し　ここまで　-->
 	
 	<!-- insert部ここから -->
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="span6 offset3">
-                    <h2>ユーザー登録が完了しました</h2>
-                    <div class="control-group">
-                    	<div><a href="index.php">ログインする</a></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+	<div class="col-md-offset-3 col-md-6">
+		<div class="jumbotron" >
+  			<h1>ようこそ！</h1>
+  			<br>
+  			<p>my家計簿はデバイスにかかわらず使える家計簿として、幅広い使い方ができるように開発を行っています。</p>
+  			<p><a href="index.php" class="btn btn-primary btn-lg">ログインする</a></p>
+		</div>
+	</div>
+	
+<!--  <div id="content">
+	<div class = "center">
+		<br>
+		<br>
+		<h3>ユーザー登録が完了しました</h3>
+		<br>
+		<br>
+		 <h2>
+		 	<a href="index.php" class="btn btn-primary">ログインする</a>
+		 </h2>
+  	</div>
+</div>
+-->
 	<!-- insert部ここまで -->
+	
+	
         
-    </body>
+</body>
 </html>
 
