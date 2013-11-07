@@ -31,7 +31,7 @@ require 'function/calculate_account_balance.php';
 				<div class = "center">
 					<br>
 					<h2>口座残高情報更新</h2>
-           			<form method="POST" action="update_action" class="form-horizontal well">
+           			<form method="POST" action="update_action.php" class="form-horizontal well">
 	           			<table class="table table-hover table-bordered">
 							<thead>
 								<tr>
