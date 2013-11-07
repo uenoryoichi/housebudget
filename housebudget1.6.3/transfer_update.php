@@ -47,32 +47,40 @@ $date=mysql_fetch_assoc($recordSet);
 			<div class="col-md-offset-3 col-md-6">
 				<br><h2>修正フォーム   ID：<?php print (htmlspecialchars($date['id'],ENT_QUOTES));?></h2>
               	<form method = "POST" action = "update_action.php" class = "form-horizontal well">
-                    	<!-- 修正記入 -->
-                    	<label>金額</label>
-                   	<input type = "text" name = "amount" class="form-control" value="<?php print (htmlspecialchars($date['amount'],ENT_QUOTES));?>"/>
-                     
-                    	<label>送り手</label>
-                   	<select  name="user_accounts_id_remitter" class="form-control" >
-                     		<?php //選択肢にユーザーの口座情報を入れる?>
-                     		<?php $selected=$date['user_accounts_id_remitter']?>
-                    		<?php require 'function/input_user_account_name.php'; ?>
-					</select>
-		
-					<label>受け手</label>
-                     	<select  name="user_accounts_id_remittee" class="form-control" >
-                     		<?php //選択肢にユーザーの口座情報を入れる?>
-                     		<?php $selected=$date['user_accounts_id_remittee']?>
-                     		<?php require 'function/input_user_account_name.php'; ?>
-					</select>
-	
-					<label>移動日</label>
-					<input type = "text" name = "date" class="form-control" value="<?php print (htmlspecialchars($date['date'],ENT_QUOTES));?>"/>
-		
-					<label>メモ</label>
-					<input type = "text" name = "memo" class="form-control" value="<?php print (htmlspecialchars($date['memo'],ENT_QUOTES));?>"/>
-	
+					<dl>
+              		<dt>金額</dt>
+                   		<dd>
+                   			<input type = "text" name = "amount" class="form-control" value="<?php print (htmlspecialchars($date['amount'],ENT_QUOTES));?>"/>
+                     		</dd>
+                    	<dt>送り手</dt>
+                   		<dd>
+                   			<select  name="user_accounts_id_remitter" class="form-control" >
+        	             		<?php //選択肢にユーザーの口座情報を入れる?>
+        	             		<?php $selected=$date['user_accounts_id_remitter']?>
+        		            		<?php require 'function/input_user_account_name.php'; ?>
+							</select>
+						</dd>
+						
+					<dt>受け手</dt>
+                     		<dd>
+                     			<select  name="user_accounts_id_remittee" class="form-control" >
+                     			<?php //選択肢にユーザーの口座情報を入れる?>
+                     			<?php $selected=$date['user_accounts_id_remittee']?>
+                     			<?php require 'function/input_user_account_name.php'; ?>
+							</select>
+						</dd>
+						
+					<dt>移動日</dt>
+						<dd>
+							<input type = "text" name = "date" class="form-control" value="<?php print (htmlspecialchars($date['date'],ENT_QUOTES));?>"/>
+						</dd>
+						
+					<dt>メモ</dt>
+						<dd>
+							<input type = "text" name = "memo" class="form-control" value="<?php print (htmlspecialchars($date['memo'],ENT_QUOTES));?>"/>
+						</dd>
+					</dl>
 					<div class="center">	
-						<!-- 送信ボタン -->
 						<?php // ID ?>
         	             	<input type = "hidden" name="transfer_id" value="<?php print(htmlspecialchars($id));?>"> 
 						<?php //口座移動情報キー?>

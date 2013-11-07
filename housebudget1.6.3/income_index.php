@@ -43,22 +43,30 @@ require 'function/login_check.php';
 			<div class="col-md-offset-3 col-md-6">
            		<br><h2>収入情報入力フォーム</h2>
           		<form method = "POST" action = "insert_action.php" class = "form-horizontal well">
-	                 
-	                 <label>金額</label>
-                     	<input type = "text" name = "amount" class="form-control" >
+	             	<dl>
+	             	<dt>金額</dt>
+	             		<dd>
+	             			<input type = "text" name = "amount" class="form-control" >
+	             		</dd>
+		      	
+                   	<dt>内容</dt>
+                   		<dd>
+                   			<input type = "text" name = "content" class="form-control" >
+                   		</dd>
+                   			
+					<dt>日付</dt>
+                   		<dd>
+                   			<input type = "text" name = "date" class="form-control" value=<?php echo date("Y-m-d H:i:s");?>>
+                   		</dd>
                    	
-                   	<label>内容</label>
-             		<input type = "text" name = "content" class="form-control" placeholder= "">
-							
-					<label>日付</label>
-                   	<input type = "text" name = "date" class="form-control" value=<?php echo date("Y-m-d H:i:s");?>>
-                   	
-                   	<label>口座名</label>
-                    	<select  name="user_accounts_id" id="user_accounts_id" class="form-control" >
-                   		<?php //選択肢にユーザーの口座情報を入れる?>
-                    		<?php require 'function/input_user_account_name.php'; ?>
-					</select>
-                    	
+                   	<dt>口座名</dt>
+                    		<dd>
+                    			<select  name="user_accounts_id" id="user_accounts_id" class="form-control" >
+                   				<?php //選択肢にユーザーの口座情報を入れる?>
+                    				<?php require 'function/input_user_account_name.php'; ?>
+							</select>
+                    		</dd>
+             		</dl>
                     	<?php  //収入情報キー ?>
                     	<div class="center">
 						<input type = "hidden" name = "key" value="income" >
@@ -68,12 +76,7 @@ require 'function/login_check.php';
            	</div>
       	</div>
    	</div>
-    <!-- insert部ここまで -->
-       	
-	<div class = "center">
-		<a href="index.php">Back To TOP </a>
-	</div>
-     
+    
 	<!-- 一覧部ここから -->   
 	<div class="container">
 		<div class="row"> 		
@@ -87,8 +90,8 @@ require 'function/login_check.php';
 								<th scope="col">内容</th>
 								<th scope="col">日付</th>
 								<th scope="col">口座名</th>
-								<th scope="col">編集</th>
-								<th scope="col">削除</th>
+								<th scope="col"></th>
+								<th scope="col"></th>
 							</tr>
 						</thead>
 						<?php for ($i = 0, $count_income=count($income); $i < $count_income; $i++): ?>
@@ -98,19 +101,19 @@ require 'function/login_check.php';
 								<td><?php print(htmlspecialchars($income[$i]['content'], ENT_QUOTES));?></td>
 								<td><?php print(htmlspecialchars($income[$i]['date'], ENT_QUOTES));?></td>
 								<td><?php print(htmlspecialchars($income[$i]['name'], ENT_QUOTES));?></td>
-								<td>
+								<td class="center">
 									<form method = "POST" action = "income_update.php" >
                  						<?php  //編集　id送信 ?>
 										<input type = "hidden" name = "id" value=<?php print(htmlspecialchars($income[$i]['id'], ENT_QUOTES));?> >
-										<input type = "submit" value = "編集" class="btn btn-primary" >
+										<input type = "submit" value = "編集" class="btn btn-success btn-xs" >
                 						</form>
             						</td>
-            						<td>   
+            						<td class="center">   
                 						<form method = "POST" action = "delete_action.php" >
                  						<?php  //削除　収入キー送信　id送信 ?>
 										<input type = "hidden" name = "key" value="income" >
 										<input type = "hidden" name = "id" value=<?php print(htmlspecialchars($income[$i]['id'], ENT_QUOTES));?> >
-										<input type = "submit" value = "削除" class="btn btn-primary" onclick="return confirm('削除してよろしいですか');">
+										<input type = "submit" value = "削除" class="btn btn-danger btn-xs" onclick="return confirm('削除してよろしいですか');">
                 						</form>
 								</td>
 							</tr>

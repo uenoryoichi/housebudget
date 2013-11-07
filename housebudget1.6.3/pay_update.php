@@ -48,26 +48,36 @@ $date=mysql_fetch_assoc($result);
         		<div class="col-md-offset-3 col-xs-6">
              	<br><h2>修正フォーム   ID：<?php print (htmlspecialchars($date['id'],ENT_QUOTES));?></h2>
                 	<form method = "POST" action = "update_action.php" class = "form-horizontal well">
-                		<!-- 修正記入 -->
-                    	<label>金額</label>
-                    	<input type = "text" name = "how_much" class="form-control" value="<?php print (htmlspecialchars($date['how_much'],ENT_QUOTES));?>"/>
+					<dl>
+                		<dt>金額</dt>
+                    		<dd>
+                    			<input type = "text" name = "how_much" class="form-control" value="<?php print (htmlspecialchars($date['how_much'],ENT_QUOTES));?>"/>
+                        	</dd>
                         	
-                     	<label>内容</label>
-                    	<input type = "text" name = "what" class="form-control" value="<?php print (htmlspecialchars($date['what'],ENT_QUOTES));?>"/>
+                     	<dt>内容</dt>
+                    		<dd>
+                    			<input type = "text" name = "what" class="form-control" value="<?php print (htmlspecialchars($date['what'],ENT_QUOTES));?>"/>
+						</dd>
 						
-					<label>日付</label>
-                     	<input type = "text" name = "date" class="form-control" value="<?php print (htmlspecialchars($date['date'],ENT_QUOTES));?>"/>
+					<dt>日付</dt>
+                     		<dd>
+                     			<input type = "text" name = "date" class="form-control" value="<?php print (htmlspecialchars($date['date'],ENT_QUOTES));?>"/>
+						</dd>
 						
-					<label>支払い</label>
-					<select  name="user_accounts_id" id="user_accounts_id" class="form-control">
-						<?php //選択肢にユーザーの口座情報を入れる?>
-						<?php $selected=$date['user_accounts_id']?>
-                         	<?php require 'function/input_user_account_name.php'; ?>
- 					</select>
+					<dt>支払い</dt>
+						<dd>
+							<select  name="user_accounts_id" class="form-control">
+							<?php //選択肢にユーザーの口座情報を入れる?>
+							<?php $selected=$date['user_accounts_id']?>
+                 	        	<?php require 'function/input_user_account_name.php'; ?>
+ 							</select>
+						</dd>
 						
-					<label>分類</label>
-                     	<input type = "text" name = "type" class="form-control" value="<?php print (htmlspecialchars($date['type'],ENT_QUOTES));?>"/>
-                       	
+					<dt>分類</dt>
+                     		<dd>
+                     			<input type = "text" name = "type" class="form-control" value="<?php print (htmlspecialchars($date['type'],ENT_QUOTES));?>"/>
+                       	</dd>
+                    	</dl>
                      	<div class="center">
                     		<!-- 送信ボタン -->
            				<input type = "hidden" name="pay_id" value="<?php print(htmlspecialchars($id, ENT_QUOTES));?>"> 
@@ -79,7 +89,7 @@ $date=mysql_fetch_assoc($result);
         	</div>
     	</div>
       	
-                	<!-- 削除ボタン -->
+    <!-- 削除ボタン -->
       <div class="container">
    		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
