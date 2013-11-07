@@ -129,7 +129,7 @@ require 'function/calculate_this_month.php';
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-45505701-1', 'lost-waldo.jp');
+  ga('create', 'UA-45505701-2', 'lost-waldo.jp');
   ga('send', 'pageview');
 
 </script>
