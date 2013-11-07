@@ -82,7 +82,7 @@ while ($row = mysql_fetch_assoc($result)) {
 	<?php //使用中の口座一覧?>
 	<div class="container">
 		<div class="row"> 		
-			<div class="col-md-offset-4 col-xs-4">
+			<div class="col-md-offset-4 col-md-4">
 				<div class = "center">
 					<br><h2>使用中の口座</h2>
            			<?php if ($_POST['can_delete']=="true"):	?>										<?php //削除アクション有効?>
@@ -97,7 +97,7 @@ while ($row = mysql_fetch_assoc($result)) {
              		
              		<?php for ($i = 0, $count_a_c=count($account_classifications);$i< $count_a_c; $i++):?>
              			<h3><?php echo $account_classifications[$i]['name']?></h3>
-             			<table class="table table-hover table-bordered">
+             			<table class="table table-hover table-bordered table-condensed">
 							<thead>
 								<tr>
 								<?php if ($_POST['can_delete']=="true"):?>
@@ -145,7 +145,7 @@ while ($row = mysql_fetch_assoc($result)) {
 	<?php //使用してない口座一覧?>
 	<div class="container">
 		<div class="row"> 		
-			<div class="col-md-offset-3 col-xs-6">
+			<div class="col-md-offset-4 col-md-4">
 				<div class = "center">
 					<br><br><h2>登録されている口座から選択</h2>
            			<form method= "post" action= "insert_action.php" name ="user" class = "form-horizontal well">
@@ -163,7 +163,7 @@ while ($row = mysql_fetch_assoc($result)) {
 							<?php if ($not_using_accounts[$j]['account_classification_id']==$account_classifications[$i]['id']):?>
 							<tbody>
 								<tr>
-									<td><input type="checkbox" name="account_id[]" class="checkbox-center" value="<?php echo $not_using_accounts[$j]['id']?>" /></td>
+									<td class="center"><input type="checkbox" name="account_id[]" value="<?php echo $not_using_accounts[$j]['id']?>" /></td>
 									<td><?php print (htmlspecialchars($not_using_accounts[$j]['name'], ENT_QUOTES));?></td>
 								</tr>
 							</tbody>
@@ -187,7 +187,7 @@ while ($row = mysql_fetch_assoc($result)) {
 	<?php //口座追加?>
 	<div class="container">
 		<div class="row"> 		
-			<div class="col-md-offset-4 col-xs-4">
+			<div class="col-md-offset-3 col-md-6">
 				<div class = "center">
 					<br><h2>上記にない口座を登録</h2>
 					<form action="" method="post" name="add_accounts" class = "form-horizontal well">
