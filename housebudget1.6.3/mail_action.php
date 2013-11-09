@@ -1,3 +1,11 @@
+<?
+session_start();
+//データベースへの接続 housebudget
+require 'function/connect_housebudget.php';
+//ログインチェック
+require 'function/login_check.php';
+?>
+
 <?php
 mb_language("japanese");
 mb_internal_encoding("UTF-8");
@@ -32,13 +40,11 @@ if (!empty($_POST['email'])) {
 		<br>
 		<br>
 		<h3>
-			<?php
-			if ($success) {
-				print('送信しました');
-			} else {
-				print('送信に失敗しました');
-			}
-			?>
+			<?php if ($success) :?>
+				<?php echo $to;?>へ送信しました
+			<?php else: ?>
+				送信に失敗しました
+			<?php endif?>
 		</h3>
 	</div>
 </div>
