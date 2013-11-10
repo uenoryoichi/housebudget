@@ -7,7 +7,7 @@ require 'function/login_check.php';
 ?>
 
 <?php
-    $sql = sprintf('SELECT income.*, accounts.name 
+    $sql = sprintf('SELECT income.*, accounts.name, DATE(income.date) AS date_ymd
  				FROM income 
  					JOIN user_accounts ON income.user_accounts_id=user_accounts.id 
  					JOIN accounts ON user_accounts.account_id=accounts.id 
@@ -42,7 +42,7 @@ require 'function/login_check.php';
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-md-6">
            		<br><h2>収入情報入力フォーム</h2>
-          		<form method = "POST" action = "insert_action.php" class = "form-horizontal well">
+          		<form method = "POST" action = "insert_action.php" class = "form-inline well">
 	             	<dl>
 	             	<dt>金額</dt>
 	             		<dd>
@@ -56,14 +56,14 @@ require 'function/login_check.php';
                    			
 					<dt>日付</dt>
                    		<dd>
-                   			<input type = "text" name = "date" class="form-control" value=<?php echo date("Y-m-d H:i:s");?>>
+                   		<?php require_once 'function/form_date.php';?>	
                    		</dd>
                    	
                    	<dt>口座名</dt>
                     		<dd>
-                    			<select  name="user_accounts_id" id="user_accounts_id" class="form-control" >
+                    			<select  name="user_accounts_id" class="form-control" >
                    				<?php //選択肢にユーザーの口座情報を入れる?>
-                    				<?php require 'function/input_user_account_name.php'; ?>
+                    				<?php require_once 'function/input_user_account_name.php'; ?>
 							</select>
                     		</dd>
              		</dl>
@@ -86,9 +86,9 @@ require 'function/login_check.php';
 					<table class="table table-hover table-bordered">
 						<thead>
 							<tr>
+								<th scope="col">日付</th>
 								<th scope="col">金額</th>
 								<th scope="col">内容</th>
-								<th scope="col">日付</th>
 								<th scope="col">口座名</th>
 								<th scope="col"></th>
 								<th scope="col"></th>
@@ -97,10 +97,10 @@ require 'function/login_check.php';
 						<?php for ($i = 0, $count_income=count($income); $i < $count_income; $i++): ?>
 						<tbody>
 							<tr>
+								<td><?php print(htmlspecialchars($income[$i]['date_ymd'], ENT_QUOTES));?></td>
 								<td><?php print(htmlspecialchars($income[$i]['amount'], ENT_QUOTES));?></td>
 								<td><?php print(htmlspecialchars($income[$i]['content'], ENT_QUOTES));?></td>
-								<td><?php print(htmlspecialchars($income[$i]['date'], ENT_QUOTES));?></td>
-								<td><?php print(htmlspecialchars($income[$i]['name'], ENT_QUOTES));?></td>
+							  	<td><?php print(htmlspecialchars($income[$i]['name'], ENT_QUOTES));?></td>
 								<td class="center">
 									<form method = "POST" action = "income_update.php" >
                  						<?php  //編集　id送信 ?>

@@ -8,7 +8,7 @@ require 'function/login_check.php';
 ?>
 
 <?php //支払情報をDBから取得
-    $sql = sprintf('SELECT pay.*, DATE(pay.date) AS date_ymd,accounts.name 
+    $sql = sprintf('SELECT pay.*, DATE(pay.date) AS date_ymd ,accounts.name 
  				FROM pay 
  					JOIN user_accounts ON pay.user_accounts_id=user_accounts.id 
  					JOIN accounts ON user_accounts.account_id=accounts.id 
@@ -41,7 +41,7 @@ require 'function/login_check.php';
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-xs-6">
            		<br><h2>支出情報入力フォーム</h2>
-          		<form method = "POST" action = "insert_action.php" class = "form-horizontal well">
+          		<form method = "POST" action = "insert_action.php" class = "form-inline well">
                      	<dl>
                  	<dt>金額</dt>
                     		<dd>
@@ -54,12 +54,11 @@ require 'function/login_check.php';
 						</dd>
 						
 					<dt>日付</dt>
-						<?php $today = date("Y-m-d");?>
-                     		<dd>
-                     			<input type = "text" name = "date" class="form-control"  value=<?php echo $today?>>
-                         </dd>
+                   		<dd>
+                   		<?php require_once 'function/form_date.php';?>	
+                   		</dd>
                          
-                    	<dt>支払い</dt>
+                    	<dt>口座名</dt>
                     		<dd>
                     			<select  name="user_accounts_id"  class="form-control"  >
 								<?php //選択肢にユーザーの口座情報を入れる?>
@@ -71,7 +70,7 @@ require 'function/login_check.php';
                      		<dd>
                      			<select  name="type"class="form-control" >
 							<?php 
-								$bunrui_array = array("交通費","食費","消耗品","交際費","HUCC","研究室","その他");
+								$bunrui_array = array("交通費","食費","消耗品","交際費","その他");
 								for ($i=0; $i<count($bunrui_array); $i++){
 									print('<option value="'.$bunrui_array[$i].'">'.$bunrui_array[$i].'</option>');
 								}
@@ -100,8 +99,8 @@ require 'function/login_check.php';
 							<tr>
 								<th scope="col">日付</th>
 								<th scope="col">値段</th>
-								<th scope="col">支払内容</th>
-								<th scope="col">支払口座</th>
+								<th scope="col">内容</th>
+								<th scope="col">口座名</th>
 								<th scope="col">分類</th>
 								<th scope="col"></th>
 								<th scope="col"></th>

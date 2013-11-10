@@ -4,6 +4,19 @@ session_start();
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
+
+if (!empty($_POST)){
+	//入力不足チェック
+	if (!is_numeric($_POST['amount'] )){
+		$error['amount']='int';
+	}
+	//エラーがなければ次へ
+	if (empty($error)){
+		$_SESSION['transfer'] = $_POST;
+		$_SESSION['key'] = $_POST['key'];
+		header('Location: insert_action.php');
+	}
+}
 ?>
 
 <?php
@@ -24,13 +37,13 @@ require 'function/login_check.php';
 ?>
 
 
+
 <!DOCTYPE html>
 <html lang=ja>
 	<!-- ヘッダー -->
     <?php include 'include/head.html';?>
 	
 <body>
-    <!-- 見出し　-->
 	<div id="head">
 		<h1>口座移動一覧</h1>
 	</div>
@@ -44,11 +57,14 @@ require 'function/login_check.php';
 			<div class="col-md-offset-3 col-xs-6">
               	<br><h2>口座移動情報入力フォーム</h2>
                 	<div class="control-group">
-                   	<form method = "POST" action = "insert_action.php" class = "form-horizontal well">
+                   	<form method = "POST" action = "" class = "form-inline well">
                     		<dl>
                     		<dt>金額</dt>
                        		<dd>
                        			<input type = "text" name = "amount" class="form-control" >
+                       			<?php if ($error['amount']=='int'):?>
+									<p class="error">* 数字（半角）を入力してください</p>
+                    				<?php endif; ?>
                          		</dd>
                          		
                        	<dt>送り手</dt>
@@ -68,10 +84,9 @@ require 'function/login_check.php';
 							</dd>
 							
 						<dt>移動日</dt>
-							<?php $today = date("Y-m-d");?>
-    	                   		<dd>
-    	                   			<input type = "text" name = "date" class="form-control" value=<?php echo $today?>>
-                            	</dd>
+                   			<dd>
+                   				<?php require_once 'function/form_date.php';?>	
+                   			</dd>
                             	
                        	<dt>memo</dt>
                        		<dd>

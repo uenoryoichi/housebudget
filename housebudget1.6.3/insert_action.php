@@ -5,7 +5,9 @@ require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
 //キーの格納
-$key = htmlspecialchars($_POST["key"], ENT_QUOTES);
+//$key = htmlspecialchars($_POST["key"], ENT_QUOTES);
+$key = htmlspecialchars($_SESSION["key"], ENT_QUOTES);
+unset($_SESSION['key']);
 //配列をエスケープするための関数
 function array_htmlspecialchars($string) {
 	if (is_array($string)) {
@@ -14,76 +16,64 @@ function array_htmlspecialchars($string) {
 		return htmlspecialchars($string, ENT_QUOTES);
 	}
 }
-?>
 
-<?php
+
+
+
 //支払い情報入力
 	if ($key == "pay") {
-		$how_much = htmlspecialchars($_POST["how_much"], ENT_QUOTES);
-		$what = htmlspecialchars($_POST["what"], ENT_QUOTES);
-		$date = htmlspecialchars($_POST["date"], ENT_QUOTES);
-		$user_accounts_id = htmlspecialchars($_POST["user_accounts_id"], ENT_QUOTES);
-		$type = htmlspecialchars($_POST["type"], ENT_QUOTES);
-		$user_id = $_SESSION['user_id'];
-		
-		$sql = "INSERT INTO pay (how_much,what,date,user_accounts_id,type,user_id) VALUES ('$how_much','$what','$date','$user_accounts_id','$type','$user_id')";
+		$sql = sprintf('INSERT INTO pay SET how_much=%d, what="%s", date="%s",user_accounts_id=%d, type="%s", created=NOW(), user_id=%d' ,
+				htmlspecialchars($_POST["how_much"], ENT_QUOTES),
+				htmlspecialchars($_POST["what"], ENT_QUOTES),
+				htmlspecialchars($_POST["year"], ENT_QUOTES)."-".htmlspecialchars($_POST["month"], ENT_QUOTES)."-".htmlspecialchars($_POST["day"], ENT_QUOTES)." ".htmlspecialchars($_POST["hour"], ENT_QUOTES),
+				htmlspecialchars($_POST["user_accounts_id"], ENT_QUOTES),
+				htmlspecialchars($_POST["type"], ENT_QUOTES),
+				$_SESSION['user_id']
+		);
 		mysql_query($sql, $link) or die(mysql_error());
 	}
     //ここまで
     
 	//収入情報入力
 	if ($key == "income") {
-		$amount = htmlspecialchars($_POST["amount"], ENT_QUOTES);
-		$content = htmlspecialchars($_POST["content"], ENT_QUOTES);
-		$date = htmlspecialchars($_POST["date"], ENT_QUOTES);
-		$user_accounts_id = htmlspecialchars($_POST["user_accounts_id"], ENT_QUOTES);
-		$user_id = $_SESSION['user_id'];
 		
-		$sql = "INSERT INTO income (amount,content,date,user_accounts_id,created,user_id) VALUES (
-			'$amount',
-			'$content',
-			'$date',
-			'$user_accounts_id',
-			NOW(),
-			'$user_id')";
+		$sql = sprintf('INSERT INTO income SET amount=%d, content="%s", date="%s",user_accounts_id=%d, created=NOW(), user_id=%d' ,
+				htmlspecialchars($_POST["amount"], ENT_QUOTES),
+				htmlspecialchars($_POST["content"], ENT_QUOTES),
+				htmlspecialchars($_POST["year"], ENT_QUOTES)."-".htmlspecialchars($_POST["month"], ENT_QUOTES)."-".htmlspecialchars($_POST["day"], ENT_QUOTES)." ".htmlspecialchars($_POST["hour"], ENT_QUOTES),
+				htmlspecialchars($_POST["user_accounts_id"], ENT_QUOTES),
+				$user_id = $_SESSION['user_id']
+		);
 		mysql_query($sql, $link) or die(mysql_error());
-	
 	}
-	//ここまで
 	
 	//口座移動情報入力
 	if ($key == "transfer") {
-		$amount = htmlspecialchars($_POST["amount"], ENT_QUOTES);
-		$user_accounts_id_remitter = htmlspecialchars($_POST["user_accounts_id_remitter"], ENT_QUOTES); 
-		$user_accounts_id_remittee = htmlspecialchars($_POST["user_accounts_id_remittee"], ENT_QUOTES);
-		$date = htmlspecialchars($_POST["date"], ENT_QUOTES);
-		$memo = htmlspecialchars($_POST["memo"], ENT_QUOTES);
-		$user_id = $_SESSION['user_id'];
-		
-		$sql = "INSERT INTO transfer (amount,user_accounts_id_remitter,user_accounts_id_remittee,date,memo,user_id,created) VALUES (
-			'$amount',
-			'$user_accounts_id_remitter',
-			'$user_accounts_id_remittee',
-			'$date',
-			'$memo',
-			'$user_id',
-			NOW())";
+		$sql = sprintf('INSERT INTO transfer SET amount=%d, user_accounts_id_remitter=%d, user_accounts_id_remittee=%d, date="%s",memo="%s", created=NOW(), user_id=%d' ,
+				htmlspecialchars($_SESSION['transfer']["amount"], ENT_QUOTES),
+				htmlspecialchars($_SESSION['transfer']["user_accounts_id_remitter"], ENT_QUOTES),
+				htmlspecialchars($_SESSION['transfer']["user_accounts_id_remittee"], ENT_QUOTES),
+				htmlspecialchars($_SESSION['transfer']["year"], ENT_QUOTES)."-".htmlspecialchars($_SESSION['transfer']["month"], ENT_QUOTES)."-".htmlspecialchars($_SESSION['transfer']["day"], ENT_QUOTES)." ".htmlspecialchars($_SESSION['transfer']["hour"], ENT_QUOTES),
+				htmlspecialchars($_SESSION['transfer']["memo"], ENT_QUOTES),
+				$_SESSION['user_id']
+		);	
 		mysql_query($sql, $link) or die(mysql_error());
+		unset($_SESSION['transfer']);
 	}
 
 	//口座移動情報入力
 	if ($key == "user_accounts_add") {
 		$account_id=array_htmlspecialchars($_POST["account_id"]);
-		$user_id=$_SESSION['user_id'];
 		//acounts_idを一つづつ抽出
 		for ($i = 0, $count_accounts=count($account_id); $i < $count_accounts; $i++) {
-			$sql = "INSERT INTO user_accounts (user_id,account_id,created) VALUES (
-				'$user_id',
-				'$account_id[$i]',
-				NOW())";
+			$sql = sprintf('INSERT INTO user_accounts SET user_id=%d, account_id=%d, created=NOW()',
+					$_SESSION['user_id'],
+					$account_id[$i]
+			);
 		mysql_query($sql, $link) or die(mysql_error());
 		}
 	}
+	
 ?>	
 
 <!DOCTYPE html>
@@ -116,6 +106,10 @@ function array_htmlspecialchars($string) {
 		</h3>
 		<br>
 		<br>
+		<?php if ($key == 'user_accounts_add') :?>
+			<h2><a href="account_index.php" class="btn btn-primary btn-lg">残高登録</a></h2>
+			<br><br>
+		<?php endif;?>
 		
 		<h2><a href=
 			<?php 
@@ -138,7 +132,6 @@ function array_htmlspecialchars($string) {
 	
 	<!-- フッター -->
 <?php include 'include/footer.html';?>
-	
 
 </body>
 </html>

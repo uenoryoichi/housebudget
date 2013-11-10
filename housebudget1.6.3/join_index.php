@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
 //ここまで
@@ -30,14 +29,12 @@ if (!empty($_POST)){
 			$error['email']='duplicate';
 		}
 	}
-	//チェックへ
+	//エラーがなければ次へへ
 	if (empty($error)){
 		$_SESSION['join'] = $_POST;		
 		header('Location: join_check.php');
 	}
-
 }
-
 
 //書き直し
 if ($_REQUEST['action']== 'rewrite') {
