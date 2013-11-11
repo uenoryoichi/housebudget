@@ -6,17 +6,29 @@ require 'function/connect_housebudget.php';
 require 'function/login_check.php';
 //口座の現在残高取得
 require 'function/calculate_account_balance.php';
+
+if (!empty($_POST['key'])){
+	//金額<-数字チェック
+	for ($i = 0, $count=count($_POST['balance']); $i < $count; $i++)
+	if (!is_numeric($_POST['balance'][$i] )){
+		$error['balance']='int';
+	}
+	//エラーがなければ次へ
+	if (empty($error)){
+		$_SESSION['account_balance'] = $_POST;
+		$_SESSION['key'] = $_POST['key'];
+		header('Location: update_action.php');
+	}
+}
+
 ?>
 
 <!DOCTYPE html>
 <html lang=ja>
-	<!-- ヘッダーここから -->
+	<!-- ヘッダー -->
     <?php include 'include/head.html';?>
 
-	<!-- 本文　ここから -->	
 <body>
-	
-	<!-- 見出し ここから　-->
 	<div id="head">
 		<h1>口座情報更新</h1>
 	</div>
@@ -24,14 +36,18 @@ require 'function/calculate_account_balance.php';
 	<!-- メニューバー -->
 	<?php include 'include/menu.html';?>
 	
-	<!-- 見出し　ここまで　-->
 	<div class="container">
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-md-6">
 				<div class = "center">
 					<br>
 					<h2>口座残高情報更新</h2>
-           			<form method="POST" action="update_action.php" class="form-horizontal well">
+           			<form method="POST" action="" class="form-horizontal well">
+	           			<?php if ($error['balance']=='int'):?>
+								<div class="alert alert-warning">
+									<p class="error">* 数字（半角）を入力してください</p>
+                    				</div>	
+                    		<?php endif; ?>
 	           			<table class="table table-hover table-bordered">
 							<thead>
 								<tr>

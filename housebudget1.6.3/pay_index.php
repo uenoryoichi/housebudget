@@ -5,22 +5,32 @@ session_start();
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
-?>
 
-<?php //支払情報をDBから取得
-    $sql = sprintf('SELECT pay.*, DATE(pay.date) AS date_ymd ,accounts.name 
+if (!empty($_POST)){
+	//入力不足チェック
+	if (!is_numeric($_POST['how_much'] )){
+		$error['how_much']='int';
+	}
+	//エラーがなければ次へ
+	if (empty($error)){
+		$_SESSION['pay'] = $_POST;
+		$_SESSION['key'] = $_POST['key'];
+		header('Location: insert_action.php');
+	}
+}
+
+$sql = sprintf('SELECT pay.*, DATE(pay.date) AS date_ymd ,accounts.name 
  				FROM pay 
  					JOIN user_accounts ON pay.user_accounts_id=user_accounts.id 
  					JOIN accounts ON user_accounts.account_id=accounts.id 
  				WHERE pay.user_id=%d 
  				ORDER BY DATE DESC',
     				$_SESSION['user_id']
-	);
-	$result = mysql_query($sql, $link);
-
-	while ($row = mysql_fetch_assoc($result)) {
-		$pay[] = $row;
-	}
+);
+$result = mysql_query($sql, $link);
+while ($row = mysql_fetch_assoc($result)) {
+	$pay[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -41,11 +51,16 @@ require 'function/login_check.php';
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-xs-6">
            		<br><h2>支出情報入力フォーム</h2>
-          		<form method = "POST" action = "insert_action.php" class = "form-inline well">
+          		<form method = "POST" action = "" class = "form-inline well">
                      	<dl>
                  	<dt>金額</dt>
                     		<dd>
                     			<input type = "text" name = "how_much" class="form-control" >
+                    			<?php if ($error['how_much']=='int'):?>
+								<div class="alert alert-warning">
+									<p class="error">* 数字（半角）を入力してください</p>
+                    				</div>	
+                    			<?php endif; ?>
                         	</dd>
                         	
                      	<dt>内容</dt>

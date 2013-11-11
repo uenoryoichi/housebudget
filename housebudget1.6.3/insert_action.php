@@ -5,7 +5,6 @@ require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
 //キーの格納
-//$key = htmlspecialchars($_POST["key"], ENT_QUOTES);
 $key = htmlspecialchars($_SESSION["key"], ENT_QUOTES);
 unset($_SESSION['key']);
 //配列をエスケープするための関数
@@ -18,19 +17,18 @@ function array_htmlspecialchars($string) {
 }
 
 
-
-
 //支払い情報入力
 	if ($key == "pay") {
 		$sql = sprintf('INSERT INTO pay SET how_much=%d, what="%s", date="%s",user_accounts_id=%d, type="%s", created=NOW(), user_id=%d' ,
-				htmlspecialchars($_POST["how_much"], ENT_QUOTES),
-				htmlspecialchars($_POST["what"], ENT_QUOTES),
-				htmlspecialchars($_POST["year"], ENT_QUOTES)."-".htmlspecialchars($_POST["month"], ENT_QUOTES)."-".htmlspecialchars($_POST["day"], ENT_QUOTES)." ".htmlspecialchars($_POST["hour"], ENT_QUOTES),
-				htmlspecialchars($_POST["user_accounts_id"], ENT_QUOTES),
-				htmlspecialchars($_POST["type"], ENT_QUOTES),
+				htmlspecialchars($_SESSION['pay']["how_much"], ENT_QUOTES),
+				htmlspecialchars($_SESSION['pay']["what"], ENT_QUOTES),
+				htmlspecialchars($_SESSION['pay']["year"], ENT_QUOTES)."-".htmlspecialchars($_SESSION['pay']["month"], ENT_QUOTES)."-".htmlspecialchars($_SESSION['pay']["day"], ENT_QUOTES)." ".htmlspecialchars($_SESSION['pay']["hour"], ENT_QUOTES),
+				htmlspecialchars($_SESSION['pay']["user_accounts_id"], ENT_QUOTES),
+				htmlspecialchars($_SESSION['pay']["type"], ENT_QUOTES),
 				$_SESSION['user_id']
 		);
 		mysql_query($sql, $link) or die(mysql_error());
+		unset($_SESSION['pay']);
 	}
     //ここまで
     
@@ -38,13 +36,14 @@ function array_htmlspecialchars($string) {
 	if ($key == "income") {
 		
 		$sql = sprintf('INSERT INTO income SET amount=%d, content="%s", date="%s",user_accounts_id=%d, created=NOW(), user_id=%d' ,
-				htmlspecialchars($_POST["amount"], ENT_QUOTES),
-				htmlspecialchars($_POST["content"], ENT_QUOTES),
-				htmlspecialchars($_POST["year"], ENT_QUOTES)."-".htmlspecialchars($_POST["month"], ENT_QUOTES)."-".htmlspecialchars($_POST["day"], ENT_QUOTES)." ".htmlspecialchars($_POST["hour"], ENT_QUOTES),
-				htmlspecialchars($_POST["user_accounts_id"], ENT_QUOTES),
+				htmlspecialchars($_SESSION['income']["amount"], ENT_QUOTES),
+				htmlspecialchars($_SESSION['income']["content"], ENT_QUOTES),
+				htmlspecialchars($_SESSION['income']["year"], ENT_QUOTES)."-".htmlspecialchars($_SESSION['income']["month"], ENT_QUOTES)."-".htmlspecialchars($_SESSION['income']["day"], ENT_QUOTES)." ".htmlspecialchars($_SESSION['income']["hour"], ENT_QUOTES),
+				htmlspecialchars($_SESSION['income']["user_accounts_id"], ENT_QUOTES),
 				$user_id = $_SESSION['user_id']
 		);
 		mysql_query($sql, $link) or die(mysql_error());
+		unset($_SESSION['income']);
 	}
 	
 	//口座移動情報入力
@@ -61,17 +60,18 @@ function array_htmlspecialchars($string) {
 		unset($_SESSION['transfer']);
 	}
 
-	//口座移動情報入力
+	//使用する口座追加
 	if ($key == "user_accounts_add") {
-		$account_id=array_htmlspecialchars($_POST["account_id"]);
+		$account_id=array_htmlspecialchars($_SESSION['user_accounts_add']["account_id"]);
 		//acounts_idを一つづつ抽出
 		for ($i = 0, $count_accounts=count($account_id); $i < $count_accounts; $i++) {
 			$sql = sprintf('INSERT INTO user_accounts SET user_id=%d, account_id=%d, created=NOW()',
 					$_SESSION['user_id'],
 					$account_id[$i]
 			);
-		mysql_query($sql, $link) or die(mysql_error());
+			mysql_query($sql, $link) or die(mysql_error());
 		}
+		unset($_SESSION['user_accounts_add']);
 	}
 	
 ?>	

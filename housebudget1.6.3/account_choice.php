@@ -4,9 +4,22 @@ session_start();
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
-?>
 
-<?php 
+if ($_POST['key']=="user_accounts_add"){
+	//入力不足チェック
+	if (!array_key_exists(0, $_POST['account_id'])){
+		$error['acount_id']='empty';
+	}
+	//エラーがなければ次へ
+	if (empty($error)){
+		$_SESSION['user_accounts_add'] = $_POST;
+		$_SESSION['key'] = $_POST['key'];
+		header('Location: insert_action.php');
+	}
+	
+}
+
+
 //優先：登録口座追加
 if (isset($_POST['accounts_name'])&&isset($_POST["accounts_kana"])) {
 	$accounts_name=htmlspecialchars($_POST["accounts_name"], ENT_QUOTES);
@@ -67,10 +80,7 @@ while ($row = mysql_fetch_assoc($result)) {
 	<!-- ヘッダーここから -->
     <?php include 'include/head.html';?>
 
-	<!-- 本文　ここから -->	
 <body>
-	
-	<!-- 見出し ここから　-->
 	<div id="head">
 		<h1>口座選択</h1>
 	</div>
@@ -78,7 +88,6 @@ while ($row = mysql_fetch_assoc($result)) {
 	<!-- メニューバー -->
 	<?php include 'include/menu.html';?>
  
-	<!-- 一覧表示　ここから　-->
 	<?php //使用中の口座一覧?>
 	<div class="container">
 		<div class="row"> 		
@@ -148,7 +157,7 @@ while ($row = mysql_fetch_assoc($result)) {
 			<div class="col-md-offset-4 col-md-4">
 				<div class = "center">
 					<br><br><h2>登録されている口座から選択</h2>
-           			<form method= "post" action= "insert_action.php" name ="user" class = "form-horizontal well">
+           			<form method= "post" action= "" name ="user" class = "form-horizontal well">
              			<?php for ($i = 0, $count_a_c=count($account_classifications);$i< $count_a_c; $i++):?>
              			<br><h2><?php echo $account_classifications[$i]['name']?></h2>
              			<table class="table table-hover table-bordered table-condensed" >
@@ -192,7 +201,7 @@ while ($row = mysql_fetch_assoc($result)) {
 					<br><h2>上記にない口座を登録</h2>
 					<form action="" method="post" name="add_accounts" class = "form-horizontal well">
 						<label>口座種別</label>
-						<select name="account_classification_id" id="account_classification_id" class="form-control" >
+						<select name="account_classification_id" class="form-control" >
                             <?php //選択肢口座種別情報を入れる?>
                             <?php require 'function/input_account_classifications.php'; ?>
 						</select>

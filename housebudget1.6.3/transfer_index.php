@@ -6,7 +6,7 @@ require 'function/connect_housebudget.php';
 require 'function/login_check.php';
 
 if (!empty($_POST)){
-	//入力不足チェック
+	//金額<-数字チェック
 	if (!is_numeric($_POST['amount'] )){
 		$error['amount']='int';
 	}
@@ -17,9 +17,7 @@ if (!empty($_POST)){
 		header('Location: insert_action.php');
 	}
 }
-?>
 
-<?php
     $sql =sprintf('SELECT transfer.*, a_er.name AS remitter_name, a_ee.name AS remittee_name
  				FROM transfer 
  					JOIN user_accounts AS u_er ON transfer.user_accounts_id_remitter=u_er.id 
@@ -63,7 +61,9 @@ if (!empty($_POST)){
                        		<dd>
                        			<input type = "text" name = "amount" class="form-control" >
                        			<?php if ($error['amount']=='int'):?>
+								<div class="alert alert-warning">
 									<p class="error">* 数字（半角）を入力してください</p>
+                    				</div>	
                     				<?php endif; ?>
                          		</dd>
                          		

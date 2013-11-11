@@ -4,21 +4,33 @@ session_start();
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
-?>
 
-<?php
-    $sql = sprintf('SELECT income.*, accounts.name, DATE(income.date) AS date_ymd
+if (!empty($_POST)){
+	//入力不足チェック
+	if (!is_numeric($_POST['amount'])){
+		$error['amount']='int';
+	}
+	//エラーがなければ次へ
+	if (empty($error)){
+		$_SESSION['income'] = $_POST;
+		$_SESSION['key'] = $_POST['key'];
+		header('Location: insert_action.php');
+	}
+}
+
+$sql = sprintf('SELECT income.*, accounts.name, DATE(income.date) AS date_ymd
  				FROM income 
  					JOIN user_accounts ON income.user_accounts_id=user_accounts.id 
  					JOIN accounts ON user_accounts.account_id=accounts.id 
  				WHERE income.user_id=%d 
  				ORDER BY DATE DESC',
     				$_SESSION['user_id']
-	);
-	$result = mysql_query($sql, $link) or die(mysql_error());
-	while ($row = mysql_fetch_assoc($result)) {
-		$income[] = $row;
-	}
+);
+$result = mysql_query($sql, $link) or die(mysql_error());
+while ($row = mysql_fetch_assoc($result)) {
+	$income[] = $row;
+}
+
 ?>
 
 
@@ -28,8 +40,6 @@ require 'function/login_check.php';
     <?php include 'include/head.html';?>
 
 <body>
-
-    <!-- 見出し ここから　-->
 	<div id="head">
 		<h1>収入一覧</h1>
 	</div>
@@ -42,11 +52,16 @@ require 'function/login_check.php';
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-md-6">
            		<br><h2>収入情報入力フォーム</h2>
-          		<form method = "POST" action = "insert_action.php" class = "form-inline well">
+          		<form method = "POST" action = "" class = "form-inline well">
 	             	<dl>
 	             	<dt>金額</dt>
 	             		<dd>
 	             			<input type = "text" name = "amount" class="form-control" >
+	             			<?php if ($error['amount']=='int'):?>
+								<div class="alert alert-warning">
+									<p class="error">* 数字（半角）を入力してください</p>
+                    				</div>	
+                    			<?php endif; ?>
 	             		</dd>
 		      	
                    	<dt>内容</dt>

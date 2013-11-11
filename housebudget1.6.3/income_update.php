@@ -4,9 +4,24 @@ session_start();
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
-?>
 
-<?php 
+
+if (!empty($_POST['key'])){
+	//金額<-数字チェック
+	if (!is_numeric($_POST['amount'] )){
+		$error['amount']='int';
+	}
+	//日付チェック ref  http://okumocchi.jp/php/re.php  /   http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1149331471   /   http://www.tryphp.net/2012/03/14/phpsample-preg-date/
+	if (!preg_match('/^([1-9][0-9]{3})-(0[1-9]{1}|1[0-2]{1})-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})\s(?:(2[0-3])|([0-1][0-9])):([0-5][0-9]):([0-5][0-9])$/',$_POST['date'])) {
+		$error['date']='date';
+	}
+	//エラーがなければ次へ
+	if (empty($error)){
+		$_SESSION['income'] = $_POST;
+		$_SESSION['key'] = $_POST['key'];
+		header('Location: update_action.php');
+	}
+}
 $id=htmlspecialchars($_REQUEST['id'], ENT_QUOTES);
 $sql=sprintf("SELECT income.*, accounts.name 
  				FROM income 
@@ -26,7 +41,6 @@ $date=mysql_fetch_assoc($recordSet);
 
 <body>
     
-    	<!-- 見出し -->
 	<div id="head">
 		<h1>収入修正</h1>
 	</div>
@@ -39,11 +53,16 @@ $date=mysql_fetch_assoc($recordSet);
    		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
                  <br><h2>修正フォーム   ID：<?php print (htmlspecialchars($date['id'],ENT_QUOTES));?></h2>
-               	<form method = "POST" action = "update_action.php" class = "form-horizontal well">
+               	<form method = "POST" action = "" class = "form-horizontal well">
                		<dl>
 	                	<dt>金額</dt>
     		            		<dd>
     		            			<input type = "text" name = "amount" class="form-control" value="<?php print (htmlspecialchars($date['amount'],ENT_QUOTES));?>"/>
+    		            			<?php if ($error['amount']=='int'):?>
+								<div class="alert alert-warning">
+									<p class="error">* 数字（半角）を入力してください</p>
+                    				</div>	
+                    			<?php endif; ?>
 						</dd>
 						                       
         	          	<dt>内容</dt>
@@ -54,6 +73,11 @@ $date=mysql_fetch_assoc($recordSet);
 					<dt>日付</dt>
                 			<dd>
                 				<input type = "text" name = "date" class="form-control" value="<?php print (htmlspecialchars($date['date'],ENT_QUOTES));?>"/>
+                				<?php if ($error['date']=='date'):?>
+								<div class="alert alert-warning">
+									<p class="error">* <?php echo date('Y-m-d H:i:s');?> のフォーマットで入力してください</p>
+                    				</div>	
+                    			<?php endif; ?>
 						</dd>
 						
 					<dt>口座名</dt>
@@ -66,9 +90,7 @@ $date=mysql_fetch_assoc($recordSet);
 						</dd>
 					</dl>
 					<div class="center">	
-						<?php //ID?>
-    	                 	<input type = "hidden" name="income_id" value="<?php print(htmlspecialchars($id));?>"> 
-	    	                	<?php //収入情報キー?>	
+    	                 	<input type = "hidden" name="id" value="<?php print(htmlspecialchars($id));?>"> 
 						<input type = "hidden" name = "key" value="income" >
 						<input type = "submit" value = "修正を送信" class="btn btn-primary">
 					</div>

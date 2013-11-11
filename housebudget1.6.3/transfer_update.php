@@ -1,18 +1,27 @@
 <?php
-
-/*
- * バージョン管理
- * 1.5.3
- * 
- * */
 session_start();
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
-?>
 
-<?php 
+if (!empty($_POST['key'])){
+	//金額<-数字チェック
+	if (!is_numeric($_POST['amount'] )){
+		$error['amount']='int';
+	}
+	//日付チェック ref  http://okumocchi.jp/php/re.php  /   http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1149331471   /   http://www.tryphp.net/2012/03/14/phpsample-preg-date/
+	if (!preg_match('/^([1-9][0-9]{3})-(0[1-9]{1}|1[0-2]{1})-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/',$_POST['date'])) {
+		$error['date']='date';
+	}
+	//エラーがなければ次へ
+	if (empty($error)){
+		$_SESSION['transfer'] = $_POST;
+		$_SESSION['key'] = $_POST['key'];
+		header('Location: update_action.php');
+	}
+}
+
 $id=htmlspecialchars($_REQUEST['id'], ENT_QUOTES);
 $sql=sprintf("SELECT transfer.*, a_er.name AS remitter_name, a_ee.name AS remittee_name
  				FROM transfer 
@@ -46,12 +55,18 @@ $date=mysql_fetch_assoc($recordSet);
    		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
 				<br><h2>修正フォーム   ID：<?php print (htmlspecialchars($date['id'],ENT_QUOTES));?></h2>
-              	<form method = "POST" action = "update_action.php" class = "form-horizontal well">
+              	<form method = "POST" action = "" class = "form-horizontal well">
 					<dl>
               		<dt>金額</dt>
                    		<dd>
                    			<input type = "text" name = "amount" class="form-control" value="<?php print (htmlspecialchars($date['amount'],ENT_QUOTES));?>"/>
+                   			<?php if ($error['amount']=='int'):?>
+								<div class="alert alert-warning">
+									<p class="error">* 数字（半角）を入力してください</p>
+                    				</div>	
+                    			<?php endif; ?>
                      		</dd>
+                    	
                     	<dt>送り手</dt>
                    		<dd>
                    			<select  name="user_accounts_id_remitter" class="form-control" >
@@ -73,6 +88,11 @@ $date=mysql_fetch_assoc($recordSet);
 					<dt>移動日</dt>
 						<dd>
 							<input type = "text" name = "date" class="form-control" value="<?php print (htmlspecialchars($date['date'],ENT_QUOTES));?>"/>
+							<?php if ($error['date']=='date'):?>
+								<div class="alert alert-warning">
+									<p class="error">* <?php echo date('Y-m-d');?> のフォーマットで入力してください</p>
+                    				</div>	
+                    			<?php endif; ?>
 						</dd>
 						
 					<dt>メモ</dt>
@@ -82,7 +102,7 @@ $date=mysql_fetch_assoc($recordSet);
 					</dl>
 					<div class="center">	
 						<?php // ID ?>
-        	             	<input type = "hidden" name="transfer_id" value="<?php print(htmlspecialchars($id));?>"> 
+        	             	<input type = "hidden" name="id" value="<?php print(htmlspecialchars($id));?>"> 
 						<?php //口座移動情報キー?>
 						<input type = "hidden" name = "key" value="transfer" >
 						<input type = "submit" value = "修正を送信" class="btn btn-primary">

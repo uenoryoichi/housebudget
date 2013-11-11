@@ -1,21 +1,26 @@
 <?php
-
-/*
- * バージョン管理
-* 1.6.2
-*
-*
-*
-*/
 session_start();
-
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
-?>
+if (!empty($_POST['key'])){
+	//金額<-数字チェック
+	if (!is_numeric($_POST['how_much'] )){
+		$error['how_much']='int';
+	}
+	//日付チェック ref  http://okumocchi.jp/php/re.php  /   http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1149331471   /   http://www.tryphp.net/2012/03/14/phpsample-preg-date/
+	if (!preg_match('/^([1-9][0-9]{3})-(0[1-9]{1}|1[0-2]{1})-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})\s(?:(2[0-3])|([0-1][0-9])):([0-5][0-9]):([0-5][0-9])$/',$_POST['date'])) {
+		$error['date']='date';
+	}
+	//エラーがなければ次へ
+	if (empty($error)){
+		$_SESSION['pay'] = $_POST;
+		$_SESSION['key'] = $_POST['key'];
+		header('Location: update_action.php');
+	}
+}
 
-<?php 
 $id=htmlspecialchars($_POST['id'], ENT_QUOTES);
 $sql=sprintf("SELECT pay.*, accounts.name 
  				FROM pay 
@@ -32,9 +37,7 @@ $date=mysql_fetch_assoc($result);
 	<!-- ヘッダーここから -->
     <?php include 'include/head.html';?>
     
-    <!-- 本文ここから -->
 <body>
-    	<!-- 見出し ここから　-->
 	<div id="head">
 	　	<h1>支払修正</h1>
 	</div>
@@ -42,16 +45,20 @@ $date=mysql_fetch_assoc($result);
 	<!-- メニューバー -->
 	<?php include 'include/menu.html';?>
 	
-		<!-- update部ここから -->
    	<div class="container">
       	<div class="row">
         		<div class="col-md-offset-3 col-xs-6">
              	<br><h2>修正フォーム   ID：<?php print (htmlspecialchars($date['id'],ENT_QUOTES));?></h2>
-                	<form method = "POST" action = "update_action.php" class = "form-horizontal well">
+                	<form method = "POST" action = "" class = "form-horizontal well">
 					<dl>
                 		<dt>金額</dt>
                     		<dd>
                     			<input type = "text" name = "how_much" class="form-control" value="<?php print (htmlspecialchars($date['how_much'],ENT_QUOTES));?>"/>
+                    			<?php if ($error['how_much']=='int'):?>
+								<div class="alert alert-warning">
+									<p class="error">* 数字（半角）を入力してください</p>
+                    				</div>	
+                    			<?php endif; ?>
                         	</dd>
                         	
                      	<dt>内容</dt>
@@ -62,6 +69,11 @@ $date=mysql_fetch_assoc($result);
 					<dt>日付</dt>
                      		<dd>
                      			<input type = "text" name = "date" class="form-control" value="<?php print (htmlspecialchars($date['date'],ENT_QUOTES));?>"/>
+                     			<?php if ($error['date']=='date'):?>
+								<div class="alert alert-warning">
+									<p class="error">* <?php echo date('Y-m-d H:i:s');?> のフォーマットで入力してください</p>
+                    				</div>	
+                    			<?php endif; ?>
 						</dd>
 						
 					<dt>支払い</dt>
@@ -80,7 +92,7 @@ $date=mysql_fetch_assoc($result);
                     	</dl>
                      	<div class="center">
                     		<!-- 送信ボタン -->
-           				<input type = "hidden" name="pay_id" value="<?php print(htmlspecialchars($id, ENT_QUOTES));?>"> 
+           				<input type = "hidden" name="id" value="<?php print(htmlspecialchars($id, ENT_QUOTES));?>"> 
                 	    		<input type = "hidden" name = "key" value="pay" >
 						<input type = "submit" value = "修正を送信" class="btn btn-primary">
             			</div>
