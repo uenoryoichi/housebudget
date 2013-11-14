@@ -5,10 +5,12 @@ require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
 
+
+//口座選択ボタン
 if ($_POST['key']=="user_accounts_add"){
 	//入力不足チェック
 	if (!array_key_exists(0, $_POST['account_id'])){
-		$error['acount_id']='empty';
+		$error['account_id']='empty';
 	}
 	//エラーがなければ次へ
 	if (empty($error)){
@@ -16,23 +18,44 @@ if ($_POST['key']=="user_accounts_add"){
 		$_SESSION['key'] = $_POST['key'];
 		header('Location: insert_action.php');
 	}
-	
 }
 
 
-//優先：登録口座追加
-if (isset($_POST['accounts_name'])&&isset($_POST["accounts_kana"])) {
-	$accounts_name=htmlspecialchars($_POST["accounts_name"], ENT_QUOTES);
-	$accounts_kana=htmlspecialchars($_POST["accounts_kana"], ENT_QUOTES);
-	$account_classification_id=htmlspecialchars($_POST["account_classification_id"], ENT_QUOTES);
-	$sql = "INSERT INTO accounts ( name, kana, account_classification_id, created) 
-						VALUES (
-							'$accounts_name',
-							'$accounts_kana',
-							'$account_classification_id',
-							NOW())"
-	;
+//登録口座追加ボタン
+if ($_POST['key']=="add_accounts") {
+	if (!isset($_POST['accounts_name'])) {
+		$error['accounts_name']='empty';
+	}
+	if (!isset($_POST["accounts_kana"])) {
+		$error['accounts_name']='empty';
+	}
+	mb_regex_encoding("UTF-8");
+	if (!mb_ereg("^[ぁ-ん]+$",$_POST["accounts_kana"])) {
+		$error["accounts_kana"]="no_kana";
+	}
+	$sql=sprintf('SELECT COUNT(*) AS cnt FROM accounts 	WHERE kana="%s" OR name="%s" ',
+					mysql_real_escape_string($_POST["accounts_kana"]),
+					mysql_real_escape_string($_POST["accounts_name"])
+		);
+	$result=mysql_query($sql) or die(mysql_error());
+	$table= mysql_fetch_assoc($result);
+	if ($table['cnt']>0) {
+		$error['add_accounts']='duplicate';
+	}
+	
+	if (empty($error)){
+		$sql = sprintf('INSERT INTO accounts SET name="%s", kana="%s", account_classification_id=%d, created=NOW()', 
+							mysql_real_escape_string($_POST["accounts_name"]),
+							mysql_real_escape_string($_POST["accounts_kana"]),
+							mysql_real_escape_string($_POST["account_classification_id"])
+	);
 	mysql_query($sql, $link) or die(mysql_error());
+	} else {
+		$rewrite['accounts_name']=$_POST['accounts_name'];
+		$rewrite['accounts_kana']=$_POST['accounts_kana'];
+		$rewrite['account_classification_id']=$_POST['account_classification_id'];
+	}
+	unset($_POST);
 }
 
 //使用中の口座情報
@@ -158,6 +181,11 @@ while ($row = mysql_fetch_assoc($result)) {
 				<div class = "center">
 					<br><br><h2>登録されている口座から選択</h2>
            			<form method= "post" action= "" name ="user" class = "form-horizontal well">
+             			<?php if ($error['account_id']=='empty'):?>
+								<div class="alert alert-warning">
+									<p class="error">* 使用する口座名にチェックを入れてください</p>
+                    				</div>	
+                    		<?php endif; ?>
              			<?php for ($i = 0, $count_a_c=count($account_classifications);$i< $count_a_c; $i++):?>
              			<br><h2><?php echo $account_classifications[$i]['name']?></h2>
              			<table class="table table-hover table-bordered table-condensed" >
@@ -200,19 +228,35 @@ while ($row = mysql_fetch_assoc($result)) {
 				<div class = "center">
 					<br><h2>上記にない口座を登録</h2>
 					<form action="" method="post" name="add_accounts" class = "form-horizontal well">
+						<?php if ($error['add_accounts']=='duplicate'):?>
+							<div class="alert alert-warning">
+								<p class="error">* すでに登録されています。登録口座一覧を確認下さい</p>
+                				</div>	
+                    		<?php endif; ?>		
 						<label>口座種別</label>
 						<select name="account_classification_id" class="form-control" >
                             <?php //選択肢口座種別情報を入れる?>
+                            <?php //$selected=$rewrite['account_classification_id']?>
                             <?php require 'function/input_account_classifications.php'; ?>
 						</select>
-						<input type="hidden" name="add_accounts" valuse="ture">
-						
 						<label>名称</label>
-						<input type="text" name="accounts_name" class="form-control"/>
+										
+						<?php if ($error["accounts_name"]=="empty"):?>
+							<div class="alert alert-warning">
+								<p class="error">* 入力してください</p>
+                				</div>	
+                    		<?php endif; ?>
+						<input type="text" name="accounts_name" class="form-control" value="<?php echo (htmlspecialchars($rewrite['accounts_name'], ENT_QUOTES)); ?>"/>
 						
 						<label>かな(全角ひらがな)</label>
-						<input type="text" name="accounts_kana" class="form-control"/>
+						<?php if ($error["accounts_kana"]=="no_kana" || $error["accounts_kana"]=="empty"):?>
+							<div class="alert alert-warning">
+								<p class="error">* 全角ひらがなで入力してください</p>
+                				</div>	
+                    		<?php endif; ?>
+						<input type="text" name="accounts_kana" class="form-control" value="<?php echo(htmlspecialchars($rewrite['accounts_kana'], ENT_QUOTES)); ?>" />
 						
+						<input type="hidden" name="key" value="add_accounts">
 						<input type="submit" value="追加" class="btn btn-success"/>
 					</form>
 				</div>
