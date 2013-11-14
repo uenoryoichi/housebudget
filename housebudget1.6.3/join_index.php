@@ -2,7 +2,8 @@
 session_start();
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
-//ここまで
+//関数設定
+require 'library_all.php';
 
 if (!empty($_POST)){
 	//入力不足チェック
@@ -51,12 +52,9 @@ if ($_REQUEST['action']== 'rewrite') {
     <?php include 'include/head.html';?>
 
 <body>
-	
-	<!-- 見出し ここから　-->
 	<div id="head">
 		<h1>登録</h1>
 	</div>
-	<!-- 見出し　ここまで　-->
 	
 	<!-- insert部ここから -->
  	<div class="container">
@@ -67,7 +65,7 @@ if ($_REQUEST['action']== 'rewrite') {
                		<dl>
                		<dt>ニックネーム<span class="label label-danger">必須</span></dt>
                     		<dd>
-                    			<input type = "text" name = "name" class="form-control" value="<?php echo htmlspecialchars($_POST['name'], ENT_QUOTES);?>"/>
+                    			<input type = "text" name = "name" class="form-control" value="<?php echo h($_POST['name']);?>"/>
                    			<?php if ($error['user_name']=='blank'):?>
 								<p class="error">* ニックネームを入力してください</p>
                     			<?php endif; ?>
@@ -75,7 +73,7 @@ if ($_REQUEST['action']== 'rewrite') {
                        	 
                    	<dt>メールアドレス<span class="label label-danger">必須</span></dt>
                    		<dd>
-                   			<input type = "text" name = "email" class="form-control" value="<?php echo htmlspecialchars($_POST['email'], ENT_QUOTES);?>"/>
+                   			<input type = "text" name = "email" class="form-control" value="<?php echo h($_POST['email']);?>"/>
                 			  	<?php if ($error['email']=='blank'):?>
 								<p class="error">* メールアドレスを入力してください</p>
    			               	<?php endif; ?>
@@ -86,7 +84,7 @@ if ($_REQUEST['action']== 'rewrite') {
 						
 					<dt>パスワード<span class="label label-danger">必須</span></dt>
                   		<dd>
-                  			<input type = "password" name = "user_password" maxlength="20" class="form-control"value="<?php echo htmlspecialchars($_POST['password'], ENT_QUOTES);?>"/>
+                  			<input type = "password" name = "user_password" maxlength="20" class="form-control"value="<?php echo h($_POST['password']);?>"/>
         			           	<?php if ($error['password']=='blank'):?>
 								<p class="error">* パスワードを入力してください</p>
                   			<?php endif; ?>
@@ -103,8 +101,8 @@ if ($_REQUEST['action']== 'rewrite') {
           	</div>
      	</div>
   	</div>
-	<!-- insert部ここまで -->
-        
+
+  	<?php include 'include/footer.html';?>
     </body>
 </html>
 

@@ -5,6 +5,8 @@ session_start();
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
+//関数設定
+require 'library_all.php';
 
 if (!empty($_POST)){
 	//入力不足チェック
@@ -25,7 +27,7 @@ $sql = sprintf('SELECT pay.*, DATE(pay.date) AS date_ymd ,accounts.name
  					JOIN accounts ON user_accounts.account_id=accounts.id 
  				WHERE pay.user_id=%d 
  				ORDER BY DATE DESC',
-    				$_SESSION['user_id']
+    				mysql_real_escape_string($_SESSION['user_id'])
 );
 $result = mysql_query($sql, $link);
 while ($row = mysql_fetch_assoc($result)) {
@@ -87,7 +89,7 @@ while ($row = mysql_fetch_assoc($result)) {
 							<?php 
 								$bunrui_array = array("交通費","食費","消耗品","交際費","その他");
 								for ($i=0; $i<count($bunrui_array); $i++){
-									print('<option value="'.$bunrui_array[$i].'">'.$bunrui_array[$i].'</option>');
+									print('<option value="'.h($bunrui_array[$i]).'">'.h($bunrui_array[$i]).'</option>');
 								}
 							?>
 							</select>
@@ -125,15 +127,15 @@ while ($row = mysql_fetch_assoc($result)) {
 						<?php for ($i = 0; $i < count($pay); $i++): ?>
 						<tbody>					
 							<tr>
-								<td><?php print(htmlspecialchars($pay[$i]['date_ymd'], ENT_QUOTES));?></td>
-								<td><?php print(htmlspecialchars($pay[$i]['how_much'], ENT_QUOTES));?></td>
-								<td><?php print(htmlspecialchars($pay[$i]['what'], ENT_QUOTES));?></td>
-								<td><?php print(htmlspecialchars($pay[$i]['name'], ENT_QUOTES));?></td>
-								<td><?php print(htmlspecialchars($pay[$i]['type'], ENT_QUOTES));?></td>
+								<td><?php print(h($pay[$i]['date_ymd']));?></td>
+								<td><?php print(h($pay[$i]['how_much']));?></td>
+								<td><?php print(h($pay[$i]['what']));?></td>
+								<td><?php print(h($pay[$i]['name']));?></td>
+								<td><?php print(h($pay[$i]['type']));?></td>
 								<td class="center">
 									<form method = "POST" action = "pay_update.php" >
                  					<?php  //編集　id送信 ?>
-										<input type = "hidden" name = "id" value=<?php print(htmlspecialchars($pay[$i]['id'], ENT_QUOTES));?> >
+										<input type = "hidden" name = "id" value=<?php print(h($pay[$i]['id']));?> >
 										<input type = "submit" value = "編集" class="btn btn-success btn-xs" >
                 						</form>
  	           					</td>
@@ -141,7 +143,7 @@ while ($row = mysql_fetch_assoc($result)) {
 									<form method = "POST" action = "delete_action.php" >
 	    	     					        	<?php  //削除　収入キー送信　id送信 ?>
 										<input type = "hidden" name = "key" value="pay" >
-										<input type = "hidden" name = "id" value=<?php print(htmlspecialchars($pay[$i]['id'], ENT_QUOTES));?> >
+										<input type = "hidden" name = "id" value=<?php print(h($pay[$i]['id']));?> >
 										<input type = "submit" value = "削除" class="btn btn-danger btn-xs" onclick="return confirm('削除してよろしいですか');">
                 						</form>
 								</td>

@@ -4,6 +4,9 @@ session_start();
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
+//関数設定
+require 'library_all.php';
+
 
 
 //口座選択ボタン
@@ -60,9 +63,9 @@ if ($_POST['key']=="add_accounts") {
 
 //使用中の口座情報
 $sql = sprintf('SELECT a.name,a.account_classification_id, u.*  FROM user_accounts u 
-		JOIN accounts a ON u.account_id=a.id 
-                WHERE u.user_id=%d',
-				($_SESSION['user_id'])
+			JOIN accounts a ON u.account_id=a.id 
+               	WHERE u.user_id=%d',
+				mysql_real_escape_string($_SESSION['user_id'])
 );
 $result = mysql_query($sql, $link);
 while ($row = mysql_fetch_assoc($result)) {
@@ -128,7 +131,7 @@ while ($row = mysql_fetch_assoc($result)) {
 					<?php endif;?>
              		
              		<?php for ($i = 0, $count_a_c=count($account_classifications);$i< $count_a_c; $i++):?>
-             			<h3><?php echo $account_classifications[$i]['name']?></h3>
+             			<h3><?php echo h($account_classifications[$i]['name']);?></h3>
              			<table class="table table-hover table-bordered table-condensed">
 							<thead>
 								<tr>
@@ -145,10 +148,10 @@ while ($row = mysql_fetch_assoc($result)) {
 							<tbody>
 								<tr>
 								<?php if ($_POST['can_delete']=="true"):?>
-									<td class="center"><input type="radio" name="user_accounts_id" value="<?php echo $using_accounts[$j]['id']; ?>"/></td>	<?php //削除アクション有効?>
+									<td class="center"><input type="radio" name="user_accounts_id" value="<?php echo h($using_accounts[$j]['id']); ?>"/></td>	<?php //削除アクション有効?>
 								<?php endif;?>
-									<td><?php print (htmlspecialchars($using_accounts[$j]['name'], ENT_QUOTES));?></td> 	
-									<td>	<?php print (htmlspecialchars($using_accounts[$j]['balance'], ENT_QUOTES));?></td>
+									<td><?php print (h($using_accounts[$j]['name']));?></td> 	
+									<td>	<?php print (h($using_accounts[$j]['balance']));?></td>
 								</tr>
 							<?php endif;?>
 							<?php endfor;?>
@@ -200,8 +203,8 @@ while ($row = mysql_fetch_assoc($result)) {
 							<?php if ($not_using_accounts[$j]['account_classification_id']==$account_classifications[$i]['id']):?>
 							<tbody>
 								<tr>
-									<td class="center"><input type="checkbox" name="account_id[]" value="<?php echo $not_using_accounts[$j]['id']?>" /></td>
-									<td><?php print (htmlspecialchars($not_using_accounts[$j]['name'], ENT_QUOTES));?></td>
+									<td class="center"><input type="checkbox" name="account_id[]" value="<?php echo h($not_using_accounts[$j]['id']);?> " /></td>
+									<td><?php print (h($not_using_accounts[$j]['name']));?></td>
 								</tr>
 							</tbody>
 							<?php endif;?>
@@ -246,7 +249,7 @@ while ($row = mysql_fetch_assoc($result)) {
 								<p class="error">* 入力してください</p>
                 				</div>	
                     		<?php endif; ?>
-						<input type="text" name="accounts_name" class="form-control" value="<?php echo (htmlspecialchars($rewrite['accounts_name'], ENT_QUOTES)); ?>"/>
+						<input type="text" name="accounts_name" class="form-control" value="<?php echo (h($rewrite['accounts_name'])); ?>"/>
 						
 						<label>かな(全角ひらがな)</label>
 						<?php if ($error["accounts_kana"]=="no_kana" || $error["accounts_kana"]=="empty"):?>
@@ -254,7 +257,7 @@ while ($row = mysql_fetch_assoc($result)) {
 								<p class="error">* 全角ひらがなで入力してください</p>
                 				</div>	
                     		<?php endif; ?>
-						<input type="text" name="accounts_kana" class="form-control" value="<?php echo(htmlspecialchars($rewrite['accounts_kana'], ENT_QUOTES)); ?>" />
+						<input type="text" name="accounts_kana" class="form-control" value="<?php echo(h($rewrite['accounts_kana'])); ?>" />
 						
 						<input type="hidden" name="key" value="add_accounts">
 						<input type="submit" value="追加" class="btn btn-success"/>
@@ -273,4 +276,3 @@ while ($row = mysql_fetch_assoc($result)) {
 	
 </body>
 </html>
-

@@ -4,13 +4,13 @@ session_start();
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
-?>
+//関数設定
+require 'library_all.php';
 
-<?php 
 $sql = sprintf('SELECT *
  				FROM users
  				WHERE id=%d',
-		$_SESSION['user_id']
+		mysql_real_escape_string($_SESSION['user_id'])
 );
 $result = mysql_query($sql, $link) or die(mysql_error());
 while ($row = mysql_fetch_assoc($result)) {
@@ -21,12 +21,9 @@ while ($row = mysql_fetch_assoc($result)) {
 
 <!DOCTYPE html>
 <html lang=ja>
-	<!-- ヘッダー -->
     <?php include 'include/head.html';?>
 
 <body>
-
-    <!-- 見出し -->
 	<div id="head">
 		<h1>お問い合わせフォーム</h1>
 	</div>
@@ -41,7 +38,7 @@ while ($row = mysql_fetch_assoc($result)) {
           		<form method = "POST" action = "mail_action.php" class = "form-horizontal well">
 					<dl>
 					<dt>連絡先(Emailアドレス)</dt>
-						<dd><input name="email" type="text" class="form-control" maxlength="255" value=<?php echo $users["email"];?>></dd>
+						<dd><input name="email" type="text" class="form-control" maxlength="255" value=<?php echo h($users["email"]);?>></dd>
 					<dt>件名</dt>
 						<dd><input name="subject" type="text" class="form-control" maxlength="255" /></dd>
 					<dt>内容</dt>

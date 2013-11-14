@@ -4,8 +4,11 @@ session_start();
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
+//関数取得
+require 'library_all.php';
 //口座の現在残高取得
 require 'function/calculate_account_balance.php';
+
 
 if (!empty($_POST['key'])){
 	//金額<-数字チェック
@@ -25,7 +28,6 @@ if (!empty($_POST['key'])){
 
 <!DOCTYPE html>
 <html lang=ja>
-	<!-- ヘッダー -->
     <?php include 'include/head.html';?>
 
 <body>
@@ -58,10 +60,10 @@ if (!empty($_POST['key'])){
 							<?php for ($i = 0, $count_accounts=count($account); $i < $count_accounts;  $i++): ?>
 							<tbody>
 								<tr>
-									<td><?php print(htmlspecialchars($account[$i]['name'], ENT_QUOTES));?></td>
+									<td><?php print(h($account[$i]['name']));?></td>
 									<td>
-										<input type = "hidden" name = "user_accounts_id[]"  value="<?php print (htmlspecialchars($account[$i]['id'],ENT_QUOTES));?>"/>
-										<input type = "text" name = "balance[]" class="form-control input-sm text-right" value="<?php print (htmlspecialchars($account[$i]['balance'],ENT_QUOTES));?>"/>
+										<input type = "hidden" name = "user_accounts_id[]"  value="<?php print (h($account[$i]['id']));?>"/>
+										<input type = "text" name = "balance[]" class="form-control input-sm text-right" value="<?php print (h($account[$i]['balance']));?>"/>
 									</td>
 								</tr>
 							</tbody>

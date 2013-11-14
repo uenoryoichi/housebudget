@@ -1,8 +1,8 @@
 <?php
-
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
-//ここまで
+//関数設定
+require 'library_all.php';
 
 session_start();
 
@@ -65,7 +65,7 @@ if (!empty($_POST)) {
 					<dl>
 						<dt>メールアドレス</dt>
 							<dd>
-								<input type = "text" name = "email" maxlength="255" class="form-control"" value="<?php echo htmlspecialchars($_POST['email']);?>"/>
+								<input type = "text" name = "email" maxlength="255" class="form-control"" value="<?php echo h($_POST['email']);?>"/>
                     				<?php if ($error['login']=='blank'):?>
 									<p class="error">* メールアドレスとパスワードを入力してください</p>
                     				<?php endif; ?>
@@ -75,7 +75,7 @@ if (!empty($_POST)) {
                     			</dd>
 						<dt>パスワード</dt>
 							<dd>
-                    				<input type = "password" name = "password" maxlength="20" class="form-control" value="<?php echo htmlspecialchars($_POST['password']);?>"/>
+                    				<input type = "password" name = "password" maxlength="20" class="form-control" value="<?php echo h($_POST['password']);?>"/>
 							</dd>
 							<?php //ログイン情報の記録?>
 							<dd>

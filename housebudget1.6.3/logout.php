@@ -1,5 +1,8 @@
 <?php
 session_start();
+//関数設定
+require 'library_all.php';
+
 
 //セッション情報を削除
 $_SESSION=array();

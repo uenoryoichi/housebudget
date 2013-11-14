@@ -1,19 +1,8 @@
 <?php 	
-	/*
-	 * sessionに保存されているuser_idをもちいて
-	 * user_accountからユーザーの口座情報を取り出す
-	 * その後、残高確認を行って以降の支払い、収入、口座間移動情報を取り出し計算
-	 * 現時点での残高に変更する
-	 * $account=>array($key,name,id,user_id,account_id,balance,checked,created,modified)
-	 * $pay=>array($key,account_id,sum(p.hou_much)
-	 * $income=>array($key,account_id,sum(i.amount)
-	 * $transfer_remitter=>array($key,account_id,sum(t.amount)
-	 * $transfer_remittee=>array($key,account_id,sum(t.amount)
-	 */
 	
 	//account情報を入手
     $sql = sprintf('SELECT a.name, u.* FROM user_accounts u JOIN accounts a ON u.account_id=a.id WHERE u.user_id=%d ORDER BY ID ASC',
-		($_SESSION['user_id'])
+					mysql_real_escape_string($_SESSION['user_id'])
 	);
 	$result = mysql_query($sql, $link);
 	while ($row = mysql_fetch_assoc($result)) {
@@ -27,7 +16,7 @@
 					WHERE p.user_accounts_id 
 						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=%d) AND p.date>u.checked 
 					GROUP BY p.user_accounts_id',
-				($_SESSION['user_id'])
+					mysql_real_escape_string($_SESSION['user_id'])
 	);
 	$result = mysql_query($sql, $link);
 	while ($row = mysql_fetch_assoc($result)) {
@@ -41,7 +30,7 @@
 					WHERE i.user_accounts_id 
 						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=%d) AND i.date>u.checked 
 					GROUP BY i.user_accounts_id',
-				($_SESSION['user_id'])
+					mysql_real_escape_string($_SESSION['user_id'])
 	);
 	$result = mysql_query($sql, $link);
 	while ($row = mysql_fetch_assoc($result)) {
@@ -56,7 +45,7 @@
 					WHERE t.user_accounts_id_remitter
 						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=%d) AND t.date>u.checked 
 					GROUP BY t.user_accounts_id_remitter',
-				($_SESSION['user_id'])
+					mysql_real_escape_string($_SESSION['user_id'])
 	);	
 	$result = mysql_query($sql, $link) or die(mysql_error());;
 	while ($row = mysql_fetch_assoc($result)) {
@@ -69,7 +58,7 @@
 					WHERE t.user_accounts_id_remittee
 						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=%d) AND t.date>u.checked
 					GROUP BY t.user_accounts_id_remittee',
-			($_SESSION['user_id'])
+			  		mysql_real_escape_string($_SESSION['user_id'])
 	);
 	$result = mysql_query($sql, $link) or die(mysql_error());
 	while ($row = mysql_fetch_assoc($result)) {

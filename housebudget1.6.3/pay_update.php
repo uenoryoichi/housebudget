@@ -4,6 +4,10 @@ session_start();
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
+//関数設定
+require 'library_all.php';
+
+
 if (!empty($_POST['key'])){
 	//金額<-数字チェック
 	if (!is_numeric($_POST['how_much'] )){
@@ -21,7 +25,7 @@ if (!empty($_POST['key'])){
 	}
 }
 
-$id=htmlspecialchars($_POST['id'], ENT_QUOTES);
+$id=$_POST['id'];
 $sql=sprintf("SELECT pay.*, accounts.name 
  				FROM pay 
  					JOIN user_accounts ON pay.user_accounts_id=user_accounts.id 
@@ -48,12 +52,12 @@ $date=mysql_fetch_assoc($result);
    	<div class="container">
       	<div class="row">
         		<div class="col-md-offset-3 col-xs-6">
-             	<br><h2>修正フォーム   ID：<?php print (htmlspecialchars($date['id'],ENT_QUOTES));?></h2>
+             	<br><h2>修正フォーム   ID：<?php print (h($date['id']));?></h2>
                 	<form method = "POST" action = "" class = "form-horizontal well">
 					<dl>
                 		<dt>金額</dt>
                     		<dd>
-                    			<input type = "text" name = "how_much" class="form-control" value="<?php print (htmlspecialchars($date['how_much'],ENT_QUOTES));?>"/>
+                    			<input type = "text" name = "how_much" class="form-control" value="<?php print (h($date['how_much']));?>"/>
                     			<?php if ($error['how_much']=='int'):?>
 								<div class="alert alert-warning">
 									<p class="error">* 数字（半角）を入力してください</p>
@@ -63,12 +67,12 @@ $date=mysql_fetch_assoc($result);
                         	
                      	<dt>内容</dt>
                     		<dd>
-                    			<input type = "text" name = "what" class="form-control" value="<?php print (htmlspecialchars($date['what'],ENT_QUOTES));?>"/>
+                    			<input type = "text" name = "what" class="form-control" value="<?php print (h($date['what']));?>"/>
 						</dd>
 						
 					<dt>日付</dt>
                      		<dd>
-                     			<input type = "text" name = "date" class="form-control" value="<?php print (htmlspecialchars($date['date'],ENT_QUOTES));?>"/>
+                     			<input type = "text" name = "date" class="form-control" value="<?php print (h($date['date']));?>"/>
                      			<?php if ($error['date']=='date'):?>
 								<div class="alert alert-warning">
 									<p class="error">* <?php echo date('Y-m-d H:i:s');?> のフォーマットで入力してください</p>
@@ -87,12 +91,12 @@ $date=mysql_fetch_assoc($result);
 						
 					<dt>分類</dt>
                      		<dd>
-                     			<input type = "text" name = "type" class="form-control" value="<?php print (htmlspecialchars($date['type'],ENT_QUOTES));?>"/>
+                     			<input type = "text" name = "type" class="form-control" value="<?php print (h($date['type']));?>"/>
                        	</dd>
                     	</dl>
                      	<div class="center">
                     		<!-- 送信ボタン -->
-           				<input type = "hidden" name="id" value="<?php print(htmlspecialchars($id, ENT_QUOTES));?>"> 
+           				<input type = "hidden" name="id" value="<?php print(h($id));?>"> 
                 	    		<input type = "hidden" name = "key" value="pay" >
 						<input type = "submit" value = "修正を送信" class="btn btn-primary">
             			</div>
@@ -107,7 +111,7 @@ $date=mysql_fetch_assoc($result);
 			<div class="col-md-offset-3 col-md-6">
 				<div class="center">
                		<form method= "post" action= "delete_action.php" class = "form-horizontal well" >
-            				<input type= "hidden" name="pay_id" value="<?php print(htmlspecialchars($id, ENT_QUOTES));?>"> 
+            				<input type= "hidden" name="pay_id" value="<?php print(h($id));?>"> 
            				<input type = "hidden" name = "key" value="pay" >
                			<input type= "submit" value= "この項目を削除" class="btn btn-danger" onclick="return confirm('削除してよろしいですか');">
            			</form>

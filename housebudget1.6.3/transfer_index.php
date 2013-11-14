@@ -4,6 +4,9 @@ session_start();
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
+//関数設定
+require 'library_all.php';
+
 
 if (!empty($_POST)){
 	//金額<-数字チェック
@@ -26,7 +29,7 @@ if (!empty($_POST)){
  					JOIN accounts AS a_ee ON u_ee.account_id=a_ee.id
 				WHERE transfer.user_id=%d 
  				ORDER BY DATE DESC',
-    				$_SESSION['user_id']
+    				mysql_real_escape_string($_SESSION['user_id'])
 	);
 	$result = mysql_query($sql, $link);
 	while ($row = mysql_fetch_assoc($result)) {
@@ -49,7 +52,6 @@ if (!empty($_POST)){
 	<!-- メニューバー -->
 	<?php include 'include/menu.html';?>
 	
-	<!-- insert部 -->
 	<div class="container">
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-xs-6">
@@ -125,15 +127,15 @@ if (!empty($_POST)){
 						<?php for ($i = 0, $count_transfer=count($transfer); $i < $count_transfer; $i++): ?>
 						<tbody>
 							<tr>
-								<td><?php print(htmlspecialchars($transfer[$i]['amount'], ENT_QUOTES));?></td>
-								<td><?php print(htmlspecialchars($transfer[$i]['remitter_name'], ENT_QUOTES));?></td>
-								<td><?php print(htmlspecialchars($transfer[$i]['remittee_name'], ENT_QUOTES));?></td>
-								<td><?php print(htmlspecialchars($transfer[$i]['date'], ENT_QUOTES));?></td>
-								<td><?php print(htmlspecialchars($transfer[$i]['memo'], ENT_QUOTES));?></td>
+								<td><?php print(h($transfer[$i]['amount']));?></td>
+								<td><?php print(h($transfer[$i]['remitter_name']));?></td>
+								<td><?php print(h($transfer[$i]['remittee_name']));?></td>
+								<td><?php print(h($transfer[$i]['date']));?></td>
+								<td><?php print(h($transfer[$i]['memo']));?></td>
 								<td class="center">
 									<form method = "POST" action = "transfer_update.php" >
                  						<?php  //編集　id送信 ?>
-										<input type = "hidden" name = "id" value=<?php print(htmlspecialchars($transfer[$i]['id'], ENT_QUOTES));?> >
+										<input type = "hidden" name = "id" value=<?php print(h($transfer[$i]['id']));?> >
 										<input type = "submit" value = "編集" class="btn btn-success btn-xs" >
                 						</form>
            					 	</td>
@@ -141,7 +143,7 @@ if (!empty($_POST)){
                 						<form method = "POST" action = "delete_action.php" >
                  						<?php  //削除　収入キー送信　id送信 ?>
 										<input type = "hidden" name = "key" value="transfer" >
-										<input type = "hidden" name = "id" value=<?php print(htmlspecialchars($transfer[$i]['id'], ENT_QUOTES));?> >
+										<input type = "hidden" name = "id" value=<?php print(h($transfer[$i]['id']));?> >
 										<input type = "submit" value = "削除" class="btn btn-danger btn-xs" onclick="return confirm('削除してよろしいですか');">
                 						</form>
 								</td>
