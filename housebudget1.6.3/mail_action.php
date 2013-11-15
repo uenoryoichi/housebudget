@@ -10,10 +10,10 @@ require 'library_all.php';
 mb_language("japanese");
 mb_internal_encoding("UTF-8");
  
-if (!empty($_POST['email'])) {
-	$to = $_POST['email'];
-	$subject = $_POST['subject'];
-	$body = $_POST['message'];
+if (!empty($_SESSION['inquiry']['email'])) {
+	$to = $_SESSION['inquiry']['email'];
+	$subject = $_SESSION['inquiry']['subject'];
+	$body = $_SESSION['inquiry']['message'];
 	$from = mb_encode_mimeheader(mb_convert_encoding("my家計簿 自動送信","JIS","UTF-8"))."<support@lost-waldo.jp>";
 	
 	$success = mb_send_mail($to,$subject,$body,"From:".$from);
@@ -29,7 +29,6 @@ if (!empty($_POST['email'])) {
 		<h1>収入一覧</h1>
 	</div>
 
-	<!-- メニューバー -->
 	<?php include 'include/menu.html';?>
 	
 <div id="content">
