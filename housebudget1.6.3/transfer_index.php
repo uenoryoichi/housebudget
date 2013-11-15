@@ -4,9 +4,23 @@ session_start();
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
-?>
+//関数設定
+require 'library_all.php';
 
-<?php
+
+if (!empty($_POST)){
+	//金額<-数字チェック
+	if (!is_numeric($_POST['amount'] )){
+		$error['amount']='int';
+	}
+	//エラーがなければ次へ
+	if (empty($error)){
+		$_SESSION['transfer'] = $_POST;
+		$_SESSION['key'] = $_POST['key'];
+		header('Location: insert_action.php');
+	}
+}
+
     $sql =sprintf('SELECT transfer.*, a_er.name AS remitter_name, a_ee.name AS remittee_name
  				FROM transfer 
  					JOIN user_accounts AS u_er ON transfer.user_accounts_id_remitter=u_er.id 
@@ -15,7 +29,7 @@ require 'function/login_check.php';
  					JOIN accounts AS a_ee ON u_ee.account_id=a_ee.id
 				WHERE transfer.user_id=%d 
  				ORDER BY DATE DESC',
-    				$_SESSION['user_id']
+    				mysql_real_escape_string($_SESSION['user_id'])
 	);
 	$result = mysql_query($sql, $link);
 	while ($row = mysql_fetch_assoc($result)) {
@@ -24,13 +38,13 @@ require 'function/login_check.php';
 ?>
 
 
+
 <!DOCTYPE html>
 <html lang=ja>
 	<!-- ヘッダー -->
     <?php include 'include/head.html';?>
 	
 <body>
-    <!-- 見出し　-->
 	<div id="head">
 		<h1>口座移動一覧</h1>
 	</div>
@@ -38,17 +52,21 @@ require 'function/login_check.php';
 	<!-- メニューバー -->
 	<?php include 'include/menu.html';?>
 	
-	<!-- insert部 -->
 	<div class="container">
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-xs-6">
               	<br><h2>口座移動情報入力フォーム</h2>
                 	<div class="control-group">
-                   	<form method = "POST" action = "insert_action.php" class = "form-horizontal well">
+                   	<form method = "POST" action = "" class = "form-inline well">
                     		<dl>
                     		<dt>金額</dt>
                        		<dd>
                        			<input type = "text" name = "amount" class="form-control" >
+                       			<?php if ($error['amount']=='int'):?>
+								<div class="alert alert-warning">
+									<p class="error">* 数字（半角）を入力してください</p>
+                    				</div>	
+                    				<?php endif; ?>
                          		</dd>
                          		
                        	<dt>送り手</dt>
@@ -68,10 +86,9 @@ require 'function/login_check.php';
 							</dd>
 							
 						<dt>移動日</dt>
-							<?php $today = date("Y-m-d");?>
-    	                   		<dd>
-    	                   			<input type = "text" name = "date" class="form-control" value=<?php echo $today?>>
-                            	</dd>
+                   			<dd>
+                   				<?php require_once 'function/form_date.php';?>	
+                   			</dd>
                             	
                        	<dt>memo</dt>
                        		<dd>
@@ -110,15 +127,15 @@ require 'function/login_check.php';
 						<?php for ($i = 0, $count_transfer=count($transfer); $i < $count_transfer; $i++): ?>
 						<tbody>
 							<tr>
-								<td><?php print(htmlspecialchars($transfer[$i]['amount'], ENT_QUOTES));?></td>
-								<td><?php print(htmlspecialchars($transfer[$i]['remitter_name'], ENT_QUOTES));?></td>
-								<td><?php print(htmlspecialchars($transfer[$i]['remittee_name'], ENT_QUOTES));?></td>
-								<td><?php print(htmlspecialchars($transfer[$i]['date'], ENT_QUOTES));?></td>
-								<td><?php print(htmlspecialchars($transfer[$i]['memo'], ENT_QUOTES));?></td>
+								<td><?php print(h($transfer[$i]['amount']));?></td>
+								<td><?php print(h($transfer[$i]['remitter_name']));?></td>
+								<td><?php print(h($transfer[$i]['remittee_name']));?></td>
+								<td><?php print(h($transfer[$i]['date']));?></td>
+								<td><?php print(h($transfer[$i]['memo']));?></td>
 								<td class="center">
 									<form method = "POST" action = "transfer_update.php" >
                  						<?php  //編集　id送信 ?>
-										<input type = "hidden" name = "id" value=<?php print(htmlspecialchars($transfer[$i]['id'], ENT_QUOTES));?> >
+										<input type = "hidden" name = "id" value=<?php print(h($transfer[$i]['id']));?> >
 										<input type = "submit" value = "編集" class="btn btn-success btn-xs" >
                 						</form>
            					 	</td>
@@ -126,7 +143,7 @@ require 'function/login_check.php';
                 						<form method = "POST" action = "delete_action.php" >
                  						<?php  //削除　収入キー送信　id送信 ?>
 										<input type = "hidden" name = "key" value="transfer" >
-										<input type = "hidden" name = "id" value=<?php print(htmlspecialchars($transfer[$i]['id'], ENT_QUOTES));?> >
+										<input type = "hidden" name = "id" value=<?php print(h($transfer[$i]['id']));?> >
 										<input type = "submit" value = "削除" class="btn btn-danger btn-xs" onclick="return confirm('削除してよろしいですか');">
                 						</form>
 								</td>

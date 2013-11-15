@@ -1,19 +1,9 @@
 <?php
-
-/*
- * バージョン管理
- * 1.6.3
- * 
- * メモ
- * マスタ利用時修正必要
- * 
- * 
- */
-
-
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
-//ここまで
+//関数設定
+require 'library_all.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -22,14 +12,10 @@ require 'function/connect_housebudget.php';
     <?php include 'include/head.html';?>
 
 <body>
-
-	<!-- 見出し ここから　-->
 	<div id="head">
 		<h1>登録完了</h1>
 	</div>
-	<!-- 見出し　ここまで　-->
 	
-	<!-- insert部ここから -->
 	<div class="col-md-offset-3 col-md-6">
 		<div class="jumbotron" >
   			<h1>ようこそ！</h1>
@@ -38,23 +24,6 @@ require 'function/connect_housebudget.php';
   			<p><a href="index.php" class="btn btn-primary btn-lg">ログインする</a></p>
 		</div>
 	</div>
-	
-<!--  <div id="content">
-	<div class = "center">
-		<br>
-		<br>
-		<h3>ユーザー登録が完了しました</h3>
-		<br>
-		<br>
-		 <h2>
-		 	<a href="index.php" class="btn btn-primary">ログインする</a>
-		 </h2>
-  	</div>
-</div>
--->
-	<!-- insert部ここまで -->
-	
-	
         
 </body>
 </html>

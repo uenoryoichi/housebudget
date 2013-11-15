@@ -4,6 +4,9 @@ session_start();
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
+//関数設定
+require 'library_all.php';
+
 //キーの格納
 $key=htmlspecialchars($_POST['key'], ENT_QUOTES);
 
@@ -11,8 +14,8 @@ $key=htmlspecialchars($_POST['key'], ENT_QUOTES);
 //削除要求 支払い
 if ($key=="pay") {
 	$sql=sprintf("DELETE FROM pay WHERE id=%d AND user_id=%d",
-			mysql_real_escape_string(htmlspecialchars($_REQUEST['id'], ENT_QUOTES)),
-			mysql_real_escape_string(htmlspecialchars($_SESSION['user_id'], ENT_QUOTES))
+			mysql_real_escape_string($_POST['id']),
+			mysql_real_escape_string($_SESSION['user_id'])
 	);
 	mysql_query($sql) or die(mysql_error());
 }
@@ -20,8 +23,8 @@ if ($key=="pay") {
 //削除要求　収入
 if ($key =="income") {
 		$sql=sprintf("DELETE FROM income WHERE id=%d AND user_id=%d",
-			mysql_real_escape_string(htmlspecialchars($_REQUEST['id'], ENT_QUOTES)),
-			mysql_real_escape_string(htmlspecialchars($_SESSION['user_id'], ENT_QUOTES))
+			mysql_real_escape_string($_POST['id']),
+			mysql_real_escape_string($_SESSION['user_id'])
 	);
 	mysql_query($sql) or die(mysql_error());
 }
@@ -29,8 +32,8 @@ if ($key =="income") {
 //削除要求　口座移動
 if ($key =="transfer") {
 	$sql=sprintf("DELETE FROM transfer WHERE id=%d AND user_id=%d",
-			mysql_real_escape_string(htmlspecialchars($_REQUEST['id'], ENT_QUOTES)),
-			mysql_real_escape_string(htmlspecialchars($_SESSION['user_id'], ENT_QUOTES))
+			mysql_real_escape_string($_POST['id']),
+			mysql_real_escape_string($_SESSION['user_id'])
 	);
 	mysql_query($sql) or die(mysql_error());
 }
@@ -38,8 +41,8 @@ if ($key =="transfer") {
 //削除要求　ユーザー使用口座
 if ($key =="user_accounts") {
 	$sql=sprintf("DELETE FROM user_accounts WHERE id=%d AND user_id=%d",
-			mysql_real_escape_string(htmlspecialchars($_REQUEST['user_accounts_id'], ENT_QUOTES)),
-			mysql_real_escape_string(htmlspecialchars($_SESSION['user_id'], ENT_QUOTES))
+			mysql_real_escape_string($_POST['user_accounts_id']),
+			mysql_real_escape_string($_SESSION['user_id'])
 	);
 	mysql_query($sql) or die(mysql_error());
 }
@@ -47,20 +50,15 @@ if ($key =="user_accounts") {
 ?>
 <!DOCTYPE html>
 <html lang=ja>
-	<!-- ヘッダーここから -->
     <?php include 'include/head.html';?>
 	
 <body>
-
-<!-- 見出し -->
 <div id="head">
 	<h1>削除処理</h1>
 </div>
-
 <!-- メニューバー -->
 <?php include 'include/menu.html';?>
-	
-<!-- 実行内容表示 -->
+
 <div id="content">
 	<div class = "center">
 		<br>

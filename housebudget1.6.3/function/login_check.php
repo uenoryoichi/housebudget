@@ -1,12 +1,4 @@
 <?php
-
-/*
- * ログインをチェックする関数
- * need：session_start();
- * need：require 'connect_housebudget.php';
- */
-
-
 if (isset($_SESSION['user_id']) && $_SESSION['time'] + 3600 > time()) {
 	// ログインしている
 	$_SESSION['time'] = time();
