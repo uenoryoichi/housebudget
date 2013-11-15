@@ -4,19 +4,33 @@ session_start();
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
+//関数取得
+require 'library_all.php';
 //口座の現在残高取得
 require 'function/calculate_account_balance.php';
+
+
+if (!empty($_POST['key'])){
+	//金額<-数字チェック
+	for ($i = 0, $count=count($_POST['balance']); $i < $count; $i++)
+	if (!is_numeric($_POST['balance'][$i] )){
+		$error['balance']='int';
+	}
+	//エラーがなければ次へ
+	if (empty($error)){
+		$_SESSION['account_balance'] = $_POST;
+		$_SESSION['key'] = $_POST['key'];
+		header('Location: update_action.php');
+	}
+}
+
 ?>
 
 <!DOCTYPE html>
 <html lang=ja>
-	<!-- ヘッダーここから -->
     <?php include 'include/head.html';?>
 
-	<!-- 本文　ここから -->	
 <body>
-	
-	<!-- 見出し ここから　-->
 	<div id="head">
 		<h1>口座情報更新</h1>
 	</div>
@@ -24,14 +38,18 @@ require 'function/calculate_account_balance.php';
 	<!-- メニューバー -->
 	<?php include 'include/menu.html';?>
 	
-	<!-- 見出し　ここまで　-->
 	<div class="container">
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-md-6">
 				<div class = "center">
 					<br>
 					<h2>口座残高情報更新</h2>
-           			<form method="POST" action="update_action.php" class="form-horizontal well">
+           			<form method="POST" action="" class="form-horizontal well">
+	           			<?php if ($error['balance']=='int'):?>
+								<div class="alert alert-warning">
+									<p class="error">* 数字（半角）を入力してください</p>
+                    				</div>	
+                    		<?php endif; ?>
 	           			<table class="table table-hover table-bordered">
 							<thead>
 								<tr>
@@ -42,10 +60,10 @@ require 'function/calculate_account_balance.php';
 							<?php for ($i = 0, $count_accounts=count($account); $i < $count_accounts;  $i++): ?>
 							<tbody>
 								<tr>
-									<td><?php print(htmlspecialchars($account[$i]['name'], ENT_QUOTES));?></td>
+									<td><?php print(h($account[$i]['name']));?></td>
 									<td>
-										<input type = "hidden" name = "user_accounts_id[]"  value="<?php print (htmlspecialchars($account[$i]['id'],ENT_QUOTES));?>"/>
-										<input type = "text" name = "balance[]" class="form-control input-sm text-right" value="<?php print (htmlspecialchars($account[$i]['balance'],ENT_QUOTES));?>"/>
+										<input type = "hidden" name = "user_accounts_id[]"  value="<?php print (h($account[$i]['id']));?>"/>
+										<input type = "text" name = "balance[]" class="form-control input-sm text-right" value="<?php print (h($account[$i]['balance']));?>"/>
 									</td>
 								</tr>
 							</tbody>

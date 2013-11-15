@@ -13,14 +13,14 @@ while ($row = mysql_fetch_assoc($result)) {
 if(isset($selected)){		//更新時
 	for ($i=0,$count_accounts=count($accounts); $i<$count_accounts; $i++){
 		if ($selected==$accounts[$i]['id']) {
-			print ('<option value="'.$accounts[$i]['id'].'" selected>'.$accounts[$i]['name'].'</option>');
+			print ('<option value="'.h($accounts[$i]['id']).'" selected>'.h($accounts[$i]['name']).'</option>');
 		}else {
-			print('<option value="'.$accounts[$i]['id'].'">'.$accounts[$i]['name'].'</option>');
+			print('<option value="'.h($accounts[$i]['id']).'">'.h($accounts[$i]['name']).'</option>');
 		}
 	}
 }else {							//入力時
 	for ($i=0,$count_accounts=count($accounts); $i<$count_accounts; $i++){
-		print('<option value="'.$accounts[$i]['id'].'">'.$accounts[$i]['name'].'</option>');
+		print('<option value="'.h($accounts[$i]['id']).'">'.h($accounts[$i]['name']).'</option>');
 		
 	}
 }

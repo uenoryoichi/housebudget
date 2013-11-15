@@ -8,7 +8,7 @@ while ($row = mysql_fetch_assoc($result)) {
 }
 							//入力時
 for ($i=0,$count_account_classifications=count($account_classifications); $i<$count_account_classifications; $i++){
-	print('<option value="'.$account_classifications[$i]['id'].'">'.$account_classifications[$i]['name'].'</option>');
+	print('<option value="'.h($account_classifications[$i]['id']).'">'.h($account_classifications[$i]['name']).'</option>');
 }
 
 ?>

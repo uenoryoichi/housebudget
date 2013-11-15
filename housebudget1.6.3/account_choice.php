@@ -4,29 +4,68 @@ session_start();
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
-?>
+//関数設定
+require 'library_all.php';
 
-<?php 
-//優先：登録口座追加
-if (isset($_POST['accounts_name'])&&isset($_POST["accounts_kana"])) {
-	$accounts_name=htmlspecialchars($_POST["accounts_name"], ENT_QUOTES);
-	$accounts_kana=htmlspecialchars($_POST["accounts_kana"], ENT_QUOTES);
-	$account_classification_id=htmlspecialchars($_POST["account_classification_id"], ENT_QUOTES);
-	$sql = "INSERT INTO accounts ( name, kana, account_classification_id, created) 
-						VALUES (
-							'$accounts_name',
-							'$accounts_kana',
-							'$account_classification_id',
-							NOW())"
-	;
+
+
+//口座選択ボタン
+if ($_POST['key']=="user_accounts_add"){
+	//入力不足チェック
+	if (!array_key_exists(0, $_POST['account_id'])){
+		$error['account_id']='empty';
+	}
+	//エラーがなければ次へ
+	if (empty($error)){
+		$_SESSION['user_accounts_add'] = $_POST;
+		$_SESSION['key'] = $_POST['key'];
+		header('Location: insert_action.php');
+	}
+}
+
+
+//登録口座追加ボタン
+if ($_POST['key']=="add_accounts") {
+	if (!isset($_POST['accounts_name'])) {
+		$error['accounts_name']='empty';
+	}
+	if (!isset($_POST["accounts_kana"])) {
+		$error['accounts_name']='empty';
+	}
+	mb_regex_encoding("UTF-8");
+	if (!mb_ereg("^[ぁ-ん]+$",$_POST["accounts_kana"])) {
+		$error["accounts_kana"]="no_kana";
+	}
+	$sql=sprintf('SELECT COUNT(*) AS cnt FROM accounts 	WHERE kana="%s" OR name="%s" ',
+					mysql_real_escape_string($_POST["accounts_kana"]),
+					mysql_real_escape_string($_POST["accounts_name"])
+		);
+	$result=mysql_query($sql) or die(mysql_error());
+	$table= mysql_fetch_assoc($result);
+	if ($table['cnt']>0) {
+		$error['add_accounts']='duplicate';
+	}
+	
+	if (empty($error)){
+		$sql = sprintf('INSERT INTO accounts SET name="%s", kana="%s", account_classification_id=%d, created=NOW()', 
+							mysql_real_escape_string($_POST["accounts_name"]),
+							mysql_real_escape_string($_POST["accounts_kana"]),
+							mysql_real_escape_string($_POST["account_classification_id"])
+	);
 	mysql_query($sql, $link) or die(mysql_error());
+	} else {
+		$rewrite['accounts_name']=$_POST['accounts_name'];
+		$rewrite['accounts_kana']=$_POST['accounts_kana'];
+		$rewrite['account_classification_id']=$_POST['account_classification_id'];
+	}
+	unset($_POST);
 }
 
 //使用中の口座情報
 $sql = sprintf('SELECT a.name,a.account_classification_id, u.*  FROM user_accounts u 
-		JOIN accounts a ON u.account_id=a.id 
-                WHERE u.user_id=%d',
-				($_SESSION['user_id'])
+			JOIN accounts a ON u.account_id=a.id 
+               	WHERE u.user_id=%d',
+				mysql_real_escape_string($_SESSION['user_id'])
 );
 $result = mysql_query($sql, $link);
 while ($row = mysql_fetch_assoc($result)) {
@@ -67,10 +106,7 @@ while ($row = mysql_fetch_assoc($result)) {
 	<!-- ヘッダーここから -->
     <?php include 'include/head.html';?>
 
-	<!-- 本文　ここから -->	
 <body>
-	
-	<!-- 見出し ここから　-->
 	<div id="head">
 		<h1>口座選択</h1>
 	</div>
@@ -78,7 +114,6 @@ while ($row = mysql_fetch_assoc($result)) {
 	<!-- メニューバー -->
 	<?php include 'include/menu.html';?>
  
-	<!-- 一覧表示　ここから　-->
 	<?php //使用中の口座一覧?>
 	<div class="container">
 		<div class="row"> 		
@@ -96,7 +131,7 @@ while ($row = mysql_fetch_assoc($result)) {
 					<?php endif;?>
              		
              		<?php for ($i = 0, $count_a_c=count($account_classifications);$i< $count_a_c; $i++):?>
-             			<h3><?php echo $account_classifications[$i]['name']?></h3>
+             			<h3><?php echo h($account_classifications[$i]['name']);?></h3>
              			<table class="table table-hover table-bordered table-condensed">
 							<thead>
 								<tr>
@@ -113,10 +148,10 @@ while ($row = mysql_fetch_assoc($result)) {
 							<tbody>
 								<tr>
 								<?php if ($_POST['can_delete']=="true"):?>
-									<td class="center"><input type="radio" name="user_accounts_id" value="<?php echo $using_accounts[$j]['id']; ?>"/></td>	<?php //削除アクション有効?>
+									<td class="center"><input type="radio" name="user_accounts_id" value="<?php echo h($using_accounts[$j]['id']); ?>"/></td>	<?php //削除アクション有効?>
 								<?php endif;?>
-									<td><?php print (htmlspecialchars($using_accounts[$j]['name'], ENT_QUOTES));?></td> 	
-									<td>	<?php print (htmlspecialchars($using_accounts[$j]['balance'], ENT_QUOTES));?></td>
+									<td><?php print (h($using_accounts[$j]['name']));?></td> 	
+									<td>	<?php print (h($using_accounts[$j]['balance']));?></td>
 								</tr>
 							<?php endif;?>
 							<?php endfor;?>
@@ -148,7 +183,12 @@ while ($row = mysql_fetch_assoc($result)) {
 			<div class="col-md-offset-4 col-md-4">
 				<div class = "center">
 					<br><br><h2>登録されている口座から選択</h2>
-           			<form method= "post" action= "insert_action.php" name ="user" class = "form-horizontal well">
+           			<form method= "post" action= "" name ="user" class = "form-horizontal well">
+             			<?php if ($error['account_id']=='empty'):?>
+								<div class="alert alert-warning">
+									<p class="error">* 使用する口座名にチェックを入れてください</p>
+                    				</div>	
+                    		<?php endif; ?>
              			<?php for ($i = 0, $count_a_c=count($account_classifications);$i< $count_a_c; $i++):?>
              			<br><h2><?php echo $account_classifications[$i]['name']?></h2>
              			<table class="table table-hover table-bordered table-condensed" >
@@ -163,8 +203,8 @@ while ($row = mysql_fetch_assoc($result)) {
 							<?php if ($not_using_accounts[$j]['account_classification_id']==$account_classifications[$i]['id']):?>
 							<tbody>
 								<tr>
-									<td class="center"><input type="checkbox" name="account_id[]" value="<?php echo $not_using_accounts[$j]['id']?>" /></td>
-									<td><?php print (htmlspecialchars($not_using_accounts[$j]['name'], ENT_QUOTES));?></td>
+									<td class="center"><input type="checkbox" name="account_id[]" value="<?php echo h($not_using_accounts[$j]['id']);?> " /></td>
+									<td><?php print (h($not_using_accounts[$j]['name']));?></td>
 								</tr>
 							</tbody>
 							<?php endif;?>
@@ -191,19 +231,35 @@ while ($row = mysql_fetch_assoc($result)) {
 				<div class = "center">
 					<br><h2>上記にない口座を登録</h2>
 					<form action="" method="post" name="add_accounts" class = "form-horizontal well">
+						<?php if ($error['add_accounts']=='duplicate'):?>
+							<div class="alert alert-warning">
+								<p class="error">* すでに登録されています。登録口座一覧を確認下さい</p>
+                				</div>	
+                    		<?php endif; ?>		
 						<label>口座種別</label>
-						<select name="account_classification_id" id="account_classification_id" class="form-control" >
+						<select name="account_classification_id" class="form-control" >
                             <?php //選択肢口座種別情報を入れる?>
+                            <?php //$selected=$rewrite['account_classification_id']?>
                             <?php require 'function/input_account_classifications.php'; ?>
 						</select>
-						<input type="hidden" name="add_accounts" valuse="ture">
-						
 						<label>名称</label>
-						<input type="text" name="accounts_name" class="form-control"/>
+										
+						<?php if ($error["accounts_name"]=="empty"):?>
+							<div class="alert alert-warning">
+								<p class="error">* 入力してください</p>
+                				</div>	
+                    		<?php endif; ?>
+						<input type="text" name="accounts_name" class="form-control" value="<?php echo (h($rewrite['accounts_name'])); ?>"/>
 						
 						<label>かな(全角ひらがな)</label>
-						<input type="text" name="accounts_kana" class="form-control"/>
+						<?php if ($error["accounts_kana"]=="no_kana" || $error["accounts_kana"]=="empty"):?>
+							<div class="alert alert-warning">
+								<p class="error">* 全角ひらがなで入力してください</p>
+                				</div>	
+                    		<?php endif; ?>
+						<input type="text" name="accounts_kana" class="form-control" value="<?php echo(h($rewrite['accounts_kana'])); ?>" />
 						
+						<input type="hidden" name="key" value="add_accounts">
 						<input type="submit" value="追加" class="btn btn-success"/>
 					</form>
 				</div>
@@ -220,4 +276,3 @@ while ($row = mysql_fetch_assoc($result)) {
 	
 </body>
 </html>
-
