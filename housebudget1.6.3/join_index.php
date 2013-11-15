@@ -13,6 +13,9 @@ if (!empty($_POST)){
 	if ($_POST['email'] == '') {
 		$error['email']='blank';
 	}
+	if (!preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/',$_POST['email'])) {
+		$error['email']='no_email';
+	}
 	if (strlen($_POST['user_password']) < 4) {
 		$error['password']='length';
 	}

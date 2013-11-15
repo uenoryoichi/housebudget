@@ -11,11 +11,11 @@ unset($_SESSION['key']);
 //支払い情報入力
 	if ($key == "pay") {
 		$sql = sprintf('INSERT INTO pay SET how_much=%d, what="%s", date="%s",user_accounts_id=%d, type="%s", created=NOW(), user_id=%d' ,
-				mysql_real_escape_string($_SESSION['pay']["how_much"], ENT_QUOTES),
-				mysql_real_escape_string($_SESSION['pay']["what"], ENT_QUOTES),
-				mysql_real_escape_string($_SESSION['pay']["year"], ENT_QUOTES)."-".mysql_real_escape_string($_SESSION['pay']["month"], ENT_QUOTES)."-".mysql_real_escape_string($_SESSION['pay']["day"], ENT_QUOTES)." ".mysql_real_escape_string($_SESSION['pay']["hour"], ENT_QUOTES),
-				mysql_real_escape_string($_SESSION['pay']["user_accounts_id"], ENT_QUOTES),
-				mysql_real_escape_string($_SESSION['pay']["type"], ENT_QUOTES),
+				mysql_real_escape_string($_SESSION['pay']["how_much"]),
+				mysql_real_escape_string($_SESSION['pay']["what"]),
+				mysql_real_escape_string($_SESSION['pay']["year"])."-".mysql_real_escape_string($_SESSION['pay']["month"])."-".mysql_real_escape_string($_SESSION['pay']["day"])." ".mysql_real_escape_string($_SESSION['pay']["hour"]),
+				mysql_real_escape_string($_SESSION['pay']["user_accounts_id"]),
+				mysql_real_escape_string($_SESSION['pay']["type"]),
 				mysql_real_escape_string($_SESSION['user_id'])
 		);
 		mysql_query($sql, $link) or die(mysql_error());
@@ -27,10 +27,10 @@ unset($_SESSION['key']);
 	if ($key == "income") {
 		
 		$sql = sprintf('INSERT INTO income SET amount=%d, content="%s", date="%s",user_accounts_id=%d, created=NOW(), user_id=%d' ,
-				mysql_real_escape_string($_SESSION['income']["amount"], ENT_QUOTES),
-				mysql_real_escape_string($_SESSION['income']["content"], ENT_QUOTES),
-				mysql_real_escape_string($_SESSION['income']["year"], ENT_QUOTES)."-".mysql_real_escape_string($_SESSION['income']["month"], ENT_QUOTES)."-".mysql_real_escape_string($_SESSION['income']["day"], ENT_QUOTES)." ".mysql_real_escape_string($_SESSION['income']["hour"], ENT_QUOTES),
-				mysql_real_escape_string($_SESSION['income']["user_accounts_id"], ENT_QUOTES),
+				mysql_real_escape_string($_SESSION['income']["amount"]),
+				mysql_real_escape_string($_SESSION['income']["content"]),
+				mysql_real_escape_string($_SESSION['income']["year"])."-".mysql_real_escape_string($_SESSION['income']["month"])."-".mysql_real_escape_string($_SESSION['income']["day"])." ".mysql_real_escape_string($_SESSION['income']["hour"]),
+				mysql_real_escape_string($_SESSION['income']["user_accounts_id"]),
 				mysql_real_escape_string($_SESSION['user_id'])
 		);
 		mysql_query($sql, $link) or die(mysql_error());
@@ -40,11 +40,11 @@ unset($_SESSION['key']);
 	//口座移動情報入力
 	if ($key == "transfer") {
 		$sql = sprintf('INSERT INTO transfer SET amount=%d, user_accounts_id_remitter=%d, user_accounts_id_remittee=%d, date="%s",memo="%s", created=NOW(), user_id=%d' ,
-				mysql_real_escape_string($_SESSION['transfer']["amount"], ENT_QUOTES),
-				mysql_real_escape_string($_SESSION['transfer']["user_accounts_id_remitter"], ENT_QUOTES),
-				mysql_real_escape_string($_SESSION['transfer']["user_accounts_id_remittee"], ENT_QUOTES),
-				mysql_real_escape_string($_SESSION['transfer']["year"], ENT_QUOTES)."-".mysql_real_escape_string($_SESSION['transfer']["month"], ENT_QUOTES)."-".mysql_real_escape_string($_SESSION['transfer']["day"], ENT_QUOTES)." ".mysql_real_escape_string($_SESSION['transfer']["hour"], ENT_QUOTES),
-				mysql_real_escape_string($_SESSION['transfer']["memo"], ENT_QUOTES),
+				mysql_real_escape_string($_SESSION['transfer']["amount"]),
+				mysql_real_escape_string($_SESSION['transfer']["user_accounts_id_remitter"]),
+				mysql_real_escape_string($_SESSION['transfer']["user_accounts_id_remittee"]),
+				mysql_real_escape_string($_SESSION['transfer']["year"])."-".mysql_real_escape_string($_SESSION['transfer']["month"])."-".mysql_real_escape_string($_SESSION['transfer']["day"])." ".mysql_real_escape_string($_SESSION['transfer']["hour"]),
+				mysql_real_escape_string($_SESSION['transfer']["memo"]),
 				mysql_real_escape_string($_SESSION['user_id'])
 		);	
 		mysql_query($sql, $link) or die(mysql_error());
