@@ -41,6 +41,10 @@ if (!empty($_POST)) {
 	}
 }
 
+
+//デモ用のアカウント候補生成
+$demo="demo".rand(1, 3);
+
 ?>
 
 <!DOCTYPE html>
@@ -49,12 +53,9 @@ if (!empty($_POST)) {
     <?php include 'include/head.html';?>
 
 <body>
-	
-	<!-- 見出し ここから　-->
 	<div id="head">
 		<h1>ログインする</h1>
 	</div>
-	<!-- 見出し　ここまで　-->
 
 <!-- ログイン画面ここから -->	
 	<div class="container">
@@ -90,8 +91,6 @@ if (!empty($_POST)) {
 	 	</div>
     	</div>
     	
-    	
-    	
     	<div class="container">
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-md-6">
@@ -106,10 +105,27 @@ if (!empty($_POST)) {
 	       	</div>
 	 	</div>
     	</div>
-<!-- ログイン画面ここまで -->	
-	<?php include 'include/footer.html';?>
+    	
+    	<div class="container">
+		<div class="row"> 		
+			<div class="col-md-offset-3 col-md-6">
+				<form method = "POST" action = "" class="form-horizontal well">
+					<dl>
+						<dt>登録をせずにデモ用ユーザーとして試す</dt>
+								<input type ="hidden" name = "email" value="<?php echo $demo;?>"/>
+                    				<input type = "hidden" name = "password"  value="<?php echo $demo;?>"/>
+					</dl>
+					<div class="center">
+						<input type="submit" value="デモ版" class="btn btn-primary"/>
+					</div>
+				</form>
+	       	</div>
+	 	</div>
+    	</div>
+    	
+<?php include 'include/footer.html';?>
     		
-	</body>
+</body>
 	
 	
 </html>
