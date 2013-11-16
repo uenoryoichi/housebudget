@@ -33,7 +33,7 @@ require 'function/calculate_this_month.php';
 			<div class="col-md-offset-3 col-xs-6 well well-lg" >
 				<div class="text-center">
 					<h2>今月の収支</h2>
-					<p><?php echo h($this_month);?> 出費：<?php echo h($sum_pay);?>円  収入：<?php echo h($sum_income);?>円</p>
+					<p>   出費：<?php echo h($sum_pay);?>円  収入：<?php echo h($sum_income);?>円</p>
 				</div>
 			</div>
 		</div>
