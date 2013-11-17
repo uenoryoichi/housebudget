@@ -1,30 +1,33 @@
 <?php
 //今月分の支払いデータ取得					
-$this_month = date('Y-m');
-$sql = "SELECT * FROM pay WHERE date  LIKE '$this_month%' ";
-$result = mysql_query($sql, $link);
-$sum_pay = 0;
+$sql = sprintf("SELECT SUM(pay.how_much) AS sum_pay
+					FROM pay 
+					WHERE user_id=%d
+						AND date  >= DATE_FORMAT(NOW(), '%%Y-%%m-01')
+						AND date < ADDDATE(DATE_FORMAT(NOW(), '%%Y-%%m-01'), interval 2 month)
+                    	GROUP BY pay.user_id ",	
+					mysql_real_escape_string($_SESSION['user_id'])
+);
+$result = mysql_query($sql, $link) or die(mysql_error());
 while ($row = mysql_fetch_assoc($result)) {
-	$pay[] = $row;
-}				
-
-//支払い合計金額
-for ($i = 0; $i < count($pay); $i++){
-	$sum_pay += $pay[$i]['how_much'];
+	$pay = $row;
 }
+$sum_pay = $pay['sum_pay'];
+
 					
 //今月の収入データ取得					
-$this_month_income = date('Y-m');
-$sql = "SELECT * FROM income WHERE date  LIKE '$this_month%' ";
-$result = mysql_query($sql, $link);
-$sum_income = 0;
+$sql = $sql = sprintf("SELECT SUM(income.amount) AS sum_income
+					FROM income 
+					WHERE user_id=%d
+						AND date  >= DATE_FORMAT(NOW(), '%%Y-%%m-01')
+						AND date < ADDDATE(DATE_FORMAT(NOW(), '%%Y-%%m-01'), interval 2 month)
+                    	GROUP BY income.user_id ",	
+					mysql_real_escape_string($_SESSION['user_id'])
+);
+$result = mysql_query($sql, $link) or die(mysql_error());
 while ($row = mysql_fetch_assoc($result)) {
-	$income[] = $row;
+	$income= $row;
 }
-											
-//支払い合計金額
-for ($i = 0; $i < count($income); $i++){
-	$sum_income += $income[$i]['amount'];
-}
+$sum_income = $income['sum_income'];
 
 ?>	

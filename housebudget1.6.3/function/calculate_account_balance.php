@@ -4,7 +4,7 @@
     $sql = sprintf('SELECT a.name, u.* FROM user_accounts u JOIN accounts a ON u.account_id=a.id WHERE u.user_id=%d ORDER BY ID ASC',
 					mysql_real_escape_string($_SESSION['user_id'])
 	);
-	$result = mysql_query($sql, $link);
+	$result = mysql_query($sql, $link) or die(mysql_error());
 	while ($row = mysql_fetch_assoc($result)) {
 		$account[] = $row;
 	}
@@ -18,7 +18,7 @@
 					GROUP BY p.user_accounts_id',
 					mysql_real_escape_string($_SESSION['user_id'])
 	);
-	$result = mysql_query($sql, $link);
+	$result = mysql_query($sql, $link) or die(mysql_error());
 	while ($row = mysql_fetch_assoc($result)) {
 		$pay[] = $row;
 	}
@@ -32,7 +32,7 @@
 					GROUP BY i.user_accounts_id',
 					mysql_real_escape_string($_SESSION['user_id'])
 	);
-	$result = mysql_query($sql, $link);
+	$result = mysql_query($sql, $link) or die(mysql_error());
 	while ($row = mysql_fetch_assoc($result)) {
 		$income[] = $row;
 	}
@@ -47,7 +47,7 @@
 					GROUP BY t.user_accounts_id_remitter',
 					mysql_real_escape_string($_SESSION['user_id'])
 	);	
-	$result = mysql_query($sql, $link) or die(mysql_error());;
+	$result = mysql_query($sql, $link) or die(mysql_error());
 	while ($row = mysql_fetch_assoc($result)) {
 		$transfer_remitter[] = $row;
 	}	
