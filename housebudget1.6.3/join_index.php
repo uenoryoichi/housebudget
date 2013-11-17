@@ -46,7 +46,6 @@ if ($_REQUEST['action']== 'rewrite') {
 	$error['rewrite']=true;
 }
 
-
 ?>
 
 <!DOCTYPE html>
@@ -77,8 +76,8 @@ if ($_REQUEST['action']== 'rewrite') {
                    	<dt>メールアドレス<span class="label label-danger">必須</span></dt>
                    		<dd>
                    			<input type = "text" name = "email" class="form-control" value="<?php echo h($_POST['email']);?>"/>
-                			  	<?php if ($error['email']=='blank'):?>
-								<p class="error">* メールアドレスを入力してください</p>
+                			  	<?php if ($error['email']=='blank' ||$error['email']=='no_email'):?>
+								<p class="error">* メールアドレスを正しく入力してください</p>
    			               	<?php endif; ?>
              		     	<?php if ($error['email']=='duplicate'): ?>
                     				<p class="error">* 指定したメールアドレスはすでに登録されています。</p>
