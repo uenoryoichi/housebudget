@@ -8,7 +8,6 @@ require 'function/login_check.php';
 require 'library_all.php';
 
 
-
 //キーの格納
 $key=h($_SESSION['key']);
 unset($_SESSION['key']);
@@ -37,7 +36,7 @@ if ($key == 'income') {
 			mysql_real_escape_string($_SESSION['income']['id'])
 	);
 	mysql_query($sql) or die(mysql_error());
-	unset($_SESSION[['income']]);
+	unset($_SESSION['income']);
 }
 
 //口座移動情報
@@ -59,7 +58,7 @@ if ($key == 'transfer') {
 if ($key == 'account_balance') {
 	//POST で送られてきた情報をtransferのカラム格納
 	for ($i = 0, $count=count($_SESSION['account_balance']['user_accounts_id']); $i < $count; $i++) {
-		$sql=sprintf('UPDATE user_accounts SET balance="%s", checked=cast(now() as datetime) WHERE id=%d AND user_id=%d',
+		$sql=sprintf('UPDATE user_accounts SET balance=%d, checked=cast(now() as datetime) WHERE id=%d AND user_id=%d ',
 						mysql_real_escape_string($_SESSION['account_balance']['balance'][$i]),
 						mysql_real_escape_string($_SESSION['account_balance']['user_accounts_id'][$i]),
 						mysql_real_escape_string($_SESSION['user_id'])
@@ -68,6 +67,7 @@ if ($key == 'account_balance') {
 	}
 	unset($_SESSION['account_balance']);
 }
+
 
 ?>
 
