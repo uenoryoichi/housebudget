@@ -64,6 +64,13 @@ while ($row = mysql_fetch_assoc($result)) {
                     				</div>	
                     			<?php endif; ?>
 	             		</dd>
+	             	
+	             	<dt>日付</dt>
+                   		<dd>
+                   		<select name="income_specifcation_id" class="form-control">
+                   		<?php require_once 'function/form_income_specifications.php';?>	
+                   		</select>
+                   		</dd>
 		      	
                    	<dt>内容</dt>
                    		<dd>
