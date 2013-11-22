@@ -93,7 +93,7 @@ while ($row = mysql_fetch_assoc($result)) {
                     	<?php  //収入情報キー ?>
                     	<div class="center">
 						<input type = "hidden" name = "key" value="income" >
-						<input type = "submit" value = "送信" class="btn btn-primary">
+						<input type = "submit" value="送信" class="btn btn-primary">
             			</div>
             		</form>
            	</div>
