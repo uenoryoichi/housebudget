@@ -21,12 +21,13 @@ if (!empty($_POST)){
 	}
 }
 
-$sql = sprintf('SELECT income.*, accounts.name, DATE(income.date) AS date_ymd
+$sql = sprintf('SELECT income.*, accounts.name AS accounts_name, income_specifications.name AS income_specification_name, DATE(income.date) AS date_ymd
  				FROM income 
  					JOIN user_accounts ON income.user_accounts_id=user_accounts.id 
- 					JOIN accounts ON user_accounts.account_id=accounts.id 
+ 					JOIN accounts ON user_accounts.account_id=accounts.id
+					JOIN income_specifications ON income.income_specification_id=income_specifications.id
  				WHERE income.user_id=%d 
- 				ORDER BY DATE DESC',
+ 				ORDER BY income.date DESC',
     				mysql_real_escape_string($_SESSION['user_id'])
 );
 $result = mysql_query($sql, $link) or die(mysql_error());
@@ -65,9 +66,9 @@ while ($row = mysql_fetch_assoc($result)) {
                     			<?php endif; ?>
 	             		</dd>
 	             	
-	             	<dt>日付</dt>
+	             	<dt>分類</dt>
                    		<dd>
-                   		<select name="income_specifcation_id" class="form-control">
+                   		<select name="income_specification_id" class="form-control">
                    		<?php require_once 'function/form_income_specifications.php';?>	
                    		</select>
                    		</dd>
@@ -111,8 +112,9 @@ while ($row = mysql_fetch_assoc($result)) {
 							<tr>
 								<th scope="col">日付</th>
 								<th scope="col">金額</th>
-								<th scope="col">内容</th>
+								<th scope="col">分類</th>
 								<th scope="col">口座名</th>
+								<th scope="col">メモ</th>
 								<th scope="col"></th>
 								<th scope="col"></th>
 							</tr>
@@ -122,8 +124,9 @@ while ($row = mysql_fetch_assoc($result)) {
 							<tr>
 								<td><?php print(h($income[$i]['date_ymd']));?></td>
 								<td><?php print(h($income[$i]['amount']));?></td>
+								<td><?php print(h($income[$i]['income_specification_name']));?></td>
+							  	<td><?php print(h($income[$i]['accounts_name']));?></td>
 								<td><?php print(h($income[$i]['content']));?></td>
-							  	<td><?php print(h($income[$i]['name']));?></td>
 								<td class="center">
 									<form method = "POST" action = "income_update.php" >
                  						<?php  //編集　id送信 ?>
