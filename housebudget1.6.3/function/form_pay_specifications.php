@@ -1,6 +1,6 @@
 <?php 
 $sql=sprintf('SELECT * FROM pay_specifications
-					WHERE user_id=0 OR user_id=%d
+					WHERE user_id=0 OR user_id=%d AND uses=0
 					ORDER BY ID ASC',
 			mysql_real_escape_string($_SESSION['user_id'])
 );
