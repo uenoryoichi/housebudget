@@ -65,7 +65,15 @@ while ($row = mysql_fetch_assoc($result)) {
                     				</div>	
                     			<?php endif; ?>
 	             		</dd>
-	             	
+	             		
+	          		<dt>口座名</dt>
+                    		<dd>
+                    			<select  name="user_accounts_id" class="form-control" >
+                   				<?php //選択肢にユーザーの口座情報を入れる?>
+                    				<?php require_once 'function/input_user_account_name.php'; ?>
+							</select>
+                    		</dd>
+                    		
 	             	<dt>分類</dt>
                    		<dd>
                    		<select name="income_specification_id" class="form-control">
@@ -73,7 +81,7 @@ while ($row = mysql_fetch_assoc($result)) {
                    		</select>
                    		</dd>
 		      	
-                   	<dt>内容</dt>
+                   	<dt>メモ</dt>
                    		<dd>
                    			<input type = "text" name = "content" class="form-control" >
                    		</dd>
@@ -83,13 +91,7 @@ while ($row = mysql_fetch_assoc($result)) {
                    		<?php require_once 'function/form_date.php';?>	
                    		</dd>
                    	
-                   	<dt>口座名</dt>
-                    		<dd>
-                    			<select  name="user_accounts_id" class="form-control" >
-                   				<?php //選択肢にユーザーの口座情報を入れる?>
-                    				<?php require_once 'function/input_user_account_name.php'; ?>
-							</select>
-                    		</dd>
+               
              		</dl>
                     	<?php  //収入情報キー ?>
                     	<div class="center">

@@ -7,15 +7,14 @@ require 'function/login_check.php';
 //キーの格納
 $key = $_SESSION["key"];
 unset($_SESSION['key']);
-var_dump($_SESSION);
 //支払い情報入力
 	if ($key == "pay") {
-		$sql = sprintf('INSERT INTO pay SET how_much=%d, what="%s", date="%s",user_accounts_id=%d, type="%s", created=NOW(), user_id=%d' ,
+		$sql = sprintf('INSERT INTO pay SET how_much=%d, what="%s", date="%s",user_accounts_id=%d, pay_specification_id=%d, created=NOW(), user_id=%d' ,
 				mysql_real_escape_string($_SESSION['pay']["how_much"]),
 				mysql_real_escape_string($_SESSION['pay']["what"]),
 				mysql_real_escape_string($_SESSION['pay']["year"])."-".mysql_real_escape_string($_SESSION['pay']["month"])."-".mysql_real_escape_string($_SESSION['pay']["day"])." ".mysql_real_escape_string($_SESSION['pay']["hour"]),
 				mysql_real_escape_string($_SESSION['pay']["user_accounts_id"]),
-				mysql_real_escape_string($_SESSION['pay']["type"]),
+				mysql_real_escape_string($_SESSION['pay']["pay_specification_id"]),
 				mysql_real_escape_string($_SESSION['user_id'])
 		);
 		mysql_query($sql, $link) or die(mysql_error());

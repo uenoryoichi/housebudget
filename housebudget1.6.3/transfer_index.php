@@ -84,17 +84,18 @@ if (!empty($_POST)){
                             		<?php require  'function/input_user_account_name.php'; ?>
 								</select>
 							</dd>
-							
-						<dt>移動日</dt>
-                   			<dd>
-                   				<?php require_once 'function/form_date.php';?>	
-                   			</dd>
-                            	
-                       	<dt>memo</dt>
+						 
+						 <dt>メモ</dt>
                        		<dd>
                        			<input type = "text" name = "memo" class="form-control">
                        		</dd>
                        	</dl>
+                       		
+						<dt>移動日</dt>
+                   			<dd>
+                   				<?php require_once 'function/form_date.php';?>	
+                   			</dd>
+                      
 						<div class="center">
 							<?php  //口座移動情報キー ?>
 							<input type = "hidden" name = "key" value="transfer" >

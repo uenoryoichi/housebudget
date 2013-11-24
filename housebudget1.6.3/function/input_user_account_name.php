@@ -24,5 +24,6 @@ if(isset($selected)){		//更新時
 		
 	}
 }
+unset($selected);
 ?>
 
