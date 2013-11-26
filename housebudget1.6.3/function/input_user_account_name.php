@@ -10,6 +10,9 @@ while ($row = mysql_fetch_assoc($result)) {
 	$accounts[] = $row;
 }
 
+include 'library/optionLoop2.php';
+optionLoop2($accounts, $selected) ;
+/*
 if(isset($selected)){		//更新時
 	for ($i=0,$count_accounts=count($accounts); $i<$count_accounts; $i++){
 		if ($selected==$accounts[$i]['id']) {
@@ -24,6 +27,7 @@ if(isset($selected)){		//更新時
 		
 	}
 }
+*/
 unset($selected);
 ?>
 

@@ -6,10 +6,9 @@ $account_classifications=NULL;
 while ($row = mysql_fetch_assoc($result)) {
 	$account_classifications[] = $row;
 }
-							//入力時
-for ($i=0,$count_account_classifications=count($account_classifications); $i<$count_account_classifications; $i++){
-	print('<option value="'.h($account_classifications[$i]['id']).'">'.h($account_classifications[$i]['name']).'</option>');
-}
+
+include 'library/optionLoop2.php';
+optionLoop2($account_classifications, $selected);
 
 ?>
 

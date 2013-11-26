@@ -17,8 +17,5 @@ include 'library/optionLoop2.php';
 optionLoop2 ($record, $selected);
 
 unset($selected);
-
-
-
 ?>
 
