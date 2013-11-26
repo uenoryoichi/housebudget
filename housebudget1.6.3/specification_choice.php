@@ -94,7 +94,8 @@ while ($row = mysql_fetch_assoc($result)) {
 
 <body>
 	<div id="head">
-		<h1>口座選択</h1>
+		<h1>my家計簿</h1>
+		<h1>分類項目選択</h1>
 	</div>
 
 	<!-- メニューバー -->

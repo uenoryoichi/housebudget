@@ -110,6 +110,7 @@ while ($row = mysql_fetch_assoc($result)) {
 
 <body>
 	<div id="head">
+		<h1><?php echo $member['name'];?>さんのMy家計簿</h1>
 		<h1>口座選択</h1>
 	</div>
 
