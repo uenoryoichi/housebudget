@@ -78,6 +78,8 @@ $result = mysql_query($sql, $link);
 while ($row = mysql_fetch_assoc($result)) {
 	$accounts[] = $row;
 }
+
+//使用していない口座を抽出
 for ($i= 0, $count_accounts=count($accounts);  $i < $count_accounts; $i++){
 	$using=false;
 	for ($j= 0, $count_using_accounts=count($using_accounts);  $j < $count_using_accounts; $j++){ //使用中のものとかぶっていないか
@@ -108,6 +110,7 @@ while ($row = mysql_fetch_assoc($result)) {
 
 <body>
 	<div id="head">
+		<h1><?php echo $member['name'];?>さんのMy家計簿</h1>
 		<h1>口座選択</h1>
 	</div>
 
@@ -117,21 +120,21 @@ while ($row = mysql_fetch_assoc($result)) {
 	<?php //使用中の口座一覧?>
 	<div class="container">
 		<div class="row"> 		
-			<div class="col-md-offset-4 col-md-4">
+			<div class="col-md-offset-1 col-md-4">
 				<div class = "center">
-					<br><h2>使用中の口座</h2>
+					<br><br><h2>使用中の口座</h2>
            			<?php if ($_POST['can_delete']=="true"):	?>										<?php //削除アクション有効?>
            				<div class="alert alert-warning alert-dismissable">
 							<button type = "button" class="close" data-dismiss="alert" aria-hidden="true" >&times;</button>
 							<strong >口座情報を削除すると関連する収入支出情報も削除されます</strong>
 						</div>
-						<form action="delete_action.php" method="post" class = "form-horizontal">	<!-- ### -->	           		
+						<form action="delete_action.php" method="post" class = "form-horizontal well">	<!-- ### -->	           		
 					<?php else:?>
-						<form action="" method="post" class = "form-horizontal">								<!-- ### -->				<?php //削除アクション無効?>
+						<form action="" method="post" class = "form-horizontal well">								<!-- ### -->				<?php //削除アクション無効?>
 					<?php endif;?>
              		
              		<?php for ($i = 0, $count_a_c=count($account_classifications);$i< $count_a_c; $i++):?>
-             			<h3><?php echo h($account_classifications[$i]['name']);?></h3>
+             			<br><h2><?php echo h($account_classifications[$i]['name']);?></h2>
              			<table class="table table-hover table-bordered table-condensed">
 							<thead>
 								<tr>
@@ -153,9 +156,9 @@ while ($row = mysql_fetch_assoc($result)) {
 									<td><?php print (h($using_accounts[$j]['name']));?></td> 	
 									<td>	<?php print (h($using_accounts[$j]['balance']));?></td>
 								</tr>
+							</tbody>
 							<?php endif;?>
 							<?php endfor;?>
-							</tbody>
 						</table>
 					<?php endfor;?>
 					<div class="row">
@@ -172,15 +175,11 @@ while ($row = mysql_fetch_assoc($result)) {
 					</form>
 				</div>
 			</div>
-		</div>
-	</div>
 	
 	<?php //===========================================================?>
 	
 	<?php //使用してない口座一覧?>
-	<div class="container">
-		<div class="row"> 		
-			<div class="col-md-offset-4 col-md-4">
+			<div class="col-md-offset-2 col-md-4">
 				<div class = "center">
 					<br><br><h2>登録されている口座から選択</h2>
            			<form method= "post" action= "" name ="user" class = "form-horizontal well">
@@ -241,6 +240,7 @@ while ($row = mysql_fetch_assoc($result)) {
                             <?php //選択肢口座種別情報を入れる?>
                             <?php //$selected=$rewrite['account_classification_id']?>
                             <?php require 'function/input_account_classifications.php'; ?>
+                            <?php //make_selecte_form(account_classifications, 1, $_SESSION['user_id'], 1) ?>
 						</select>
 						<label>名称</label>
 										
@@ -270,7 +270,6 @@ while ($row = mysql_fetch_assoc($result)) {
 	<div class="center">
 		<a href="index.php">Back To TOP</a>
 	</div>
-	
 	<!-- フッター -->
 	<?php include 'include/footer.html';?>
 	

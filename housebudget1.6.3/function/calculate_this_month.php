@@ -16,7 +16,7 @@ $sum_pay = $pay['sum_pay'];
 
 					
 //今月の収入データ取得					
-$sql = $sql = sprintf("SELECT SUM(income.amount) AS sum_income
+$sql = sprintf("SELECT SUM(income.amount) AS sum_income
 					FROM income 
 					WHERE user_id=%d
 						AND date  >= DATE_FORMAT(NOW(), '%%Y-%%m-01')

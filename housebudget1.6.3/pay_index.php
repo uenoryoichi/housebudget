@@ -21,12 +21,13 @@ if (!empty($_POST)){
 	}
 }
 
-$sql = sprintf('SELECT pay.*, DATE(pay.date) AS date_ymd ,accounts.name 
+$sql = sprintf('SELECT pay.*, DATE(pay.date) AS date_ymd ,accounts.name AS account_name, pay_specifications.name AS pay_specification_name
  				FROM pay 
  					JOIN user_accounts ON pay.user_accounts_id=user_accounts.id 
  					JOIN accounts ON user_accounts.account_id=accounts.id 
+					JOIN pay_specifications ON pay.pay_specification_id=pay_specifications.id
  				WHERE pay.user_id=%d 
- 				ORDER BY DATE DESC',
+ 				ORDER BY pay.date DESC',
     				mysql_real_escape_string($_SESSION['user_id'])
 );
 $result = mysql_query($sql, $link);
@@ -64,17 +65,7 @@ while ($row = mysql_fetch_assoc($result)) {
                     				</div>	
                     			<?php endif; ?>
                         	</dd>
-                        	
-                     	<dt>内容</dt>
-                     		<dd>
-                     			<input type = "text" name = "what" class="form-control" >
-						</dd>
-						
-					<dt>日付</dt>
-                   		<dd>
-                   		<?php require_once 'function/form_date.php';?>	
-                   		</dd>
-                         
+                    	  	
                     	<dt>口座名</dt>
                     		<dd>
                     			<select  name="user_accounts_id"  class="form-control"  >
@@ -83,17 +74,23 @@ while ($row = mysql_fetch_assoc($result)) {
 							</select>
                          	</dd>
                          	
-                     	<dt>分類</dt>
+                    	  <dt>分類</dt>
                      		<dd>
-                     			<select  name="type"class="form-control" >
-							<?php 
-								$bunrui_array = array("交通費","食費","消耗品","交際費","その他");
-								for ($i=0; $i<count($bunrui_array); $i++){
-									print('<option value="'.h($bunrui_array[$i]).'">'.h($bunrui_array[$i]).'</option>');
-								}
-							?>
+                     			<select  name="pay_specification_id"class="form-control" >
+							<?php  require_once 'function/form_pay_specifications.php';?>
 							</select>
-                         	</dd>
+                         	</dd>    	
+                         	
+                     	<dt>メモ</dt>
+                     		<dd>
+                     			<input type = "text" name = "what" class="form-control" >
+						</dd>
+						
+					<dt>日付</dt>
+                   		<dd>
+                   		<?php require_once 'function/form_date.php';?>	
+                   		</dd>
+                         	
                     	</dl>
 					<div class="center">
 							<?php  //支出情報キー ?>
@@ -130,8 +127,8 @@ while ($row = mysql_fetch_assoc($result)) {
 								<td><?php print(h($pay[$i]['date_ymd']));?></td>
 								<td><?php print(h($pay[$i]['how_much']));?></td>
 								<td><?php print(h($pay[$i]['what']));?></td>
-								<td><?php print(h($pay[$i]['name']));?></td>
-								<td><?php print(h($pay[$i]['type']));?></td>
+								<td><?php print(h($pay[$i]['account_name']));?></td>
+								<td><?php print(h($pay[$i]['pay_specification_name']));?></td>
 								<td class="center">
 									<form method = "POST" action = "pay_update.php" >
                  					<?php  //編集　id送信 ?>
@@ -160,7 +157,6 @@ while ($row = mysql_fetch_assoc($result)) {
 		<a href="index.php">Back To TOP</a>
 	</div>
 
-	<!--一覧表示部終わり-->
 	<!-- フッター -->
 	<?php include 'include/footer.html';?>
 	

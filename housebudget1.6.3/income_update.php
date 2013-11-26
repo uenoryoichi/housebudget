@@ -24,13 +24,15 @@ if (!empty($_POST['key'])){
 		header('Location: update_action.php');
 	}
 }
-$id=h($_REQUEST['id']);
-$sql=sprintf("SELECT income.*, accounts.name 
+$id=$_POST['id'];
+$sql=sprintf('SELECT income.*, accounts.name AS accounts_name, income_specifications.name AS income_specification_name
  				FROM income 
  					JOIN user_accounts ON income.user_accounts_id=user_accounts.id 
  					JOIN accounts ON user_accounts.account_id=accounts.id 
- 				WHERE income.id=%d",
-				mysql_real_escape_string($id)
+					JOIN income_specifications ON income.income_specification_id=income_specifications.id
+ 				WHERE income.id=%d',
+				mysql_real_escape_string($id),
+				mysql_real_escape_string($_SESSION['user_id'])
 );
 $recordSet=mysql_query($sql) or die(mysql_error());
 $income=mysql_fetch_assoc($recordSet);
@@ -49,12 +51,11 @@ $income=mysql_fetch_assoc($recordSet);
 	
 	<!-- メニューバー -->
 	<?php include 'include/menu.html';?>
-	
     
    	<div class="container">
    		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
-                 <br><h2>修正フォーム   ID：<?php print (h($income['id']));?></h2>
+                 <br><h2>修正フォーム</h2>
                	<form method = "POST" action = "" class = "form-horizontal well">
                		<dl>
 	                	<dt>金額</dt>
@@ -67,7 +68,24 @@ $income=mysql_fetch_assoc($recordSet);
                     			<?php endif; ?>
 						</dd>
 						                       
-        	          	<dt>内容</dt>
+        	          	<dt>口座名</dt>
+						<dd>
+						<select  name="user_accounts_id" class="form-control" >
+             	    			<?php //選択肢にユーザーの口座情報を入れる?>
+                   			<?php $selected=$income['user_accounts_id']?>
+                		    		<?php require 'function/input_user_account_name.php'; ?>
+						</select>
+						</dd>
+					
+					<dt>分類</dt>
+                     		<dd>
+                     			<select  name="income_specification_id"class="form-control" >
+                     			<?php $selected=$income['income_specification_id'];?>
+							<?php  require_once 'function/form_income_specifications.php';?>
+							</select>
+                         	</dd>    	
+                      	
+					<dt>メモ</dt>
            	        		<dd>
            	        			<input type = "text" name = "content" class="form-control" value="<?php print (h($income['content']));?>"/>
 						</dd>
@@ -82,14 +100,7 @@ $income=mysql_fetch_assoc($recordSet);
                     			<?php endif; ?>
 						</dd>
 						
-					<dt>口座名</dt>
-						<dd>
-						<select  name="user_accounts_id" class="form-control" >
-             	    			<?php //選択肢にユーザーの口座情報を入れる?>
-                   			<?php $selected=$income['user_accounts_id']?>
-                		    		<?php require 'function/input_user_account_name.php'; ?>
-						</select>
-						</dd>
+					
 					</dl>
 					<div class="center">	
     	                 	<input type = "hidden" name="id" value="<?php print(h($id));?>"> 

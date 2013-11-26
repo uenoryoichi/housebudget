@@ -118,3 +118,11 @@ li {
 	display: inline;
 	list-style: none;
 }
+
+.center {
+  text-align: center;
+  table-align: center;
+}
+
+[class*="span"]{float:left;margin-left:20px}
+.container{width:940px}

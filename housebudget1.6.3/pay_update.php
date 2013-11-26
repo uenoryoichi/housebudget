@@ -26,10 +26,8 @@ if (!empty($_POST['key'])){
 }
 
 $id=$_POST['id'];
-$sql=sprintf("SELECT pay.*, accounts.name 
+$sql=sprintf("SELECT pay.*
  				FROM pay 
- 					JOIN user_accounts ON pay.user_accounts_id=user_accounts.id 
- 					JOIN accounts ON user_accounts.account_id=accounts.id 
 				WHERE pay.id=%d",
 			mysql_real_escape_string($id)
 );
@@ -65,7 +63,24 @@ $date=mysql_fetch_assoc($result);
                     			<?php endif; ?>
                         	</dd>
                         	
-                     	<dt>内容</dt>
+                     <dt>口座名</dt>
+						<dd>
+							<select  name="user_accounts_id" class="form-control">
+							<?php //選択肢にユーザーの口座情報を入れる?>
+							<?php $selected=$date['user_accounts_id']?>
+                 	        	<?php require 'function/input_user_account_name.php'; ?>
+ 							</select>
+						</dd>
+						
+					<dt>分類</dt>
+                     		<dd>
+                     			<select  name="pay_specification_id"class="form-control" >
+                     			<?php $selected=$date['pay_specification_id'];?>
+							<?php  require_once 'function/form_pay_specifications.php';?>
+							</select>
+                         	</dd>
+                         	   
+                   	<dt>メモ</dt>
                     		<dd>
                     			<input type = "text" name = "what" class="form-control" value="<?php print (h($date['what']));?>"/>
 						</dd>
@@ -80,19 +95,6 @@ $date=mysql_fetch_assoc($result);
                     			<?php endif; ?>
 						</dd>
 						
-					<dt>支払い</dt>
-						<dd>
-							<select  name="user_accounts_id" class="form-control">
-							<?php //選択肢にユーザーの口座情報を入れる?>
-							<?php $selected=$date['user_accounts_id']?>
-                 	        	<?php require 'function/input_user_account_name.php'; ?>
- 							</select>
-						</dd>
-						
-					<dt>分類</dt>
-                     		<dd>
-                     			<input type = "text" name = "type" class="form-control" value="<?php print (h($date['type']));?>"/>
-                       	</dd>
                     	</dl>
                      	<div class="center">
                     		<!-- 送信ボタン -->
