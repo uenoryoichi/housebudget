@@ -10,24 +10,8 @@ while ($row = mysql_fetch_assoc($result)) {
 	$accounts[] = $row;
 }
 
-include 'library/optionLoop2.php';
+include_once 'library/optionLoop2.php';
 optionLoop2($accounts, $selected) ;
-/*
-if(isset($selected)){		//更新時
-	for ($i=0,$count_accounts=count($accounts); $i<$count_accounts; $i++){
-		if ($selected==$accounts[$i]['id']) {
-			print ('<option value="'.h($accounts[$i]['id']).'" selected>'.h($accounts[$i]['name']).'</option>');
-		}else {
-			print('<option value="'.h($accounts[$i]['id']).'">'.h($accounts[$i]['name']).'</option>');
-		}
-	}
-}else {							//入力時
-	for ($i=0,$count_accounts=count($accounts); $i<$count_accounts; $i++){
-		print('<option value="'.h($accounts[$i]['id']).'">'.h($accounts[$i]['name']).'</option>');
-		
-	}
-}
-*/
 unset($selected);
 ?>
 

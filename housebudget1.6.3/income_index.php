@@ -70,14 +70,14 @@ while ($row = mysql_fetch_assoc($result)) {
                     		<dd>
                     			<select  name="user_accounts_id" class="form-control" >
                    				<?php //選択肢にユーザーの口座情報を入れる?>
-                    				<?php require_once 'function/input_user_account_name.php'; ?>
+                    				<?php include_once 'function/input_user_account_name.php'; ?>
 							</select>
                     		</dd>
                     		
 	             	<dt>分類</dt>
                    		<dd>
                    		<select name="income_specification_id" class="form-control">
-                   		<?php require_once 'function/form_income_specifications.php';?>	
+                   		<?php include_once  'function/form_income_specifications.php';?>	
                    		</select>
                    		</dd>
 		      	

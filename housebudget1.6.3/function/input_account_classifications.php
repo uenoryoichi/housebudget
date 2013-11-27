@@ -7,7 +7,7 @@ while ($row = mysql_fetch_assoc($result)) {
 	$account_classifications[] = $row;
 }
 
-include 'library/optionLoop2.php';
+include_once 'library/optionLoop2.php';
 optionLoop2($account_classifications, $selected);
 
 ?>
