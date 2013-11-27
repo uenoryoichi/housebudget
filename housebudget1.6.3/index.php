@@ -72,7 +72,7 @@ require 'include/php/calculate_this_month.php';
 				<div class="center">
 					<br>
 					<h2>更新履歴</h2>
-					<?php include 'include/change_log.html';?>
+					<?php include 'include/html/change_log.html';?>
 				</div>
 			</div>
 		</div>
@@ -84,7 +84,7 @@ require 'include/php/calculate_this_month.php';
 				<div class="center">
 					<br>
 					<h2>coming_soon</h2>
-					<?php include 'include/coming_soon.html';?>
+					<?php include 'include/html/coming_soon.html';?>
 				</div>
 			</div>
 		</div>
