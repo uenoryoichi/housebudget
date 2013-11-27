@@ -9,9 +9,9 @@ require 'function/login_check.php';
 require 'library_all.php';
 
 //口座の現在残高取得
-require 'function/calculate_account_balance.php';
+require 'include/php/calculate_account_balance.php';
 //今月の収支情報取得
-require 'function/calculate_this_month.php';
+require 'include/php/calculate_this_month.php';
 
 ?>
 <!DOCTYPE html>

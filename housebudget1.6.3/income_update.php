@@ -73,7 +73,7 @@ $income=mysql_fetch_assoc($recordSet);
 						<select  name="user_accounts_id" class="form-control" >
              	    			<?php //選択肢にユーザーの口座情報を入れる?>
                    			<?php $selected=$income['user_accounts_id']?>
-                		    		<?php require 'function/input_user_account_name.php'; ?>
+                		    		<?php require 'include/php/input_user_account_name.php'; ?>
 						</select>
 						</dd>
 					
@@ -81,7 +81,7 @@ $income=mysql_fetch_assoc($recordSet);
                      		<dd>
                      			<select  name="income_specification_id"class="form-control" >
                      			<?php $selected=$income['income_specification_id'];?>
-							<?php  require_once 'function/form_income_specifications.php';?>
+							<?php  require_once 'include/php/form_income_specifications.php';?>
 							</select>
                          	</dd>    	
                       	

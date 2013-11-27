@@ -73,7 +73,7 @@ if (!empty($_POST)){
                         		<dd>
                         			<select  name="user_accounts_id_remitter" class="form-control" >
 								<?php //選択肢にユーザーの口座情報を入れる user_accounts_id?>
-                            		<?php require 'function/input_user_account_name.php'; ?>
+                            		<?php require 'include/php/input_user_account_name.php'; ?>
 								</select>
 							</dd>
 							
@@ -81,7 +81,7 @@ if (!empty($_POST)){
                         		<dd>
                         			<select  name="user_accounts_id_remittee" class="form-control" >
 								<?php //選択肢にユーザーの口座情報を入れる user_accounts_id?>
-                            		<?php require  'function/input_user_account_name.php'; ?>
+                            		<?php require  'include/php/input_user_account_name.php'; ?>
 								</select>
 							</dd>
 						 
@@ -93,7 +93,7 @@ if (!empty($_POST)){
                        		
 						<dt>移動日</dt>
                    			<dd>
-                   				<?php require_once 'function/form_date.php';?>	
+                   				<?php require_once 'include/php/form_date.php';?>	
                    			</dd>
                       
 						<div class="center">

@@ -239,7 +239,7 @@ while ($row = mysql_fetch_assoc($result)) {
 						<select name="account_classification_id" class="form-control" >
                             <?php //選択肢口座種別情報を入れる?>
                             <?php //$selected=$rewrite['account_classification_id']?>
-                            <?php require 'function/input_account_classifications.php'; ?>
+                            <?php require 'include/php/input_account_classifications.php'; ?>
                             <?php //make_selecte_form(account_classifications, 1, $_SESSION['user_id'], 1) ?>
 						</select>
 						<label>名称</label>

@@ -7,7 +7,7 @@ require 'function/login_check.php';
 //関数取得
 require 'library_all.php';
 //口座の現在残高取得
-require 'function/calculate_account_balance.php';
+require 'include/php/calculate_account_balance.php';
 
 
 if (!empty($_POST['key'])){

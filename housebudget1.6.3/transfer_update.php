@@ -75,7 +75,7 @@ $transfer=mysql_fetch_assoc($recordSet);
                    			<select  name="user_accounts_id_remitter" class="form-control" >
         	             		<?php //選択肢にユーザーの口座情報を入れる?>
         	             		<?php $selected=$transfer['user_accounts_id_remitter']?>
-        		            		<?php require 'function/input_user_account_name.php'; ?>
+        		            		<?php require 'include/php/input_user_account_name.php'; ?>
 							</select>
 						</dd>
 						
@@ -84,7 +84,7 @@ $transfer=mysql_fetch_assoc($recordSet);
                      			<select  name="user_accounts_id_remittee" class="form-control" >
                      			<?php //選択肢にユーザーの口座情報を入れる?>
                      			<?php $selected=$transfer['user_accounts_id_remittee']?>
-                     			<?php require 'function/input_user_account_name.php'; ?>
+                     			<?php require 'include/php/input_user_account_name.php'; ?>
 							</select>
 						</dd>
 						

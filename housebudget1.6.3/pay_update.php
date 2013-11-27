@@ -68,7 +68,7 @@ $date=mysql_fetch_assoc($result);
 							<select  name="user_accounts_id" class="form-control">
 							<?php //選択肢にユーザーの口座情報を入れる?>
 							<?php $selected=$date['user_accounts_id']?>
-                 	        	<?php require 'function/input_user_account_name.php'; ?>
+                 	        	<?php require 'include/php/input_user_account_name.php'; ?>
  							</select>
 						</dd>
 						
@@ -76,7 +76,7 @@ $date=mysql_fetch_assoc($result);
                      		<dd>
                      			<select  name="pay_specification_id"class="form-control" >
                      			<?php $selected=$date['pay_specification_id'];?>
-							<?php  require_once 'function/form_pay_specifications.php';?>
+							<?php  require_once 'include/php/form_pay_specifications.php';?>
 							</select>
                          	</dd>
                          	   
