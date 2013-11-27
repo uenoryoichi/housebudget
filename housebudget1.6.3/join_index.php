@@ -63,7 +63,7 @@ if ($_REQUEST['action']== 'rewrite') {
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-md-6">
            		<br><h2>次のフォームに入力してください</h2>
-                	<form method = "POST" action = "join_index.php" enctype="multipart/form-date" class="form-horizontal well">
+                	<form method = "POST" action = "" enctype="multipart/form-date" class="form-horizontal well">
                		<dl>
                		<dt>ニックネーム<span class="label label-danger">必須</span></dt>
                     		<dd>
