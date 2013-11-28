@@ -39,14 +39,14 @@ $recordSet=mysql_query($sql) or die(mysql_error());
 $transfer=mysql_fetch_assoc($recordSet);
 ?>
 
+<?php //エラー表示?>
+<?php include 'library/alert.php';?>
+
 <!DOCTYPE html>
 <html lang=ja>
-	<!-- ヘッダー -->
     <?php include 'include/head.html';?>
 
 <body>
-
-    	<!-- 見出し -->
 		<div id="head">
 			<h1>口座移動修正</h1>
 		</div>
@@ -63,39 +63,29 @@ $transfer=mysql_fetch_assoc($recordSet);
               		<dt>金額</dt>
                    		<dd>
                    			<input type = "text" name = "amount" class="form-control" value="<?php print (h($transfer['amount']));?>"/>
-                   			<?php if ($error['amount']=='int'):?>
-								<div class="alert alert-warning">
-									<p class="error">* 数字（半角）を入力してください</p>
-                    				</div>	
-                    			<?php endif; ?>
+                   			<?php alert_warning($error['amount']);?>
                      		</dd>
                     	
                     	<dt>送り手</dt>
                    		<dd>
                    			<select  name="user_accounts_id_remitter" class="form-control" >
-        	             		<?php //選択肢にユーザーの口座情報を入れる?>
         	             		<?php $selected=$transfer['user_accounts_id_remitter']?>
-        		            		<?php require 'include/php/input_user_account_name.php'; ?>
+        		            		<?php include_once 'include/php/input_user_account_name.php'; ?>
 							</select>
 						</dd>
 						
 					<dt>受け手</dt>
                      		<dd>
                      			<select  name="user_accounts_id_remittee" class="form-control" >
-                     			<?php //選択肢にユーザーの口座情報を入れる?>
                      			<?php $selected=$transfer['user_accounts_id_remittee']?>
-                     			<?php require 'include/php/input_user_account_name.php'; ?>
+                     			<?php include_once 'include/php/input_user_account_name.php'; ?>
 							</select>
 						</dd>
 						
 					<dt>移動日</dt>
 						<dd>
 							<input type = "text" name = "date" class="form-control" value="<?php print (h($transfer['date'])); ?>"/>
-							<?php if ($error['date']=='date'):?>
-								<div class="alert alert-warning">
-									<p class="error">* <?php echo date('Y-m-d');?> のフォーマットで入力してください</p>
-                    				</div>	
-                    			<?php endif; ?>
+							<?php alert_warning($error['date']);?>
 						</dd>
 						
 					<dt>メモ</dt>
@@ -104,9 +94,7 @@ $transfer=mysql_fetch_assoc($recordSet);
 						</dd>
 					</dl>
 					<div class="center">	
-						<?php // ID ?>
         	             	<input type = "hidden" name="id" value="<?php print (h($id));?>"> 
-						<?php //口座移動情報キー?>
 						<input type = "hidden" name = "key" value="transfer" >
 						<input type = "submit" value = "修正を送信" class="btn btn-primary">
 					</div>

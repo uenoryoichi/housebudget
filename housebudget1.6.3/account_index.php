@@ -25,6 +25,9 @@ if (!empty($_POST['key'])){
 }
 
 ?>
+<?php //エラー表示?>
+<?php include 'library/alert.php';?>
+
 
 <!DOCTYPE html>
 <html lang=ja>
@@ -44,12 +47,8 @@ if (!empty($_POST['key'])){
 				<div class = "center">
 					<br>
 					<h2>口座残高情報更新</h2>
-           			<form method="POST" action="" class="form-horizontal well">
-	           			<?php if ($error['balance']=='int'):?>
-								<div class="alert alert-warning">
-									<p class="error">* 数字（半角）を入力してください</p>
-                    				</div>	
-                    		<?php endif; ?>
+           			<form method="POST" action='' class="form-horizontal well">
+	           			<?php alert_warning($error['balance']); ?>
 	           			<table class="table table-hover table-bordered">
 							<thead>
 								<tr>
@@ -81,7 +80,6 @@ if (!empty($_POST['key'])){
 		<a href="index.php">Back To TOP</a>
 	</div>
 		
-	<!-- フッター -->
 	<?php include 'include/footer.html';?>
 	
 </body>

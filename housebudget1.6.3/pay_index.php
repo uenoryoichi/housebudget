@@ -10,9 +10,13 @@ require 'library_all.php';
 
 if (!empty($_POST)){
 	//入力不足チェック
-	if (!is_numeric($_POST['how_much'] )){
+	if (empty($_POST['how_much'] )){
+		$error['how_much']='empty';
+	}
+	elseif (!is_numeric($_POST['how_much'] )){
 		$error['how_much']='int';
 	}
+	
 	//エラーがなければ次へ
 	if (empty($error)){
 		$_SESSION['pay'] = $_POST;
@@ -36,12 +40,17 @@ while ($row = mysql_fetch_assoc($result)) {
 }
 ?>
 
+<?php //エラー表示?>
+<?php include 'library/alert.php';?>
+
 <!DOCTYPE html>
 <html lang=ja>
 	<!-- ヘッダーここから -->
     <?php include 'include/head.html';?>
 
 <body>
+
+
 	<div id="head">
 		<h1>支出一覧</h1>
 	</div>
@@ -59,12 +68,8 @@ while ($row = mysql_fetch_assoc($result)) {
                  	<dt>金額</dt>
                     		<dd>
                     			<input type = "text" name = "how_much" class="form-control" >
-                    			<?php if ($error['how_much']=='int'):?>
-								<div class="alert alert-warning">
-									<p class="error">* 数字（半角）を入力してください</p>
-                    				</div>	
-                    			<?php endif; ?>
-                        	</dd>
+                    			<?php alert_warning($error['how_much'])?>
+                    			</dd>
                     	  	
                     	<dt>口座名</dt>
                     		<dd>

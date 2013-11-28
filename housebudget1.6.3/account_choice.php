@@ -102,6 +102,8 @@ while ($row = mysql_fetch_assoc($result)) {
 }
 ?>
 
+<?php //エラー表示?>
+<?php include 'library/alert.php';?>
 
 <!DOCTYPE html>
 <html lang=ja>
@@ -110,7 +112,6 @@ while ($row = mysql_fetch_assoc($result)) {
 
 <body>
 	<div id="head">
-		<h1><?php echo $member['name'];?>さんのMy家計簿</h1>
 		<h1>口座選択</h1>
 	</div>
 
@@ -230,33 +231,18 @@ while ($row = mysql_fetch_assoc($result)) {
 				<div class = "center">
 					<br><h2>上記にない口座を登録</h2>
 					<form action="" method="post" name="add_accounts" class = "form-horizontal well">
-						<?php if ($error['add_accounts']=='duplicate'):?>
-							<div class="alert alert-warning">
-								<p class="error">* すでに登録されています。登録口座一覧を確認下さい</p>
-                				</div>	
-                    		<?php endif; ?>		
+						<?php alert_warning($error['add_accounts']); ?>		
 						<label>口座種別</label>
-						<select name="account_classification_id" class="form-control" >
-                            <?php //選択肢口座種別情報を入れる?>
-                            <?php //$selected=$rewrite['account_classification_id']?>
-                            <?php require 'include/php/input_account_classifications.php'; ?>
-                            <?php //make_selecte_form(account_classifications, 1, $_SESSION['user_id'], 1) ?>
-						</select>
+							<select name="account_classification_id" class="form-control" >
+                           	 <?php require 'include/php/input_account_classifications.php'; ?>
+							</select>
+						
 						<label>名称</label>
-										
-						<?php if ($error["accounts_name"]=="empty"):?>
-							<div class="alert alert-warning">
-								<p class="error">* 入力してください</p>
-                				</div>	
-                    		<?php endif; ?>
-						<input type="text" name="accounts_name" class="form-control" value="<?php echo (h($rewrite['accounts_name'])); ?>"/>
+							<input type="text" name="accounts_name" class="form-control" value="<?php echo (h($rewrite['accounts_name'])); ?>"/>
+							<?php alert_warning($error['accounts_name']); ?>		
 						
 						<label>かな(全角ひらがな)</label>
-						<?php if ($error["accounts_kana"]=="no_kana" || $error["accounts_kana"]=="empty"):?>
-							<div class="alert alert-warning">
-								<p class="error">* 全角ひらがなで入力してください</p>
-                				</div>	
-                    		<?php endif; ?>
+							<?php alert_warning($error['accounts_kana']); ?>
 						<input type="text" name="accounts_kana" class="form-control" value="<?php echo(h($rewrite['accounts_kana'])); ?>" />
 						
 						<input type="hidden" name="key" value="add_accounts">
@@ -270,7 +256,6 @@ while ($row = mysql_fetch_assoc($result)) {
 	<div class="center">
 		<a href="index.php">Back To TOP</a>
 	</div>
-	<!-- フッター -->
 	<?php include 'include/footer.html';?>
 	
 </body>
