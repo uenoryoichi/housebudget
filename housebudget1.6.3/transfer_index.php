@@ -67,14 +67,14 @@ if (!empty($_POST)){
                        	<dt>送り手</dt>
                         		<dd>
                         			<select  name="user_accounts_id_remitter" class="form-control" >
-                            		<?php include_once 'include/php/input_user_account_name.php'; ?>
+                            		<?php include 'include/php/input_user_account_name.php'; ?>
 								</select>
 							</dd>
 							
 						<dt>受け手</dt>
                         		<dd>
                         			<select  name="user_accounts_id_remittee" class="form-control" >
-                            		<?php include_once 'include/php/input_user_account_name.php'; ?>
+                            		<?php include 'include/php/input_user_account_name.php'; ?>
 								</select>
 							</dd>
 						 
