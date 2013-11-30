@@ -8,19 +8,19 @@ require 'library_all.php';
 if (!empty($_POST)){
 	//入力不足チェック
 	if ($_POST['name'] == '') {
-		$error['name']='blank';
-	}
-	if ($_POST['email'] == '') {
-		$error['email']='blank';
+		$error['name']='empty';
 	}
 	if (!preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/',$_POST['email'])) {
 		$error['email']='no_email';
+	}
+	if ($_POST['email'] == '') {
+		$error['email']='empty';
 	}
 	if (strlen($_POST['user_password']) < 4) {
 		$error['password']='length';
 	}
 	if ($_POST['user_password'] == '') {
-		$error['password']='blank';
+		$error['password']='empty';
 	}
 	//重複アカウントチェック
 	if (empty($error)) {
@@ -48,6 +48,9 @@ if ($_REQUEST['action']== 'rewrite') {
 
 ?>
 
+<?php //エラー表示?>
+<?php include 'library/alert.php';?>
+
 <!DOCTYPE html>
 <html lang=ja>
 	<!-- ヘッダーここから -->
@@ -63,35 +66,28 @@ if ($_REQUEST['action']== 'rewrite') {
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-md-6">
            		<br><h2>次のフォームに入力してください</h2>
-                	<form method = "POST" action = "join_index.php" enctype="multipart/form-date" class="form-horizontal well">
+                	<form method = "POST" action = "" enctype="multipart/form-date" class="form-horizontal well">
                		<dl>
                		<dt>ニックネーム<span class="label label-danger">必須</span></dt>
                     		<dd>
                     			<input type = "text" name = "name" class="form-control" value="<?php echo h($_POST['name']);?>"/>
-                   			<?php if ($error['user_name']=='blank'):?>
-								<p class="error">* ニックネームを入力してください</p>
-                    			<?php endif; ?>
+                   			<?php alert_warning($error['name']);?>
                        	</dd>
                        	 
                    	<dt>メールアドレス<span class="label label-danger">必須</span></dt>
                    		<dd>
                    			<input type = "text" name = "email" class="form-control" value="<?php echo h($_POST['email']);?>"/>
-                			  	<?php if ($error['email']=='blank' ||$error['email']=='no_email'):?>
-								<p class="error">* メールアドレスを正しく入力してください</p>
-   			               	<?php endif; ?>
-             		     	<?php if ($error['email']=='duplicate'): ?>
-                    				<p class="error">* 指定したメールアドレスはすでに登録されています。</p>
-                  			<?php endif;?>
+                			  	<?php alert_warning($error['email']);?>
 						</dd>
 						
 					<dt>パスワード<span class="label label-danger">必須</span></dt>
                   		<dd>
                   			<input type = "password" name = "user_password" maxlength="20" class="form-control"value="<?php echo h($_POST['password']);?>"/>
-        			           	<?php if ($error['password']=='blank'):?>
-								<p class="error">* パスワードを入力してください</p>
-                  			<?php endif; ?>
+        			           	<?php alert_warning($error['password']);?>
                   			<?php if ($error['password']=='length'):?>
-								<p class="error">* パスワードは４文字以上で入力してください</p>
+								<div class="alert alert-warning">
+									<p class="error">* パスワードは４文字以上で入力してください</p>
+								</div>
                    			<?php endif; ?>
                    		</dd>
                    	</dl>

@@ -38,8 +38,11 @@ $result = mysql_query($sql, $link) or die(mysql_error());
 while ($row = mysql_fetch_assoc($result)) {
 	$users = $row;
 }
-
 ?>
+
+<?php //エラー表示?>
+<?php include 'library/alert.php';?>
+
 
 <!DOCTYPE html>
 <html lang=ja>
@@ -61,32 +64,15 @@ while ($row = mysql_fetch_assoc($result)) {
 					<dl>
 					<dt>連絡先(Emailアドレス)</dt>
 						<dd><input name="email" type="text" class="form-control" maxlength="255" value=<?php echo h($users["email"]);?>></dd>
-						<?php if ($error['email']=='empty'):?>
-								<div class="alert alert-warning">
-									<p class="error">* メールアドレスが入力されていません</p>
-                    				</div>	
-                    		<?php endif; ?>
-                    		<?php if ($error['email']=='no_email'):?>
-								<div class="alert alert-warning">
-									<p class="error">* メールアドレスの形式が不正です</p>
-                    				</div>	
-                    		<?php endif; ?>
+						<?php alert_warning($error['email']);?>
 					<dt>件名</dt>
 						<dd><input name="subject" type="text" class="form-control" maxlength="255" /></dd>
-						<?php if ($error['subject']=='empty'):?>
-								<div class="alert alert-warning">
-									<p class="error">* 件名が入力されていません</p>
-                    				</div>	
-                    		<?php endif; ?>
+                    		<?php alert_warning($error['subject']);?>
 					<dt>内容</dt>
 						<dd>
 							<textarea name="message" cols="50" rows="10" class="form-control" ></textarea>
 						</dd>
-						<?php if ($error['message']=='empty'):?>
-								<div class="alert alert-warning">
-									<p class="error">* 本文が入力されていません</p>
-                    				</div>	
-                    		<?php endif; ?>
+						<?php alert_warning($error['message']);?>
 					</dl>
 					<div class="center">
 						<input type = "hidden" name = "key" value="inquiry" >

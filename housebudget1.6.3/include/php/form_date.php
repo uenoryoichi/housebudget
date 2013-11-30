@@ -1,5 +1,6 @@
 <div class="form-group">
-	<select name="year" class="form-control">
+	<select name="year" class="form-control"
+		<?php include 'library/optionLoop.php';?>		
 		<?php optionLoop('1950', date('Y'), date('Y'));?>
 	</select>
 </div>
@@ -25,15 +26,4 @@
 	</select>
 </div>
 <span class="help-inline">時</span>
-							
-<?php //セレクトオプションのループ設定   ref)    http://php-fan.org/ymdpulldown.html
-function optionLoop($start, $end, $value = null){
-	for($i = $start; $i <= $end; $i++){
-		if(isset($value) &&  $value == $i){
-			echo "<option value=\"{$i}\" selected=\"selected\">{$i}</option>";
-		}else{
-			echo "<option value=\"{$i}\">{$i}</option>";
-		}
-	}
-}
-?>
+

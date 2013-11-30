@@ -1,7 +1,7 @@
 <?php
 session_start();
 //データベースへの接続 housebudget
-require('function/connect_housebudget.php');
+require'function/connect_housebudget.php';
 
 if (!isset($_SESSION['join'])) {
 	header('Location: join_index.php');

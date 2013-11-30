@@ -13,12 +13,10 @@ $record=NULL;
 while ($row = mysql_fetch_assoc($result)) {
 	$record[] = $row;
 }
-include 'library/optionLoop2.php';
+
+include_once 'library/optionLoop2.php';
 optionLoop2 ($record, $selected);
 
 unset($selected);
-
-
-
 ?>
 

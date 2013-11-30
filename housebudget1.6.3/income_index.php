@@ -38,6 +38,9 @@ while ($row = mysql_fetch_assoc($result)) {
 ?>
 
 
+<?php //エラー表示?>
+<?php include 'library/alert.php';?>
+
 <!DOCTYPE html>
 <html lang=ja>
     <?php include 'include/head.html';?>
@@ -59,25 +62,20 @@ while ($row = mysql_fetch_assoc($result)) {
 	             	<dt>金額</dt>
 	             		<dd>
 	             			<input type = "text" name = "amount" class="form-control" >
-	             			<?php if ($error['amount']=='int'):?>
-								<div class="alert alert-warning">
-									<p class="error">* 数字（半角）を入力してください</p>
-                    				</div>	
-                    			<?php endif; ?>
+	             			<?php alert_warning($error['amount']); ?>
 	             		</dd>
 	             		
 	          		<dt>口座名</dt>
                     		<dd>
                     			<select  name="user_accounts_id" class="form-control" >
-                   				<?php //選択肢にユーザーの口座情報を入れる?>
-                    				<?php require_once 'function/input_user_account_name.php'; ?>
+                    				<?php include_once 'include/php/input_user_account_name.php'; ?>
 							</select>
                     		</dd>
                     		
 	             	<dt>分類</dt>
                    		<dd>
                    		<select name="income_specification_id" class="form-control">
-                   		<?php require_once 'function/form_income_specifications.php';?>	
+                   		<?php include_once  'include/php/form_income_specifications.php';?>	
                    		</select>
                    		</dd>
 		      	
@@ -88,7 +86,7 @@ while ($row = mysql_fetch_assoc($result)) {
                    			
 					<dt>日付</dt>
                    		<dd>
-                   		<?php require_once 'function/form_date.php';?>	
+                   		<?php require_once 'include/php/form_date.php';?>	
                    		</dd>
                    	
                

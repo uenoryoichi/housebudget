@@ -37,15 +37,18 @@ if (!empty($_POST)) {
 			$error['login'] = 'failed';
 		}
 	} else {
-		$error['login'] = 'blank';
+		$error['login'] = 'empty';
 	}
 }
 
 
 //デモ用のアカウント候補生成
 $demo="demo".rand(1, 3);
-
 ?>
+
+<?php //エラー表示?>
+<?php include 'library/alert.php';?>
+
 
 <!DOCTYPE html>
 <html lang=ja>
@@ -54,10 +57,9 @@ $demo="demo".rand(1, 3);
 
 <body>
 	<div id="head">
-		<h1>ログインする</h1>
+		<h1>ログイン</h1>
 	</div>
 
-<!-- ログイン画面ここから -->	
 	<div class="container">
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-md-6">
@@ -67,9 +69,7 @@ $demo="demo".rand(1, 3);
 						<dt>メールアドレス</dt>
 							<dd>
 								<input type = "text" name = "email" maxlength="255" class="form-control"" value="<?php echo h($_POST['email']);?>"/>
-                    				<?php if ($error['login']=='blank'):?>
-									<p class="error">* メールアドレスとパスワードを入力してください</p>
-                    				<?php endif; ?>
+                    				<?php alert_warning($error['login']);?>
                     				<?php if ($error['login']=='failed'): ?>
                     					<p class="error">* ログインに失敗しました。正しく入力してください</p>
                     				<?php endif;?>
@@ -126,6 +126,4 @@ $demo="demo".rand(1, 3);
 <?php include 'include/footer.html';?>
     		
 </body>
-	
-	
 </html>

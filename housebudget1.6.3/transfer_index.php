@@ -37,18 +37,17 @@ if (!empty($_POST)){
 	}
 ?>
 
-
+<?php //エラー表示?>
+<?php include 'library/alert.php';?>
 
 <!DOCTYPE html>
 <html lang=ja>
-	<!-- ヘッダー -->
     <?php include 'include/head.html';?>
 	
 <body>
 	<div id="head">
 		<h1>口座移動一覧</h1>
 	</div>
-
 	<!-- メニューバー -->
 	<?php include 'include/menu.html';?>
 	
@@ -62,26 +61,20 @@ if (!empty($_POST)){
                     		<dt>金額</dt>
                        		<dd>
                        			<input type = "text" name = "amount" class="form-control" >
-                       			<?php if ($error['amount']=='int'):?>
-								<div class="alert alert-warning">
-									<p class="error">* 数字（半角）を入力してください</p>
-                    				</div>	
-                    				<?php endif; ?>
+                       			<?php alert_warning($error['amount']);?>
                          		</dd>
                          		
                        	<dt>送り手</dt>
                         		<dd>
                         			<select  name="user_accounts_id_remitter" class="form-control" >
-								<?php //選択肢にユーザーの口座情報を入れる user_accounts_id?>
-                            		<?php require 'function/input_user_account_name.php'; ?>
+                            		<?php include 'include/php/input_user_account_name.php'; ?>
 								</select>
 							</dd>
 							
 						<dt>受け手</dt>
                         		<dd>
                         			<select  name="user_accounts_id_remittee" class="form-control" >
-								<?php //選択肢にユーザーの口座情報を入れる user_accounts_id?>
-                            		<?php require  'function/input_user_account_name.php'; ?>
+                            		<?php include 'include/php/input_user_account_name.php'; ?>
 								</select>
 							</dd>
 						 
@@ -93,12 +86,12 @@ if (!empty($_POST)){
                        		
 						<dt>移動日</dt>
                    			<dd>
-                   				<?php require_once 'function/form_date.php';?>	
+                   				<?php require_once 'include/php/form_date.php';?>	
                    			</dd>
                       
 						<div class="center">
 							<?php  //口座移動情報キー ?>
-							<input type = "hidden" name = "key" value="transfer" >
+							<input type="hidden" name="key" value="transfer" >
 							<input type = "submit" value = "送信" class="btn btn-primary">
 						</div>
                  	</form>
@@ -160,8 +153,6 @@ if (!empty($_POST)){
 	<div class = "center">
 		<a href="index.php">Back To TOP</a>
 	</div>
-
-	<!--一覧表示部終わり-->
 
 	<!-- フッター -->
 	<?php include 'include/footer.html';?>

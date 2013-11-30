@@ -36,15 +36,14 @@ $date=mysql_fetch_assoc($result);
 ?>
 
 <html lang=ja>
-	<!-- ヘッダーここから -->
     <?php include 'include/head.html';?>
     
 <body>
+<?php include 'library/alert.php';?>
 	<div id="head">
 	　	<h1>支払修正</h1>
 	</div>
 	
-	<!-- メニューバー -->
 	<?php include 'include/menu.html';?>
 	
    	<div class="container">
@@ -56,19 +55,14 @@ $date=mysql_fetch_assoc($result);
                 		<dt>金額</dt>
                     		<dd>
                     			<input type = "text" name = "how_much" class="form-control" value="<?php print (h($date['how_much']));?>"/>
-                    			<?php if ($error['how_much']=='int'):?>
-								<div class="alert alert-warning">
-									<p class="error">* 数字（半角）を入力してください</p>
-                    				</div>	
-                    			<?php endif; ?>
+                    			<?php alert_warning($error['how_much'])?>
                         	</dd>
                         	
                      <dt>口座名</dt>
 						<dd>
 							<select  name="user_accounts_id" class="form-control">
-							<?php //選択肢にユーザーの口座情報を入れる?>
 							<?php $selected=$date['user_accounts_id']?>
-                 	        	<?php require 'function/input_user_account_name.php'; ?>
+                 	        	<?php require 'include/php/input_user_account_name.php'; ?>
  							</select>
 						</dd>
 						
@@ -76,7 +70,7 @@ $date=mysql_fetch_assoc($result);
                      		<dd>
                      			<select  name="pay_specification_id"class="form-control" >
                      			<?php $selected=$date['pay_specification_id'];?>
-							<?php  require_once 'function/form_pay_specifications.php';?>
+							<?php  require_once 'include/php/form_pay_specifications.php';?>
 							</select>
                          	</dd>
                          	   
@@ -88,11 +82,7 @@ $date=mysql_fetch_assoc($result);
 					<dt>日付</dt>
                      		<dd>
                      			<input type = "text" name = "date" class="form-control" value="<?php print (h($date['date']));?>"/>
-                     			<?php if ($error['date']=='date'):?>
-								<div class="alert alert-warning">
-									<p class="error">* <?php echo date('Y-m-d H:i:s');?> のフォーマットで入力してください</p>
-                    				</div>	
-                    			<?php endif; ?>
+                     			<?php alert_warning($error['date']);?>
 						</dd>
 						
                     	</dl>

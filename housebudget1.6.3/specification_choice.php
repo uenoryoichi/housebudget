@@ -8,8 +8,7 @@ require 'function/login_check.php';
 require 'library_all.php';
 
 
-
-//削除ボタン
+//削除ボタン時の動作
 if ($_POST['key']=="not_use"){
 	//入力不足チェック
 	if (empty($_POST['not_use_pay_specification_id'])){
@@ -24,13 +23,13 @@ if ($_POST['key']=="not_use"){
 	);
 	mysql_query($sql) or die(mysql_error());
 	unset($_POST);
+	$success='delete';
 	}
 }
 
-
-//分類追加ボタン 支払
+//分類追加ボタン時の動作 支払
 if ($_POST['key']=="add_pay_specification") {
-	if (!isset($_POST['specification_name'])) {
+	if (empty($_POST['specification_name'])) {
 		$error['specification_name']='empty';
 	}
 	
@@ -40,15 +39,15 @@ if ($_POST['key']=="add_pay_specification") {
 							mysql_real_escape_string($_SESSION['user_id'])
 	);
 	mysql_query($sql, $link) or die(mysql_error());
-	}
 	$add_specification_name=$_POST['specification_name'];
 	unset($_POST);
 	$success="pay";
+	}
 }
 
-//分類追加ボタン 収入
+//分類追加ボタン時の動作 収入
 if ($_POST['key']=="add_income_specification") {
-	if (!isset($_POST['specification_name'])) {
+	if (empty($_POST['specification_name'])) {
 		$error['specification_name']='empty';
 	}
 
@@ -58,10 +57,10 @@ if ($_POST['key']=="add_income_specification") {
 				mysql_real_escape_string($_SESSION['user_id'])
 		);
 		mysql_query($sql, $link) or die(mysql_error());
-	}
 	$add_specification_name=$_POST['specification_name'];
 	unset($_POST);
 	$success="income";
+	}
 }
 
 
@@ -87,6 +86,9 @@ while ($row = mysql_fetch_assoc($result)) {
 }
 ?>
 
+<?php //エラー表示?>
+<?php include 'library/alert.php';?>
+
 <!DOCTYPE html>
 <html lang=ja>
 	<!-- ヘッダーここから -->
@@ -94,7 +96,6 @@ while ($row = mysql_fetch_assoc($result)) {
 
 <body>
 	<div id="head">
-		<h1>my家計簿</h1>
 		<h1>分類項目選択</h1>
 	</div>
 
@@ -103,10 +104,15 @@ while ($row = mysql_fetch_assoc($result)) {
  
 	<div class="container">
 		<div class="row"> 		
-			<?php if (isset($success)):	?>									
+			<?php if ($success=='income' || $success=='pay'):	?>									
     	    			<div class="alert alert-success alert-dismissable">
 					<button type = "button" class="close" data-dismiss="success" aria-hidden="true" >&times;</button>
 					<strong ><?php echo $add_specification_name;?>を追加しました。</strong>
+				</div>
+			<?php elseif ($success=='delete'):?>
+			<div class="alert alert-danger alert-dismissable">
+					<button type = "button" class="close" data-dismiss="success" aria-hidden="true" >&times;</button>
+					<strong >削除しました。</strong>
 				</div>
 			<?php endif;?>
 			<div class="col-md-offset-1 col-md-4">
@@ -125,7 +131,7 @@ while ($row = mysql_fetch_assoc($result)) {
 							<tbody>
 								<tr>
 									<td class="center">
-										<?php if ($pay_specifications[$j]['user_id']!=0):?>
+										<?php if ($pay_specifications[$j]['user_id']!=0):?>   <?php //ユーザー独自定義の分類の場合削除ボタンを追加?>
 											<form method="post" action="" >
 												<input type="hidden" name="key" value="not_use">	
 												<input type="hidden" name="not_use_pay_specification_id" value=<?php echo h($pay_specifications[$j]['id']); ?>	>	
@@ -152,7 +158,7 @@ while ($row = mysql_fetch_assoc($result)) {
 								</tr>
 							</thead>
 							
-							<?php for ($j = 0, $count_i_s=count($income_specifications);  $j < $count_i_s; $j++): 							?>
+							<?php for ($j = 0, $count_i_s=count($income_specifications);  $j < $count_i_s; $j++): ?>
 							<tbody>
 								<tr>
 									<td class="center">
@@ -189,13 +195,9 @@ while ($row = mysql_fetch_assoc($result)) {
                           	</select>
 						
 						<label>名称</label>
-						<?php if ($error["specification_name"]=="empty"):?>
-							<div class="alert alert-warning">
-								<p class="error">* 入力してください</p>
-                				</div>	
-                    		<?php endif; ?>
 						<input type="text" name="specification_name" class="form-control" value="<?php echo (h($rewrite['specification_name'])); ?>"/>
-					<input type="submit" value="追加" class="btn btn-success"/>
+						<?php alert_warning($error['specification_name']);?>
+						<input type="submit" value="追加" class="btn btn-success"/>
 					</form>
 				</div>
 			</div>

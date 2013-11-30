@@ -1,5 +1,5 @@
 <?php function optionLoop2($record,$selected) {
-	if(isset($selected)){		//更新時
+	if(!empty($selected)){		//更新時
 		for ($i=0,$count_record=count($record); $i<$count_record; $i++){
 			if ($selected==$record[$i]['id']) {
 				print ('<option value="'.h($record[$i]['id']).'" selected>'.h($record[$i]['name']).'</option>');
