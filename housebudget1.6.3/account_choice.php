@@ -47,12 +47,9 @@ if ($_POST['key']=="add_accounts") {
 	}
 	
 	if (empty($error)){
-		$sql = sprintf('INSERT INTO accounts SET name="%s", kana="%s", account_classification_id=%d, created=NOW()', 
-							mysql_real_escape_string($_POST["accounts_name"]),
-							mysql_real_escape_string($_POST["accounts_kana"]),
-							mysql_real_escape_string($_POST["account_classification_id"])
-	);
-	mysql_query($sql, $link) or die(mysql_error());
+		$_SESSION['add_accounts']=$_POST;
+		$_SESSION['key']=$_POST['key'];
+		header('Location: insert_action.php');
 	} else {
 		$rewrite['accounts_name']=$_POST['accounts_name'];
 		$rewrite['accounts_kana']=$_POST['accounts_kana'];
