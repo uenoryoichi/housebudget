@@ -117,10 +117,10 @@ while ($row = mysql_fetch_assoc($result)) {
 						<thead>
 							<tr>
 								<th scope="col">日付</th>
-								<th scope="col">値段</th>
-								<th scope="col">内容</th>
+								<th scope="col">金額</th>
 								<th scope="col">口座名</th>
 								<th scope="col">分類</th>
+								<th scope="col">メモ</th>
 								<th scope="col"></th>
 								<th scope="col"></th>
 							</tr>
@@ -131,9 +131,9 @@ while ($row = mysql_fetch_assoc($result)) {
 							<tr>
 								<td><?php print(h($pay[$i]['date_ymd']));?></td>
 								<td><?php print(h($pay[$i]['how_much']));?></td>
-								<td><?php print(h($pay[$i]['what']));?></td>
 								<td><?php print(h($pay[$i]['account_name']));?></td>
 								<td><?php print(h($pay[$i]['pay_specification_name']));?></td>
+								<td><?php print(h($pay[$i]['what']));?></td>
 								<td class="center">
 									<form method = "POST" action = "pay_update.php" >
                  					<?php  //編集　id送信 ?>
