@@ -26,6 +26,7 @@ if ($key == 'pay') {
 	);
 	mysql_query($sql) or die(mysql_error());
 	unset($_SESSION['pay']);
+	header('Location: pay_index.php');
 }
 //収入情報
 if ($key == 'income') {
@@ -42,6 +43,7 @@ if ($key == 'income') {
 	);
 	mysql_query($sql) or die(mysql_error());
 	unset($_SESSION['income']);
+	header('Location: income_index.php');
 }
 
 //口座移動情報
@@ -57,6 +59,7 @@ if ($key == 'transfer') {
 	);
 	mysql_query($sql) or die(mysql_error());
 	unset($_SESSION['transfer']);
+	header('Location: transfer_index.php');
 }
 
 //口座更新情報
@@ -71,6 +74,7 @@ if ($key == 'account_balance') {
 		mysql_query($sql) or die(mysql_error());
 	}
 	unset($_SESSION['account_balance']);
+	header('Location: account_index.php');
 }
 
 
@@ -78,7 +82,6 @@ if ($key == 'account_balance') {
 
 <!DOCTYPE html>
 <html lang=ja>
-	<!-- ヘッダー -->
     <?php include 'include/head.html';?>
 
 <body>
@@ -95,37 +98,16 @@ if ($key == 'account_balance') {
 		<br>
 		<h3>
 			<?php 
-			if ($key =='pay') {echo '支払い情報を変更しました';}
-			elseif ($key =='income'){echo '収入情報を変更しました';}
-			elseif ($key == 'transfer'){echo '口座移動情報を変更しました';}
-			elseif ($key == 'account_balance'){echo  '残高情報を変更しました';}
-			elseif ($key==NULL){echo 'エラー キーがありません';}
+			if ($key==NULL){echo 'エラー キーがありません';}
 			?>
 		</h3>
 		<br>
 		<br>
-		
-		<h2><a href=
-			<?php 
-			if ($key =='pay') {echo 'pay_index.php';}
-			elseif ($key =='income'){echo 'income_index.php';}
-			elseif ($key == 'transfer'){echo 'transfer_index.php';}
-			elseif ($key == 'account_balance'){echo  'account_index.php';}?>
-		>一覧に戻る</a>
-		</h2>
+		<h2><a href="index.php">Back To TOP</a></h2>
 	</div>	
 </div>
 	
-<!-- トップに戻る -->
-<div class = "center">
-	<h2><a href="index.php">Back To TOP</a></h2>
-</div>
-
-<!-- フッター -->
 <?php include 'include/footer.html';?>
 
 </body>
-
-
-
 </html>

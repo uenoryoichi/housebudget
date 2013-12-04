@@ -8,7 +8,7 @@ require 'function/login_check.php';
 require 'library_all.php';
 
 //キーの格納
-$key=htmlspecialchars($_POST['key'], ENT_QUOTES);
+$key=$_POST['key'];
 
 
 //削除要求 支払い
@@ -17,7 +17,9 @@ if ($key=="pay") {
 			mysql_real_escape_string($_POST['id']),
 			mysql_real_escape_string($_SESSION['user_id'])
 	);
+	unset($_POST);
 	mysql_query($sql) or die(mysql_error());
+	header('Location: pay_index.php');
 }
 
 //削除要求　収入
@@ -26,8 +28,9 @@ if ($key =="income") {
 			mysql_real_escape_string($_POST['id']),
 			mysql_real_escape_string($_SESSION['user_id'])
 	);
+	unset($_POST);
 	mysql_query($sql) or die(mysql_error());
-}
+	header('Location: income_index.php');}
 
 //削除要求　口座移動
 if ($key =="transfer") {
@@ -35,7 +38,9 @@ if ($key =="transfer") {
 			mysql_real_escape_string($_POST['id']),
 			mysql_real_escape_string($_SESSION['user_id'])
 	);
+	unset($_POST);
 	mysql_query($sql) or die(mysql_error());
+	header('Location: transfer_index.php');
 }
 
 //削除要求　ユーザー使用口座
@@ -44,8 +49,9 @@ if ($key =="user_accounts") {
 			mysql_real_escape_string($_POST['user_accounts_id']),
 			mysql_real_escape_string($_SESSION['user_id'])
 	);
+	unset($_POST);
 	mysql_query($sql) or die(mysql_error());
-}
+	header('Location: user_accounts_index.php');}
 
 ?>
 <!DOCTYPE html>
@@ -65,34 +71,15 @@ if ($key =="user_accounts") {
 		<br>
 		<h3>
 			<?php 
-			if ($key=='pay') {echo '支払い情報を削除しました';}
-			elseif ($key=='income'){echo '収入情報を削除しました';}
-			elseif ($key=='transfer'){echo '口座移動情報を削除しました';}
-			elseif ($key=='user_accounts'){echo '口座情報を削除しました';}
-			elseif ($key==NULL){echo 'エラー キーがありません';}
+			if ($key==NULL){echo 'エラー 正しいページから入力してください';}
 			?>
 		</h3>
 		<br>
 		<br>
-		
-		<h2><a href=
-			<?php 
-			if ($key =='pay') {echo 'pay_index.php';}
-			elseif ($key =='income'){echo 'income_index.php';}
-			elseif ($key == 'transfer'){echo 'transfer_index.php';}
-			elseif ($key == 'user_accounts'){echo 'account_choice.php';}
-			?>
-		>一覧に戻る</a>
-		</h2>
+		<h2><a href="index.php">Back To TOP</a></h2>
 	</div>	
 </div>
 
-<!-- トップに戻る -->
-<div class = "center">
-	<h2><a href="index.php">Back To TOP</a></h2>
-</div>
-
-<!-- フッター -->
 <?php include 'include/footer.html';?>
 
 </body>

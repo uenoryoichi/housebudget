@@ -17,10 +17,10 @@ unset($_SESSION['key']);
 				mysql_real_escape_string($_SESSION['pay']["pay_specification_id"]),
 				mysql_real_escape_string($_SESSION['user_id'])
 		);
-		mysql_query($sql, $link) or die(mysql_error());
 		unset($_SESSION['pay']);
+		mysql_query($sql, $link) or die(mysql_error());
+		header('Location: pay_index.php');
 	}
-    //ここまで
     
 	//収入情報入力
 	if ($key == "income") {
@@ -33,8 +33,9 @@ unset($_SESSION['key']);
 				mysql_real_escape_string($_SESSION['income']['income_specification_id']),
 				mysql_real_escape_string($_SESSION['user_id'])
 		);
-		mysql_query($sql, $link) or die(mysql_error());
 		unset($_SESSION['income']);
+		mysql_query($sql, $link) or die(mysql_error());
+		header('Location: income_index.php');
 	}
 	
 	//口座移動情報入力
@@ -47,8 +48,9 @@ unset($_SESSION['key']);
 				mysql_real_escape_string($_SESSION['transfer']["memo"]),
 				mysql_real_escape_string($_SESSION['user_id'])
 		);	
-		mysql_query($sql, $link) or die(mysql_error());
 		unset($_SESSION['transfer']);
+		mysql_query($sql, $link) or die(mysql_error());
+		header('Location: transfer_index.php');
 	}
 
 	//使用する口座追加
@@ -65,15 +67,27 @@ unset($_SESSION['key']);
 		unset($_SESSION['user_accounts_add']);
 	}
 	
+	//口座一覧への追加
+	if ($key == "add_accounts") {
+		$sql = sprintf('INSERT INTO accounts SET name="%s", kana="%s", account_classification_id=%d, created=NOW()', 
+							mysql_real_escape_string($_SESSION['add_accounts']["accounts_name"]),
+							mysql_real_escape_string($_SESSION['add_accounts']["accounts_kana"]),
+							mysql_real_escape_string($_SESSION['add_accounts']["account_classification_id"])
+		);
+		unset($_SESSION['add_accounts']);
+		mysql_query($sql, $link) or die(mysql_error());
+		header('Location: account_choice.php');
+	}
+	
+	
+	
 ?>	
 
 <!DOCTYPE html>
 <html lang=ja>
-	<!-- ヘッダーここから -->
     <?php include 'include/head.html';?>
 
 <body>
-<!-- 見出し -->
 <div id="head">
 	<h1>入力完了</h1>
 </div>
@@ -81,47 +95,35 @@ unset($_SESSION['key']);
 <!-- メニューバー -->
 <?php include 'include/menu.html';?>
 	
-<!-- 実行内容表示 -->
 <div id="content">
 	<div class = "center">
 		<br>
 		<br>
 		<h3>
 			<?php 
-			if ($key=='pay') {echo '支払い情報を入力しました';}
-			elseif ($key=='income'){echo '収入情報を入力しました';}
-			elseif ($key == 'transfer'){echo '口座移動情報を入力しました';}
-			elseif ($key== 'user_accounts_add'){echo '新規口座を登録しました';}
-			elseif ($key==NULL){echo 'エラー キーがありません';}
+			if ($key==NULL){echo 'エラー 正しいページから入力してください';}
+			elseif ($key == "user_accounts_add"){echo '使用する口座を追加しました';}
+			else {echo'入力できていません';}
 			?>
 		</h3>
 		<br>
 		<br>
 		<?php if ($key == 'user_accounts_add') :?>
-			<h2><a href="account_index.php" class="btn btn-primary btn-lg">残高登録</a></h2>
+			<h2><a href="account_choice.php" class="btn btn-primary btn-lg">口座の追加削除</a>  <a href="account_index.php" class="btn btn-success btn-lg">残高登録</a></h2>
 			<br><br>
 		<?php endif;?>
 		
-		<h2><a href=
-			<?php 
-			if ($key =='pay') {echo 'pay_index.php';}
-			elseif ($key =='income'){echo 'income_index.php';}
-			elseif ($key == 'transfer'){echo'transfer_index.php';}
-			elseif ($key == 'user_accounts_add'){echo'account_choice.php';}
-			?>
-		>一覧に戻る</a>
-		</h2>
+		<h2><a href="index.php">Back To TOP</a></h2>
+	
 	</div>	
-	</div>
-	<!-- 完了表示　ここまで -->
+</div>
 
-	<!-- トップに戻る -->
+	<!-- トップに戻る 
 	<div class = "center">
 		<h2><a href="index.php">Back To TOP</a></h2>
 	</div>
-	<!-- トップに戻る　ここまで -->		
+	トップに戻る　ここまで -->		
 	
-	<!-- フッター -->
 <?php include 'include/footer.html';?>
 
 </body>
