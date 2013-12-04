@@ -43,7 +43,7 @@ if ($key == 'income') {
 	);
 	mysql_query($sql) or die(mysql_error());
 	unset($_SESSION['income']);
-	header('Location: incemo_index.php');
+	header('Location: income_index.php');
 }
 
 //口座移動情報
