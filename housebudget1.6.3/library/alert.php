@@ -35,21 +35,25 @@ function alert_warning($error) {
 	};
 }
 
-/*function alert_add_success($success, $add_name){						
- 	if (!empty($success)) {
- 		print ('<div class="alert alert-success alert-dismissable">');
+function alert_success($success){						
+ 	if ($success=='insert') {
+ 		print ('<div class="alert alert-primary alert-dismissable">');
 		print ('<button type = "button" class="close" data-dismiss="success" aria-hidden="true" >&times;</button>');
-		print ('<strong >'.$add_name.'を追加しました。</strong>');
+		print ('<strong >追加しました。</strong>');
 		print ('</div>');
  	};
-}
 
-function alert_delete_success($delete) {
-	if (!empty($delete)) {
-		print ('<div class="alert alert-danger alert-dismissable">')
-		print ('<button type = "button" class="close" data-dismiss="success" aria-hidden="true" >&times;</button>')
-		print ('<strong >削除しました。</strong>')
+	if ($success=='delete') {
+		print ('<div class="alert alert-danger alert-dismissable">');
+		print ('<button type = "button" class="close" data-dismiss="success" aria-hidden="true" >&times;</button>');
+		print ('<strong >削除しました。</strong>');
+		print ('</div>');
+	};
+
+	if ($success=='update') {
+		print ('<div class="alert alert-success alert-dismissable">');
+		print ('<button type = "button" class="close" data-dismiss="success" aria-hidden="true" >&times;</button>');
+		print ('<strong >更新しました。</strong>');
 		print ('</div>');
 	};
 }
-*/

@@ -19,6 +19,7 @@ unset($_SESSION['key']);
 		);
 		unset($_SESSION['pay']);
 		mysql_query($sql, $link) or die(mysql_error());
+		$_SESSION['success']='insert';
 		header('Location: pay_index.php');
 	}
     
@@ -35,6 +36,7 @@ unset($_SESSION['key']);
 		);
 		unset($_SESSION['income']);
 		mysql_query($sql, $link) or die(mysql_error());
+		$_SESSION['success']='insert';
 		header('Location: income_index.php');
 	}
 	
@@ -50,6 +52,7 @@ unset($_SESSION['key']);
 		);	
 		unset($_SESSION['transfer']);
 		mysql_query($sql, $link) or die(mysql_error());
+		$_SESSION['success']='insert';
 		header('Location: transfer_index.php');
 	}
 
@@ -76,6 +79,7 @@ unset($_SESSION['key']);
 		);
 		unset($_SESSION['add_accounts']);
 		mysql_query($sql, $link) or die(mysql_error());
+		$_SESSION['success']='insert';
 		header('Location: account_choice.php');
 	}
 	

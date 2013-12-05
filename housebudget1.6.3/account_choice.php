@@ -24,6 +24,12 @@ if ($_POST['key']=="user_accounts_add"){
 }
 
 
+if (!empty($_SESSION['success'])) {
+	$success=$_SESSION['success'];
+	unset($_SESSION['success']);
+}
+
+
 //登録口座追加ボタン
 if ($_POST['key']=="add_accounts") {
 	if (!isset($_POST['accounts_name'])) {
@@ -117,6 +123,11 @@ while ($row = mysql_fetch_assoc($result)) {
  
 	<?php //使用中の口座一覧?>
 	<div class="container">
+		<div class="row">
+			<div class="col-md-offset-3 col-md-6">
+				<?php alert_success($success);?>
+			</div>
+		</div>
 		<div class="row"> 		
 			<div class="col-md-offset-1 col-md-4">
 				<div class = "center">

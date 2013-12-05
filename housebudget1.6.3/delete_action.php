@@ -19,6 +19,7 @@ if ($key=="pay") {
 	);
 	unset($_POST);
 	mysql_query($sql) or die(mysql_error());
+	$_SESSION['success']='delete';
 	header('Location: pay_index.php');
 }
 
@@ -30,6 +31,7 @@ if ($key =="income") {
 	);
 	unset($_POST);
 	mysql_query($sql) or die(mysql_error());
+	$_SESSION['success']='delete';
 	header('Location: income_index.php');}
 
 //削除要求　口座移動
@@ -40,6 +42,7 @@ if ($key =="transfer") {
 	);
 	unset($_POST);
 	mysql_query($sql) or die(mysql_error());
+	$_SESSION['success']='delete';
 	header('Location: transfer_index.php');
 }
 
@@ -51,6 +54,7 @@ if ($key =="user_accounts") {
 	);
 	unset($_POST);
 	mysql_query($sql) or die(mysql_error());
+	$_SESSION['success']='delete';
 	header('Location: user_accounts_index.php');}
 
 ?>

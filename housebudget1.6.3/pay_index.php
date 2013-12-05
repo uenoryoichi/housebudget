@@ -25,6 +25,11 @@ if (!empty($_POST)){
 	}
 }
 
+if (!empty($_SESSION['success'])) {
+	$success=$_SESSION['success'];
+	unset($_SESSION['success']);
+}
+
 $sql = sprintf('SELECT pay.*, DATE(pay.date) AS date_ymd ,accounts.name AS account_name, pay_specifications.name AS pay_specification_name
  				FROM pay 
  					JOIN user_accounts ON pay.user_accounts_id=user_accounts.id 
@@ -62,6 +67,7 @@ while ($row = mysql_fetch_assoc($result)) {
 	<div class="container">
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-xs-6">
+				<?php alert_success($success);?>
            		<br><h2>支出情報入力フォーム</h2>
           		<form method = "POST" action = "" class = "form-inline well">
                      	<dl>

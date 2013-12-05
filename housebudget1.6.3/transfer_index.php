@@ -21,6 +21,13 @@ if (!empty($_POST)){
 	}
 }
 
+
+if (!empty($_SESSION['success'])) {
+	$success=$_SESSION['success'];
+	unset($_SESSION['success']);
+}
+
+
     $sql =sprintf('SELECT transfer.*, a_er.name AS remitter_name, a_ee.name AS remittee_name
  				FROM transfer 
  					JOIN user_accounts AS u_er ON transfer.user_accounts_id_remitter=u_er.id 
@@ -54,6 +61,7 @@ if (!empty($_POST)){
 	<div class="container">
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-xs-6">
+				<?php alert_success($success);?>
               	<br><h2>口座移動情報入力フォーム</h2>
                 	<div class="control-group">
                    	<form method = "POST" action = "" class = "form-inline well">

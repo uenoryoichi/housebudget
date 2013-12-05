@@ -27,6 +27,8 @@ if ($_POST['key']=="not_use"){
 	}
 }
 
+
+
 //分類追加ボタン時の動作 支払
 if ($_POST['key']=="add_pay_specification") {
 	if (empty($_POST['specification_name'])) {
@@ -84,6 +86,15 @@ $result = mysql_query($sql, $link);
 while ($row = mysql_fetch_assoc($result)) {
 	$income_specifications[] = $row;
 }
+
+
+if (!empty($_SESSION['success'])) {
+	$success=$_SESSION['success'];
+	unset($_SESSION['success']);
+}
+
+
+
 ?>
 
 <?php //エラー表示?>
@@ -109,12 +120,8 @@ while ($row = mysql_fetch_assoc($result)) {
 					<button type = "button" class="close" data-dismiss="success" aria-hidden="true" >&times;</button>
 					<strong ><?php echo $add_specification_name;?>を追加しました。</strong>
 				</div>
-			<?php elseif ($success=='delete'):?>
-			<div class="alert alert-danger alert-dismissable">
-					<button type = "button" class="close" data-dismiss="success" aria-hidden="true" >&times;</button>
-					<strong >削除しました。</strong>
-				</div>
 			<?php endif;?>
+			<?php alert_success($success)?>
 			<div class="col-md-offset-1 col-md-4">
 				<div class = "center">
 					<br><br><h2>表示される支払い分類項目一覧</h2>

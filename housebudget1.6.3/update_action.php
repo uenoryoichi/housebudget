@@ -26,6 +26,7 @@ if ($key == 'pay') {
 	);
 	mysql_query($sql) or die(mysql_error());
 	unset($_SESSION['pay']);
+	$_SESSION['success']='update';
 	header('Location: pay_index.php');
 }
 //収入情報
@@ -43,6 +44,7 @@ if ($key == 'income') {
 	);
 	mysql_query($sql) or die(mysql_error());
 	unset($_SESSION['income']);
+	$_SESSION['success']='update';
 	header('Location: income_index.php');
 }
 
@@ -59,6 +61,7 @@ if ($key == 'transfer') {
 	);
 	mysql_query($sql) or die(mysql_error());
 	unset($_SESSION['transfer']);
+	$_SESSION['success']='update';
 	header('Location: transfer_index.php');
 }
 
@@ -74,6 +77,7 @@ if ($key == 'account_balance') {
 		mysql_query($sql) or die(mysql_error());
 	}
 	unset($_SESSION['account_balance']);
+	$_SESSION['success']='update';
 	header('Location: account_index.php');
 }
 

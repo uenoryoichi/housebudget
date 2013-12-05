@@ -24,6 +24,11 @@ if (!empty($_POST['key'])){
 	}
 }
 
+if (!empty($_SESSION['success'])) {
+	$success=$_SESSION['success'];
+	unset($_SESSION['success']);
+}
+
 ?>
 <?php //エラー表示?>
 <?php include 'library/alert.php';?>
@@ -44,6 +49,7 @@ if (!empty($_POST['key'])){
 	<div class="container">
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-md-6">
+				<?php alert_success($success);?>
 				<div class = "center">
 					<br>
 					<h2>口座残高情報更新</h2>
