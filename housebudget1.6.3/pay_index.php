@@ -18,6 +18,8 @@ if (!empty($_POST)){
 		$error['how_much']='int';
 	}
 	
+	include 'include/php/check_token.php';
+
 	//エラーがなければ次へ
 	if (empty($error)){
 		$_SESSION['pay'] = $_POST;
@@ -48,6 +50,8 @@ while ($row = mysql_fetch_assoc($result)) {
 
 <?php //エラー表示?>
 <?php include 'library/alert.php';?>
+<?php //form用トークン生成?>
+<?php include_once 'include/php/make_token.php';?>
 
 <!DOCTYPE html>
 <html lang=ja>
@@ -69,6 +73,7 @@ while ($row = mysql_fetch_assoc($result)) {
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-xs-6">
 				<?php alert_success($success);?>
+				<?php alert_warning($error['token'])?>
            		<br><h2>支出情報入力フォーム</h2>
           		<form method = "POST" action = "" class = "form-inline well">
                      	<dl>
@@ -106,6 +111,7 @@ while ($row = mysql_fetch_assoc($result)) {
                     	</dl>
 					<div class="center">
 							<?php  //支出情報キー ?>
+							<input type ="hidden" name = "token" value="<?php echo h($token);?>">
 							<input type = "hidden" name = "key" value="pay" >
 							<input type = "submit" value = "送信" class="btn btn-primary">
                      	</div>
@@ -151,6 +157,7 @@ while ($row = mysql_fetch_assoc($result)) {
     	        						<td class="center">
 									<form method = "POST" action = "delete_action.php" >
 	    	     					        	<?php  //削除　収入キー送信　id送信 ?>
+	    	     					        	<input type="hidden" name = "token" value="<?php echo h($token)?>">
 										<input type = "hidden" name = "key" value="pay" >
 										<input type = "hidden" name = "id" value=<?php print(h($pay[$i]['id']));?> >
 										<input type = "submit" value = "削除" class="btn btn-danger btn-xs" onclick="return confirm('削除してよろしいですか');">

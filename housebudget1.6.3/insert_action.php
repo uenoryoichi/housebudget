@@ -8,6 +8,7 @@ require 'function/login_check.php';
 //キーの格納
 $key = $_SESSION["key"];
 unset($_SESSION['key']);
+
 //支払い情報入力
 	if ($key == "pay") {
 		$sql = sprintf('INSERT INTO pay SET how_much=%d, what="%s", date="%s",user_accounts_id=%d, pay_specification_id=%d, created=NOW(), user_id=%d' ,

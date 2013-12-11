@@ -8,19 +8,26 @@ require 'function/login_check.php';
 //関数設定
 require 'library_all.php';
 
+//tokenチェック
+include 'include/php/check_token.php';
+
 //キーの格納
 $key=$_POST['key'];
 
-
 //削除要求 支払い
+
 if ($key=="pay") {
-	$sql=sprintf("DELETE FROM pay WHERE id=%d AND user_id=%d",
+	if (empty($error)) {
+		$sql=sprintf("DELETE FROM pay WHERE id=%d AND user_id=%d",
 			mysql_real_escape_string($_POST['id']),
 			mysql_real_escape_string($_SESSION['user_id'])
-	);
-	unset($_POST);
-	mysql_query($sql) or die(mysql_error());
-	$_SESSION['success']='delete';
+		);
+		unset($_POST);
+		mysql_query($sql) or die(mysql_error());
+		$_SESSION['success']='delete';;
+	} else {
+		$_SESSION['error']=$error;
+	}
 	header('Location: pay_index.php');
 }
 

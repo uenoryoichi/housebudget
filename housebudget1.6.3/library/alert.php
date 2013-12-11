@@ -32,12 +32,22 @@ function alert_warning($error) {
 			print ('<p class="error">* 全角ひらがなで入力してください</p>');
 			print ('</div>');
 		}
+		if ($error=='timeout') {
+			print ('<div class="alert alert-warning alert-dismissable">');
+			print ('<p class="error">フォームの有効期限切れです</p>');
+			print ('</div>');
+		}
+		if ($error=='token_disagreement') {
+			print ('<div class="alert alert-warning alert-dismissable">');
+			print ('<p class="error">無効なフォームです。</p>');
+			print ('</div>');
+		}
 	};
 }
 
 function alert_success($success){						
  	if ($success=='insert') {
- 		print ('<div class="alert alert-primary alert-dismissable">');
+ 		print ('<div class="alert alert-info alert-dismissable">');
 		print ('<button type = "button" class="close" data-dismiss="success" aria-hidden="true" >&times;</button>');
 		print ('<strong >追加しました。</strong>');
 		print ('</div>');
