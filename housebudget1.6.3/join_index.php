@@ -1,5 +1,6 @@
 <?php
 session_start();
+session_regenerate_id(TRUE);
 //データベースへの接続 housebudget
 require 'function/connect_housebudget.php';
 //関数設定

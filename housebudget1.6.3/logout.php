@@ -1,5 +1,6 @@
 <?php
 session_start();
+session_regenerate_id(TRUE);
 //関数設定
 require 'library_all.php';
 

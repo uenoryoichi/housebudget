@@ -5,6 +5,7 @@ require 'function/connect_housebudget.php';
 require 'library_all.php';
 
 session_start();
+session_regenerate_id(TRUE);
 
 if ($_COOKIE['email'] != '') {
 	$_POST['email'] = $_COOKIE['email'];
