@@ -2,6 +2,7 @@
 session_start();
 
 //データベースへの接続 housebudget
+require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
@@ -30,6 +31,20 @@ if (!empty($_SESSION['success'])) {
 	unset($_SESSION['success']);
 }
 
+$stmt = $pdo->prepare('SELECT pay.*, DATE(pay.date) AS date_ymd ,accounts.name AS account_name, pay_specifications.name AS pay_specification_name
+ 				FROM pay 
+ 					JOIN user_accounts ON pay.user_accounts_id=user_accounts.id 
+ 					JOIN accounts ON user_accounts.account_id=accounts.id 
+					JOIN pay_specifications ON pay.pay_specification_id=pay_specifications.id
+ 				WHERE pay.user_id=:user_id
+ 				ORDER BY pay.date DESC');
+$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+$stmt->execute();
+while ($row=$stmt->fetch(PDO::FETCH_ASSOC)) {
+	$pay[] = $row;
+}
+
+/*
 $sql = sprintf('SELECT pay.*, DATE(pay.date) AS date_ymd ,accounts.name AS account_name, pay_specifications.name AS pay_specification_name
  				FROM pay 
  					JOIN user_accounts ON pay.user_accounts_id=user_accounts.id 
@@ -43,6 +58,7 @@ $result = mysql_query($sql, $link);
 while ($row = mysql_fetch_assoc($result)) {
 	$pay[] = $row;
 }
+*/
 ?>
 
 <?php //エラー表示?>

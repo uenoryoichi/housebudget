@@ -1,5 +1,6 @@
 <?php
 //データベースへの接続 housebudget
+require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
 //関数設定
 require 'library_all.php';
@@ -16,12 +17,22 @@ if ($_COOKIE['email'] != '') {
 if (!empty($_POST)) {
 	// ログインの処理
 	if ($_POST['email'] != '' && $_POST['password'] != '') {
+		$stmt = $pdo->prepare('SELECT * FROM users WHERE email=:email AND password=:pass');
+		$stmt->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
+		$stmt->bindValue(':pass', sha1($_POST['password']), PDO::PARAM_STR);
+		$stmt->execute();
+		
+		/*
 		$sql = sprintf('SELECT * FROM users WHERE email="%s" AND password="%s"',
 			mysql_real_escape_string($_POST['email']),
 			sha1(mysql_real_escape_string($_POST['password']))
 		);
 		$record = mysql_query($sql) or die(mysql_error());
-		if ($table = mysql_fetch_assoc($record)) {
+		$table = mysql_fetch_assoc($record)
+		*/
+		$row=$stmt->fetch(PDO::FETCH_ASSOC);
+		$table=$row;
+		if ($table) {
 			// ログイン成功
 			$_SESSION['user_id'] = $table['id'];
 			$_SESSION['time'] = time();

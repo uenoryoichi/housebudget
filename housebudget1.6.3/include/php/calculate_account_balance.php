@@ -1,6 +1,17 @@
 <?php 	
 	
 	//account情報を入手
+	$stmt = $pdo->prepare('SELECT a.name, u.* 
+					FROM user_accounts u 
+						JOIN accounts a ON u.account_id=a.id 
+					WHERE u.user_id=:user_id ORDER BY ID ASC');
+	$stmt->bindValue(':user_id', mysql_real_escape_string($_SESSION['user_id']), PDO::PARAM_INT);
+	$stmt->execute();
+	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+		$account[]=$row;
+	}
+	
+	/*
     $sql = sprintf('SELECT a.name, u.* FROM user_accounts u JOIN accounts a ON u.account_id=a.id WHERE u.user_id=%d ORDER BY ID ASC',
 					mysql_real_escape_string($_SESSION['user_id'])
 	);
@@ -8,9 +19,23 @@
 	while ($row = mysql_fetch_assoc($result)) {
 		$account[] = $row;
 	}
+	*/
 	
 	//支払い情報を入手
-	$sql = sprintf('SELECT u.account_id, sum(p.how_much) 
+	$stmt = $pdo->prepare('SELECT u.account_id, sum(p.how_much) 
+					FROM user_accounts u 
+						JOIN pay p ON p.user_accounts_id=u.id 
+					WHERE p.user_accounts_id 
+						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=:user_id) AND p.date>u.checked 
+					GROUP BY p.user_accounts_id');
+	$stmt->bindValue(':user_id', mysql_real_escape_string($_SESSION['user_id']), PDO::PARAM_INT);
+	$stmt->execute();
+	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		$pay[] = $row;
+	}
+	
+	/*
+	 * $sql = sprintf('SELECT u.account_id, sum(p.how_much) 
 					FROM user_accounts u 
 						JOIN pay p ON p.user_accounts_id=u.id 
 					WHERE p.user_accounts_id 
@@ -22,8 +47,22 @@
 	while ($row = mysql_fetch_assoc($result)) {
 		$pay[] = $row;
 	}
+	 */
 	
 	//収入情報を入手
+	
+	$stmt = $pdo->prepare('SELECT u.account_id, sum(i.amount) 
+					FROM user_accounts u 
+						JOIN income i ON i.user_accounts_id=u.id 
+					WHERE i.user_accounts_id 
+						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=:user_id) AND i.date>u.checked 
+					GROUP BY i.user_accounts_id');
+	$stmt->bindValue(':user_id', mysql_real_escape_string($_SESSION['user_id']), PDO::PARAM_INT);
+	$stmt->execute();
+	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		$income[] = $row;
+	}
+	/*
 	$sql = sprintf('SELECT u.account_id, sum(i.amount) 
 					FROM user_accounts u 
 						JOIN income i ON i.user_accounts_id=u.id 
@@ -37,33 +76,34 @@
 		$income[] = $row;
 	}
 	
+	*/
 	//口座間移動情報を入手
 	//送金側
-	$sql = sprintf('SELECT u.account_id, sum(t.amount) 
+	$stmt = $pdo->prepare('SELECT u.account_id, sum(t.amount) 
 					FROM user_accounts u 
 						JOIN transfer t ON t.user_accounts_id_remitter=u.id 
 					WHERE t.user_accounts_id_remitter
-						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=%d) AND t.date>u.checked 
-					GROUP BY t.user_accounts_id_remitter',
-					mysql_real_escape_string($_SESSION['user_id'])
-	);	
-	$result = mysql_query($sql, $link) or die(mysql_error());
-	while ($row = mysql_fetch_assoc($result)) {
+						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=:user_id) AND t.date>u.checked 
+					GROUP BY t.user_accounts_id_remitter');	
+	$stmt->bindValue(':user_id', mysql_real_escape_string($_SESSION['user_id']), PDO::PARAM_INT);
+	$stmt->execute();
+	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 		$transfer_remitter[] = $row;
 	}	
+	
 	//受け取り側
-	$sql = sprintf('SELECT u.account_id, sum(t.amount)
+	$stmt = $pdo->prepare('SELECT u.account_id, sum(t.amount)
 					FROM user_accounts u
 						JOIN transfer t ON t.user_accounts_id_remittee=u.id
 					WHERE t.user_accounts_id_remittee
-						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=%d) AND t.date>u.checked
-					GROUP BY t.user_accounts_id_remittee',
-			  		mysql_real_escape_string($_SESSION['user_id'])
-	);
-	$result = mysql_query($sql, $link) or die(mysql_error());
-	while ($row = mysql_fetch_assoc($result)) {
+						IN (SELECT u.id FROM user_accounts u WHERE u.user_id=:user_id) AND t.date>u.checked
+					GROUP BY t.user_accounts_id_remittee');
+	$stmt->bindValue(':user_id', mysql_real_escape_string($_SESSION['user_id']), PDO::PARAM_INT);
+	$stmt->execute();
+	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 		$transfer_remittee[] = $row;
 	}
+	
 	
 	//支払い、収入、口座間移動を用いて、口座情報を更新
 	for ($i = 0, $count_account=count($account); $i < $count_account; ++$i) {

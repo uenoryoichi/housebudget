@@ -16,4 +16,3 @@ function search_array ( $array, $key, $value )
 
     return $results;
 }
-?>

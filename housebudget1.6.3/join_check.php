@@ -1,6 +1,7 @@
 <?php
 session_start();
 //データベースへの接続 housebudget
+require 'function/connect_pdo_db.php';
 require'function/connect_housebudget.php';
 
 if (!isset($_SESSION['join'])) {
@@ -10,6 +11,13 @@ if (!isset($_SESSION['join'])) {
 //登録処理
 
 if (!empty($_POST)) {
+	$stmt= $pdo->prepare('INSERT INTO users SET name=:name, email=:email, password=:pass, created=NOW()');
+	$stmt->bindValue(':name', $_SESSION['join']['name'], PDO::PARAM_STR);
+	$stmt->bindValue(':email', $_SESSION['join']['email'], PDO::PARAM_STR);
+	$stmt->bindValue(':pass', sha1($_SESSION['join']['user_password']), PDO::PARAM_STR);
+	$stmt->execute();
+	
+	/*
 	$sql = sprintf('INSERT INTO users SET name="%s", email="%s", password="%s",created="%s"',
 		mysql_real_escape_string($_SESSION['join']['name']),
 		mysql_real_escape_string($_SESSION['join']['email']),
@@ -17,8 +25,9 @@ if (!empty($_POST)) {
 		date('Y-m-d H:i:s')
 	);
 	mysql_query($sql) or die(mysql_error());
-
-	unset($_SESSION['join']);
+	*/
+	
+	$_SESSION['join']=NULL;
 	
 	header('Location: join_thanks.php');
 	exit();

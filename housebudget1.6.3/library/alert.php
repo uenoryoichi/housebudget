@@ -1,5 +1,6 @@
 <?php 
-function alert_warning($error) {
+function alert_warning($error) 
+{
 	if (!empty($error)){
 		if ($error=='empty') {
 			print ('<div class="alert alert-warning alert-dismissable">');
@@ -35,7 +36,8 @@ function alert_warning($error) {
 	};
 }
 
-function alert_success($success){						
+function alert_success($success)
+{						
  	if ($success=='insert') {
  		print ('<div class="alert alert-primary alert-dismissable">');
 		print ('<button type = "button" class="close" data-dismiss="success" aria-hidden="true" >&times;</button>');

@@ -1,6 +1,7 @@
 <?
 session_start();
 //データベースへの接続 housebudget
+require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
