@@ -1,5 +1,6 @@
 <?php
 session_start();
+session_regenerate_id(TRUE);
 //データベースへの接続 housebudget
 require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
@@ -8,25 +9,29 @@ require 'function/login_check.php';
 //関数設定
 require 'library_all.php';
 
+//tokenチェック
+include 'include/php/check_token.php';
+
 //キーの格納
 $key=$_POST['key'];
 
-
 //削除要求 支払い
+
 if ($key=="pay") {
 	$stmt= $pdo->prepare("DELETE FROM pay WHERE id=:id AND user_id=:user_id");
 	$stmt->bindValue(':id', mysql_real_escape_string($_POST['id']), PDO::PARAM_INT);
 	$stmt->bindValue(':user_id', mysql_real_escape_string($_SESSION['user_id']), PDO::PARAM_INT);
 	$stmt->execute();
 /*	
-	$sql=sprintf("DELETE FROM pay WHERE id=%d AND user_id=%d",
+	
+		$sql=sprintf("DELETE FROM pay WHERE id=%d AND user_id=%d",
 			mysql_real_escape_string($_POST['id']),
 			mysql_real_escape_string($_SESSION['user_id'])
-	);
+		);
 	*/
-	unset($_POST);
+	$_POST=NULL;
 	//mysql_query($sql) or die(mysql_error());
-	$_SESSION['success']='delete';
+	$_SESSION['success']='delete';;
 	header('Location: pay_index.php');
 }
 
