@@ -1,5 +1,6 @@
 <?
 session_start();
+session_regenerate_id(TRUE);
 //データベースへの接続 housebudget
 require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
@@ -8,6 +9,7 @@ require 'function/login_check.php';
 //キーの格納
 $key = $_SESSION["key"];
 $_SESSION['key']=NULL;
+
 //支払い情報入力
 if ($key == "pay") {
 	$date = $_SESSION["pay"]["year"]."-".$_SESSION["pay"]["month"]."-".$_SESSION["pay"]["day"]." ".$_SESSION["pay"]["hour"];

@@ -1,5 +1,6 @@
 <?php
 session_start();
+session_regenerate_id(TRUE);
 //データベースへの接続 housebudget
 require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
@@ -14,6 +15,10 @@ require 'include/php/calculate_this_month.php';
 
 
 ?>
+
+<?php //エラー表示?>
+<?php include 'library/alert.php';?>
+
 <!DOCTYPE html>
 <html lang=ja>
     	<?php include 'include/head.html';?>
@@ -31,6 +36,8 @@ require 'include/php/calculate_this_month.php';
 	<div class="container">	
 		<div class="row">
 			<div class="col-md-offset-3 col-xs-6 well well-lg" >
+			<?php alert_warning($_SESSION['error']);?>
+			<?php $_SESSION['error']=NULL;?>
 				<div class="text-center">
 					<h2>今月の収支</h2>
 					<p>   出費：<?php echo h($sum_pay);?>円  収入：<?php echo h($sum_income);?>円</p>

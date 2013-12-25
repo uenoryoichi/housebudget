@@ -1,5 +1,6 @@
 <?
 session_start();
+session_regenerate_id(TRUE);
 //データベースへの接続 housebudget
 require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
