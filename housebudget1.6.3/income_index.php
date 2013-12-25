@@ -1,6 +1,7 @@
 <?
 session_start();
 //データベースへの接続 housebudget
+require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
@@ -21,6 +22,24 @@ if (!empty($_POST)){
 	}
 }
 
+if (!empty($_SESSION['success'])) {
+	$success=$_SESSION['success'];
+	$_SESSION['success']=NULL;
+}
+
+$stmt = $pdo->prepare('SELECT income.*, accounts.name AS accounts_name, income_specifications.name AS income_specification_name, DATE(income.date) AS date_ymd
+ 				FROM income 
+ 					JOIN user_accounts ON income.user_accounts_id=user_accounts.id 
+ 					JOIN accounts ON user_accounts.account_id=accounts.id
+					JOIN income_specifications ON income.income_specification_id=income_specifications.id
+ 				WHERE income.user_id=:user_id 
+ 				ORDER BY income.date DESC');
+$stmt->bindValue(':user_id', mysql_real_escape_string($_SESSION['user_id']), PDO::PARAM_INT);
+$stmt->execute();
+while ($row=$stmt->fetch(PDO::FETCH_ASSOC)) {
+	$income[]=$row;
+}
+/*
 $sql = sprintf('SELECT income.*, accounts.name AS accounts_name, income_specifications.name AS income_specification_name, DATE(income.date) AS date_ymd
  				FROM income 
  					JOIN user_accounts ON income.user_accounts_id=user_accounts.id 
@@ -34,7 +53,7 @@ $result = mysql_query($sql, $link) or die(mysql_error());
 while ($row = mysql_fetch_assoc($result)) {
 	$income[] = $row;
 }
-
+*/
 ?>
 
 
@@ -56,6 +75,7 @@ while ($row = mysql_fetch_assoc($result)) {
 	<div class="container">
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-md-6">
+				<?php alert_success($success);?>
            		<br><h2>収入情報入力フォーム</h2>
           		<form method = "POST" action = "" class = "form-inline well">
 	             	<dl>

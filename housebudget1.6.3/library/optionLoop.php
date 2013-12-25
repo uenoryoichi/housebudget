@@ -8,5 +8,3 @@ function optionLoop($start, $end, $value = null){
 		}
 	}
 }
-
-?>

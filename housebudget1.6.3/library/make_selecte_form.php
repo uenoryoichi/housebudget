@@ -2,7 +2,8 @@
 //前提テーブルのプライマリはid、名称はnameで登録されている
 //すべてのユーザーが使うものはuser_id=initial_id(標準は0)の値として登録
 //初期選択は$selectedで指定。中身は$tableで指定したテーブルのid
-function make_selecte_form($table_name,$initial_id,$user_id,$selected) {
+function make_selecte_form($table_name,$initial_id,$user_id,$selected) 
+{
 	$sql=sprintf('SELECT * FROM %s
 					WHERE user_id=%d OR user_id=%d
 					ORDER BY ID ASC',
@@ -31,8 +32,3 @@ function make_selecte_form($table_name,$initial_id,$user_id,$selected) {
 		}
 	}
 }
-
-
-
-?>
-

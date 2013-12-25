@@ -1,6 +1,7 @@
 <?
 session_start();
 //データベースへの接続 housebudget
+require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
@@ -29,6 +30,14 @@ if (!empty($_POST)){
 	}
 }
 
+
+$stmt = $pdo->prepare('SELECT * FROM users WHERE id=:user_id');
+$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+$stmt->execute();
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+$users=$row;
+
+/*
 $sql = sprintf('SELECT *
  				FROM users
  				WHERE id=%d',
@@ -38,6 +47,7 @@ $result = mysql_query($sql, $link) or die(mysql_error());
 while ($row = mysql_fetch_assoc($result)) {
 	$users = $row;
 }
+*/
 ?>
 
 <?php //エラー表示?>

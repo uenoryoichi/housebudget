@@ -1,6 +1,7 @@
 <?php
 session_start();
 //データベースへの接続 housebudget
+require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
@@ -16,16 +17,26 @@ if ($_POST['key']=="not_use"){
 	}
 	//エラーがなければ次へ
 	if (empty($error)){
+		$stmt = $pdo->prepare('UPDATE pay_specifications 
+				SET uses=1 
+				WHERE id=:id AND user_id=:user_id');
+		$stmt->bindValue(':id', $_POST['not_use_pay_specification_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->execute();
+		/*
 		$sql=sprintf('UPDATE pay_specifications SET uses=1 
 			WHERE id=%d AND user_id=%d',
 		mysql_real_escape_string($_POST['not_use_pay_specification_id']),
 		mysql_real_escape_string($_SESSION['user_id'])
-	);
-	mysql_query($sql) or die(mysql_error());
-	unset($_POST);
-	$success='delete';
+		);
+		mysql_query($sql) or die(mysql_error());
+		*/
+		$_POST=NULL;
+		$success='delete';
 	}
 }
+
+
 
 //分類追加ボタン時の動作 支払
 if ($_POST['key']=="add_pay_specification") {
@@ -34,14 +45,20 @@ if ($_POST['key']=="add_pay_specification") {
 	}
 	
 	if (empty($error)){
+		$stmt = $pdo->prepare('INSERT INTO pay_specifications SET name=:name, user_id=:user_id, created=NOW(), uses=0');
+		$stmt->bindValue(':name', $_POST["specification_name"], PDO::PARAM_STR);
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->execute();
+		/*
 		$sql = sprintf('INSERT INTO pay_specifications SET name="%s", user_id=%d, created=NOW(), uses=0', 
 							mysql_real_escape_string($_POST["specification_name"]),
 							mysql_real_escape_string($_SESSION['user_id'])
-	);
-	mysql_query($sql, $link) or die(mysql_error());
-	$add_specification_name=$_POST['specification_name'];
-	unset($_POST);
-	$success="pay";
+		);
+		mysql_query($sql, $link) or die(mysql_error());
+		*/
+		$add_specification_name=$_POST['specification_name'];
+		$_POST=NULL;
+		$success="pay";
 	}
 }
 
@@ -52,19 +69,43 @@ if ($_POST['key']=="add_income_specification") {
 	}
 
 	if (empty($error)){
+		$stmt = $pdo->prepare('INSERT INTO income_specifications SET name=:name, user_id=:user_id, created=NOW(), uses=0');
+		$stmt->bindValue(':name', $_POST["specification_name"], PDO::PARAM_STR);
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->execute();
+		/*
 		$sql = sprintf('INSERT INTO income_specifications SET name="%s", user_id=%d, created=NOW() ,uses=0',
 				mysql_real_escape_string($_POST["specification_name"]),
 				mysql_real_escape_string($_SESSION['user_id'])
 		);
 		mysql_query($sql, $link) or die(mysql_error());
+		*/
 	$add_specification_name=$_POST['specification_name'];
-	unset($_POST);
+	$_POST=NULL;
 	$success="income";
 	}
 }
 
 
 //表示される分類項目を取得(デフォルト＋ユーザー)
+$stmt = $pdo->prepare('SELECT *  FROM pay_specifications 
+				WHERE user_id=0 OR user_id=:user_id AND uses=0
+				ORDER BY user_id ASC');
+$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+$stmt->execute();
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+	$pay_specifications[] = $row;
+}
+
+$stmt = $pdo->prepare('SELECT *  FROM income_specifications
+				WHERE user_id=0 OR user_id=:user_id AND uses=0
+				ORDER BY user_id ASC');
+$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+$stmt->execute();
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+	$income_specifications[] = $row;
+}
+/*
 $sql = sprintf('SELECT *  FROM pay_specifications 
 				WHERE user_id=0 OR user_id=%d AND uses=0
 				ORDER BY user_id ASC',
@@ -84,6 +125,15 @@ $result = mysql_query($sql, $link);
 while ($row = mysql_fetch_assoc($result)) {
 	$income_specifications[] = $row;
 }
+*/
+
+if (!empty($_SESSION['success'])) {
+	$success=$_SESSION['success'];
+	$_SESSION['success']=NULL;
+}
+
+
+
 ?>
 
 <?php //エラー表示?>
@@ -107,14 +157,10 @@ while ($row = mysql_fetch_assoc($result)) {
 			<?php if ($success=='income' || $success=='pay'):	?>									
     	    			<div class="alert alert-success alert-dismissable">
 					<button type = "button" class="close" data-dismiss="success" aria-hidden="true" >&times;</button>
-					<strong ><?php echo $add_specification_name;?>を追加しました。</strong>
-				</div>
-			<?php elseif ($success=='delete'):?>
-			<div class="alert alert-danger alert-dismissable">
-					<button type = "button" class="close" data-dismiss="success" aria-hidden="true" >&times;</button>
-					<strong >削除しました。</strong>
+					<strong ><?php echo h($add_specification_name);?>を追加しました。</strong>
 				</div>
 			<?php endif;?>
+			<?php alert_success($success)?>
 			<div class="col-md-offset-1 col-md-4">
 				<div class = "center">
 					<br><br><h2>表示される支払い分類項目一覧</h2>

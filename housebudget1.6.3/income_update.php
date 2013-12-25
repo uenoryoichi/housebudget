@@ -1,6 +1,7 @@
 <?php
 session_start();
 //データベースへの接続 housebudget
+require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
@@ -25,7 +26,19 @@ if (!empty($_POST['key'])){
 	}
 }
 $id=$_POST['id'];
-$sql=sprintf('SELECT income.*, accounts.name AS accounts_name, income_specifications.name AS income_specification_name
+$stmt= $pdo->prepare('SELECT income.*, accounts.name AS accounts_name, income_specifications.name AS income_specification_name
+ 				FROM income 
+ 					JOIN user_accounts ON income.user_accounts_id=user_accounts.id 
+ 					JOIN accounts ON user_accounts.account_id=accounts.id 
+					JOIN income_specifications ON income.income_specification_id=income_specifications.id
+ 				WHERE income.id=:id AND income.user_id=:user_id');
+$stmt->bindValue(':id', mysql_real_escape_string($id), PDO::PARAM_INT);
+$stmt->bindValue(':user_id', mysql_real_escape_string($_SESSION['user_id']), PDO::PARAM_INT);
+$stmt->execute();
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+$income = $row;
+/*
+}$sql=sprintf('SELECT income.*, accounts.name AS accounts_name, income_specifications.name AS income_specification_name
  				FROM income 
  					JOIN user_accounts ON income.user_accounts_id=user_accounts.id 
  					JOIN accounts ON user_accounts.account_id=accounts.id 
@@ -36,6 +49,7 @@ $sql=sprintf('SELECT income.*, accounts.name AS accounts_name, income_specificat
 );
 $recordSet=mysql_query($sql) or die(mysql_error());
 $income=mysql_fetch_assoc($recordSet);
+*/
 ?>
 
 <?php //エラー表示?>

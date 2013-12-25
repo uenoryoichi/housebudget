@@ -1,5 +1,6 @@
 <?php
 //データベースへの接続 housebudget
+require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
 //関数設定
 require 'library_all.php';

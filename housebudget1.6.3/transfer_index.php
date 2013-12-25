@@ -1,6 +1,7 @@
 <?php
 session_start();
 //データベースへの接続 housebudget
+require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
@@ -21,7 +22,28 @@ if (!empty($_POST)){
 	}
 }
 
-    $sql =sprintf('SELECT transfer.*, a_er.name AS remitter_name, a_ee.name AS remittee_name
+
+if (!empty($_SESSION['success'])) {
+	$success=$_SESSION['success'];
+	$_SESSION['success']=NULL;
+}
+	
+
+$stmt = $pdo->prepare('SELECT transfer.*, a_er.name AS remitter_name, a_ee.name AS remittee_name
+ 				FROM transfer 
+ 					JOIN user_accounts AS u_er ON transfer.user_accounts_id_remitter=u_er.id 
+ 					JOIN accounts AS a_er ON u_er.account_id=a_er.id
+					JOIN user_accounts AS u_ee ON transfer.user_accounts_id_remittee=u_ee.id 
+ 					JOIN accounts AS a_ee ON u_ee.account_id=a_ee.id
+				WHERE transfer.user_id=:user_id 
+ 				ORDER BY DATE DESC');
+$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+$stmt->execute();
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+	$transfer[] = $row;
+}
+/*
+$sql =sprintf('SELECT transfer.*, a_er.name AS remitter_name, a_ee.name AS remittee_name
  				FROM transfer 
  					JOIN user_accounts AS u_er ON transfer.user_accounts_id_remitter=u_er.id 
  					JOIN accounts AS a_er ON u_er.account_id=a_er.id
@@ -35,6 +57,7 @@ if (!empty($_POST)){
 	while ($row = mysql_fetch_assoc($result)) {
 		$transfer[] = $row;
 	}
+*/
 ?>
 
 <?php //エラー表示?>
@@ -54,6 +77,7 @@ if (!empty($_POST)){
 	<div class="container">
 		<div class="row"> 		
 			<div class="col-md-offset-3 col-xs-6">
+				<?php alert_success($success);?>
               	<br><h2>口座移動情報入力フォーム</h2>
                 	<div class="control-group">
                    	<form method = "POST" action = "" class = "form-inline well">

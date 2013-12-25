@@ -1,17 +1,17 @@
 <?php
 session_start();
-
 //データベースへの接続 housebudget
+require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
-//ログインチェック
+//ログインチェックpdo
 require 'function/login_check.php';
 //関数設定
 require 'library_all.php';
-
-//口座の現在残高取得
+//口座の現在残高取得pdo
 require 'include/php/calculate_account_balance.php';
-//今月の収支情報取得
+//今月の収支情報取得pdo
 require 'include/php/calculate_this_month.php';
+
 
 ?>
 <!DOCTYPE html>

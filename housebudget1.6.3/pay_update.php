@@ -1,6 +1,7 @@
 <?php
 session_start();
 //データベースへの接続 housebudget
+require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
@@ -25,14 +26,21 @@ if (!empty($_POST['key'])){
 	}
 }
 
-$id=$_POST['id'];
+$stmt = $pdo->prepare("SELECT pay.* FROM pay WHERE pay.id=:id");
+$stmt->bindValue(':id', $_POST['id'], PDO::PARAM_INT);
+$stmt->execute();
+$row=$stmt->fetch(PDO::FETCH_ASSOC);
+$date=$row;
+/*
 $sql=sprintf("SELECT pay.*
  				FROM pay 
 				WHERE pay.id=%d",
-			mysql_real_escape_string($id)
+			mysql_real_escape_string($_POST['id'])
 );
 $result=mysql_query($sql,$link);
 $date=mysql_fetch_assoc($result);
+*/
+
 ?>
 
 <html lang=ja>
@@ -88,7 +96,7 @@ $date=mysql_fetch_assoc($result);
                     	</dl>
                      	<div class="center">
                     		<!-- 送信ボタン -->
-           				<input type = "hidden" name="id" value="<?php print(h($id));?>"> 
+           				<input type = "hidden" name="id" value="<?php print(h($_POST['id']));?>"> 
                 	    		<input type = "hidden" name = "key" value="pay" >
 						<input type = "submit" value = "修正を送信" class="btn btn-primary">
             			</div>
@@ -103,7 +111,7 @@ $date=mysql_fetch_assoc($result);
 			<div class="col-md-offset-3 col-md-6">
 				<div class="center">
                		<form method= "post" action= "delete_action.php" class = "form-horizontal well" >
-            				<input type= "hidden" name="pay_id" value="<?php print(h($id));?>"> 
+            				<input type= "hidden" name="pay_id" value="<?php print(h($_POST['id']));?>"> 
            				<input type = "hidden" name = "key" value="pay" >
                			<input type= "submit" value= "この項目を削除" class="btn btn-danger" onclick="return confirm('削除してよろしいですか');">
            			</form>

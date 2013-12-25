@@ -1,6 +1,7 @@
 <?php
 session_start();
 //データベースへの接続 housebudget
+require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
 //関数設定
 require 'library_all.php';
@@ -24,11 +25,18 @@ if (!empty($_POST)){
 	}
 	//重複アカウントチェック
 	if (empty($error)) {
+		$stmt = $pdo->prepare('SELECT COUNT(*) AS cnt FROM users WHERE email=:email');
+		$stmt->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
+		$stmt->execute();
+		$row=$stmt->fetch(PDO::FETCH_ASSOC);
+		$table=$row;
+		/*		
 		$sql=sprintf('SELECT COUNT(*) AS cnt FROM users WHERE email="%s"',
 			mysql_real_escape_string($_POST['email'])
 		);
 		$record=mysql_query($sql) or die(mysql_error());
 		$table= mysql_fetch_assoc($record);
+		*/
 		if ($table['cnt']>0) {
 			$error['email']='duplicate';
 		}

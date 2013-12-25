@@ -1,6 +1,7 @@
 <?php
 session_start();
 //データベースへの接続 housebudget
+require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
@@ -25,7 +26,18 @@ if (!empty($_POST['key'])){
 	}
 }
 
-$id=$_POST['id'];
+$stmt = $pdo->prepare("SELECT transfer.*, a_er.name AS remitter_name, a_ee.name AS remittee_name
+ 				FROM transfer 
+ 					JOIN user_accounts AS u_er ON transfer.user_accounts_id_remitter=u_er.id 
+ 					JOIN accounts AS a_er ON u_er.account_id=a_er.id
+					JOIN user_accounts AS u_ee ON transfer.user_accounts_id_remittee=u_ee.id 
+ 					JOIN accounts AS a_ee ON u_ee.account_id=a_ee.id
+				WHERE transfer.id=:id ");
+$stmt->bindValue(':id', $_POST['id'], PDO::PARAM_INT);
+$stmt->execute();
+$row=$stmt->fetch(PDO::FETCH_ASSOC);
+$transfer=$row;
+/*
 $sql=sprintf("SELECT transfer.*, a_er.name AS remitter_name, a_ee.name AS remittee_name
  				FROM transfer 
  					JOIN user_accounts AS u_er ON transfer.user_accounts_id_remitter=u_er.id 
@@ -33,10 +45,11 @@ $sql=sprintf("SELECT transfer.*, a_er.name AS remitter_name, a_ee.name AS remitt
 					JOIN user_accounts AS u_ee ON transfer.user_accounts_id_remittee=u_ee.id 
  					JOIN accounts AS a_ee ON u_ee.account_id=a_ee.id
 				WHERE transfer.id=%d", 
-			mysql_real_escape_string($id)
+			mysql_real_escape_string($_POST['id'])
 );
-$recordSet=mysql_query($sql) or die(mysql_error());
-$transfer=mysql_fetch_assoc($recordSet);
+$row=mysql_query($sql) or die(mysql_error());
+$transfer=mysql_fetch_assoc($row);
+*/
 ?>
 
 <?php //エラー表示?>
@@ -94,7 +107,7 @@ $transfer=mysql_fetch_assoc($recordSet);
 						</dd>
 					</dl>
 					<div class="center">	
-        	             	<input type = "hidden" name="id" value="<?php print (h($id));?>"> 
+        	             	<input type = "hidden" name="id" value="<?php print (h($_POST['id']));?>"> 
 						<input type = "hidden" name = "key" value="transfer" >
 						<input type = "submit" value = "修正を送信" class="btn btn-primary">
 					</div>
@@ -109,7 +122,7 @@ $transfer=mysql_fetch_assoc($recordSet);
 			<div class="col-md-offset-3 col-md-6">
 				<div class="center">
                		<form method= "post" action= "delete_action.php" class = "form-horizontal well" >
-                           	<input type= "hidden" name="id" value="<?php print (h($id)); ?>"> 
+                           	<input type= "hidden" name="id" value="<?php print (h($_POST['id'])); ?>"> 
                            	<input type= "submit" value= "この項目を削除" class="btn btn-danger" onclick="return confirm('削除してよろしいですか');">
                         </form>
                     </div>

@@ -1,12 +1,12 @@
 <?php
 session_start();
 //データベースへの接続 housebudget
+require 'function/connect_pdo_db.php';
 require 'function/connect_housebudget.php';
 //ログインチェック
 require 'function/login_check.php';
 //関数設定
 require 'library_all.php';
-
 
 
 //口座選択ボタン
@@ -24,6 +24,12 @@ if ($_POST['key']=="user_accounts_add"){
 }
 
 
+if (!empty($_SESSION['success'])) {
+	$success=$_SESSION['success'];
+	unset($_SESSION['success']);
+}
+
+
 //登録口座追加ボタン
 if ($_POST['key']=="add_accounts") {
 	if (!isset($_POST['accounts_name'])) {
@@ -36,16 +42,24 @@ if ($_POST['key']=="add_accounts") {
 	if (!mb_ereg("^[ぁ-ん]+$",$_POST["accounts_kana"])) {
 		$error["accounts_kana"]="no_kana";
 	}
+	$stmt= $pdo->prepare('SELECT COUNT(*) AS cnt FROM accounts WHERE kana=:kana OR name=:name');
+	$stmt->bindValue(':kana', mysql_real_escape_string($_POST["accounts_kana"]), PDO::PARAM_STR);
+	$stmt->bindValue(':name', mysql_real_escape_string($_POST["accounts_name"]), PDO::PARAM_STR);
+	$stmt->execute();
+	$row=$stmt->fetch(PDO::FETCH_ASSOC);
+	$table=$row;
+	/*
 	$sql=sprintf('SELECT COUNT(*) AS cnt FROM accounts 	WHERE kana="%s" OR name="%s" ',
 					mysql_real_escape_string($_POST["accounts_kana"]),
 					mysql_real_escape_string($_POST["accounts_name"])
 		);
 	$result=mysql_query($sql) or die(mysql_error());
 	$table= mysql_fetch_assoc($result);
+	*/
 	if ($table['cnt']>0) {
 		$error['add_accounts']='duplicate';
 	}
-	
+
 	if (empty($error)){
 		$_SESSION['add_accounts']=$_POST;
 		$_SESSION['key']=$_POST['key'];
@@ -57,25 +71,38 @@ if ($_POST['key']=="add_accounts") {
 	}
 	unset($_POST);
 }
-
 //使用中の口座情報
+$stmt= $pdo->prepare('SELECT a.name,a.account_classification_id, u.*  FROM user_accounts u 
+			JOIN accounts a ON u.account_id=a.id 
+               	WHERE u.user_id=:user_id');
+$stmt->bindValue(':user_id', mysql_real_escape_string($_SESSION['user_id']), PDO::PARAM_INT);
+$stmt->execute();
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+	$using_accounts[] = $row;
+}
+/*
 $sql = sprintf('SELECT a.name,a.account_classification_id, u.*  FROM user_accounts u 
 			JOIN accounts a ON u.account_id=a.id 
                	WHERE u.user_id=%d',
-				mysql_real_escape_string($_SESSION['user_id'])
+		mysql_real_escape_string($_SESSION['user_id'])
 );
 $result = mysql_query($sql, $link);
 while ($row = mysql_fetch_assoc($result)) {
 	$using_accounts[] = $row;
 }
-
+*/
 //口座情報取得
+$stmt=$pdo->query('SELECT * FROM accounts');
+while ($row=$stmt->fetch(PDO::FETCH_ASSOC)) {
+	$accounts[] = $row;
+}
+/*
 $sql = sprintf('SELECT *  FROM accounts');
 $result = mysql_query($sql, $link);
 while ($row = mysql_fetch_assoc($result)) {
 	$accounts[] = $row;
 }
-
+*/
 //使用していない口座を抽出
 for ($i= 0, $count_accounts=count($accounts);  $i < $count_accounts; $i++){
 	$using=false;
@@ -92,11 +119,17 @@ for ($i= 0, $count_accounts=count($accounts);  $i < $count_accounts; $i++){
 };
 
 //口座種別取得
+$stmt=$pdo->query('SELECT * FROM account_classifications');
+while ($row=$stmt->fetch(PDO::FETCH_ASSOC)) {
+	$account_classifications[] = $row;
+}
+/*
 $sql = sprintf('SELECT *  FROM account_classifications');
 $result = mysql_query($sql, $link);
 while ($row = mysql_fetch_assoc($result)) {
 	$account_classifications[] = $row;
 }
+*/
 ?>
 
 <?php //エラー表示?>
@@ -117,6 +150,11 @@ while ($row = mysql_fetch_assoc($result)) {
  
 	<?php //使用中の口座一覧?>
 	<div class="container">
+		<div class="row">
+			<div class="col-md-offset-3 col-md-6">
+				<?php alert_success($success);?>
+			</div>
+		</div>
 		<div class="row"> 		
 			<div class="col-md-offset-1 col-md-4">
 				<div class = "center">
@@ -149,7 +187,7 @@ while ($row = mysql_fetch_assoc($result)) {
 							<tbody>
 								<tr>
 								<?php if ($_POST['can_delete']=="true"):?>
-									<td class="center"><input type="radio" name="user_accounts_id" value="<?php echo h($using_accounts[$j]['id']); ?>"/></td>	<?php //削除アクション有効?>
+									<td class="center"><input type="radio" name="id" value="<?php echo h($using_accounts[$j]['id']); ?>"/></td>	<?php //削除アクション有効?>
 								<?php endif;?>
 									<td><?php print (h($using_accounts[$j]['name']));?></td> 	
 									<td>	<?php print (h($using_accounts[$j]['balance']));?></td>
